@@ -23,7 +23,7 @@ Recommended to install R package "bedr" in order to perform structural variant s
 
 Input files
 ========
-The input to Palimpsest.R is two main files -- one for **mutational catalogue** data and
+The input to Palimpsest are two main files -- one for **mutational catalogue** data and
 one for **copy number information** and a thrid supplementary file with **sample annotation** for gender and tumor purity. 
 
 **The input files should have the following columns (the header is required, but the order of the columns can change). For proper format, please refer the example files provided with the package.**
