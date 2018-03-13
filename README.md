@@ -85,7 +85,7 @@ Running Palimpsest
 * Please refer to the following paper for extensive description of the statistical methods used in the package: [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumorigenesis](https://www.nature.com/articles/s41467-017-01358-x), with authors Letouzé, E#, Shinde, J.#, Renault, V., Couchy, G., Blanc, J.-F., Tubacher, E., Bayard, Q., Bacq, D., Meyer, V., Semhoun, J., Bioulac-Sage, P., Prévôt, S., Azoulay, D., Paradis, V., Imbeaud, S., Deleuze, J.-F. and Zucman-Rossi, J. 
 
 <p align="center">
-  <a href="https://github.com/FunGeST/Palimpsest">
+  <a>
     <img height="550" src="https://github.com/FunGeST/Palimpsest/blob/master/Files/RUNNING_PALIMPSEST.png">
   </a>
 </p>
