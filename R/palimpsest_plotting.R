@@ -536,8 +536,8 @@ plot.SV.sigs <- function(sigs){
   myord <- c("DEL_0-1kb_clust_1","DEL_1-10kb_clust_1","DEL_10-100kb_clust_1","DEL_100kb-1Mb_clust_1","DEL_1-10Mb_clust_1","DEL_>10Mb_clust_1","DUP_0-1kb_clust_1","DUP_1-10kb_clust_1","DUP_10-100kb_clust_1","DUP_100kb-1Mb_clust_1","DUP_1-10Mb_clust_1","DUP_>10Mb_clust_1","INV_0-1kb_clust_1","INV_1-10kb_clust_1","INV_10-100kb_clust_1","INV_100kb-1Mb_clust_1","INV_1-10Mb_clust_1","INV_>10Mb_clust_1","BND_clust_1","DEL_0-1kb_clust_0","DEL_1-10kb_clust_0","DEL_10-100kb_clust_0","DEL_100kb-1Mb_clust_0","DEL_1-10Mb_clust_0","DEL_>10Mb_clust_0","DUP_0-1kb_clust_0","DUP_1-10kb_clust_0","DUP_10-100kb_clust_0","DUP_100kb-1Mb_clust_0","DUP_1-10Mb_clust_0","DUP_>10Mb_clust_0","INV_0-1kb_clust_0","INV_1-10kb_clust_0","INV_10-100kb_clust_0","INV_100kb-1Mb_clust_0","INV_1-10Mb_clust_0","INV_>10Mb_clust_0","BND_clust_0")
   labs=rep(c(rep("del",6),rep("tds",6),rep("inv",6),"trans"),2)
   sigs <- matrix(sigs[myord,],ncol=ncol(sigs),dimnames=dimnames(sigs),byrow=F)
-  if(max(range(spec)) > 1) {axis_name <- "Number of mutations"}
-  if(max(range(spec)) <= 1) {axis_name <- "Percentage of mutations"}
+  if(max(range(sigs)) > 1) {axis_name <- "Number of mutations"}
+  if(max(range(sigs)) <= 1) {axis_name <- "Percentage of mutations"}
   for(siggy in colnames(sigs))
   {
     par(mai=c(1.2,1,2,1))
