@@ -85,7 +85,7 @@ palimpsestInput <- function(vcf,
     "INV_>10Mb_clust_0", "BND_clust_0")
     missings_cat = setdiff(categs, rownames(data))
     for(i in missings_cat){
-      input_data = rbind(input_data, assign(i, rep(0, ncol(data))))
+      data = rbind(data, assign(i, rep(0, ncol(data))))
       rownames(data)[nrow(data)] = i
     }
     if(proportion){ data <- prop.table(mat,2)}
