@@ -70,10 +70,28 @@ palimpsestInput <- function(vcf,
     tt <- as.matrix(table(vcf[,mutcat.col],vcf[,sample.col]))
     mat <- matrix(as.numeric(tt),nrow=nrow(tt),ncol=ncol(tt));rownames(mat) <- rownames(tt);colnames(mat) <- colnames(tt)
     data <- mat
+    categs <- c("DEL_0-1kb_clust_1", "DEL_1-10kb_clust_1", "DEL_10-100kb_clust_1",
+    "DEL_100kb-1Mb_clust_1", "DEL_1-10Mb_clust_1", "DEL_>10Mb_clust_1",
+    "DUP_0-1kb_clust_1", "DUP_1-10kb_clust_1", "DUP_10-100kb_clust_1",
+    "DUP_100kb-1Mb_clust_1", "DUP_1-10Mb_clust_1", "DUP_>10Mb_clust_1",
+    "INV_0-1kb_clust_1", "INV_1-10kb_clust_1", "INV_10-100kb_clust_1",
+    "INV_100kb-1Mb_clust_1", "INV_1-10Mb_clust_1", "INV_>10Mb_clust_1",
+    "BND_clust_1", "DEL_0-1kb_clust_0", "DEL_1-10kb_clust_0",
+    "DEL_10-100kb_clust_0", "DEL_100kb-1Mb_clust_0", "DEL_1-10Mb_clust_0",
+    "DEL_>10Mb_clust_0", "DUP_0-1kb_clust_0", "DUP_1-10kb_clust_0",
+    "DUP_10-100kb_clust_0", "DUP_100kb-1Mb_clust_0", "DUP_1-10Mb_clust_0",
+    "DUP_>10Mb_clust_0", "INV_0-1kb_clust_0", "INV_1-10kb_clust_0",
+    "INV_10-100kb_clust_0", "INV_100kb-1Mb_clust_0", "INV_1-10Mb_clust_0",
+    "INV_>10Mb_clust_0", "BND_clust_0")
+    missings_cat = setdiff(categs, rownames(data))
+    for(i in missings_cat){
+      input_data = rbind(input_data, assign(i, rep(0, ncol(data))))
+      rownames(data)[nrow(data)] = i
+    }
     if(proportion){ data <- prop.table(mat,2)}
+    }
+    return(data)
   }
-  return(data)
-}
 
 #' deconvolution_fit
 #'
