@@ -224,23 +224,17 @@ deconvolution_nmf <- function (input_data = NULL, type = NULL, range_of_sigs = N
               sep = " "))
   res <- nmf(input_data, rank = estimated_rank, method = method,
              nrun = nrun, seed = 123456)
-  sigs = basis(res)
-  colnames(sigs) <- paste("Signature.", 1:ncol(sigs), sep = "");mat.sigs <- data.frame(t(sigs))
-  mat.sigs$sums <- rowSums(mat.sigs)
-  prop.sigs <- (mat.sigs/mat.sigs$sum)
-  prop.sigs <- prop.sigs[, -dim(prop.sigs)[2]]
-  prop.sigs. <- data.frame(t(prop.sigs))
-  spec <- t(prop.sigs.)
+  sigs = t(basis(res))
+  rownames(sigs) <- paste("Signature.", 1:nrow(sigs), sep = "")
+  spec <- sigs/rowSums(sigs)
   if (plot_sigs == TRUE) {
     if (type == "SV") {
-      pdf(file.path(resdir, "Mutational_Signatures.pdf"),
-          width = 24, height = 5)
+      pdf(file.path(resdir, "Mutational_Signatures.pdf"),width = 24, height = 5)
       plot.SV.sigs(spec)
       dev.off()
     }
     if (type == "SNV") {
-      pdf(file.path(resdir, "Mutational_Signatures.pdf"),
-          width = 24, height = 5)
+      pdf(file.path(resdir, "Mutational_Signatures.pdf"),width = 24, height = 5)
       plot.SNV.sigs(spec)
       dev.off()
     }
