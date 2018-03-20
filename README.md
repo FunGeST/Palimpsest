@@ -19,16 +19,15 @@ Install from the GitHub repository using devtools:
 
 Dependencies
 ========
-Recommended to install R package "bedr" in order to perform structural variant signature analysis. The bedr API gives access to "BEDTools" as well as offers additional utilities for genomic regions processing. To gain the functionality of bedr package you will need to have the [BEDTools](http://bedtools.readthedocs.io/en/latest/content/installation.html) program installed and in your default PATH.
+The R package "bedr" is required to perform structural variant signature analysis. The bedr API gives access to "BEDTools" and offers additional utilities for genomic region processing. To gain the functionality of bedr package you will need to have the [BEDTools](http://bedtools.readthedocs.io/en/latest/content/installation.html) program installed and in your default PATH.
 
 Input files
 ========
-The input to Palimpsest are two main files -- one for **mutational catalogue** data and
-one for **copy number information** and a thrid supplementary file with **sample annotation** for gender and tumor purity. 
+Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (mut_data) describing somatic mutations in the tumor series, a **copy number alteration** file (cna_data) providing genome-wide absolute copy number estimates, and a minimal **sample annotation** file (annot_data) indicating gender and tumor purity.
 
-**The input files should have the following columns (the header is required, but the order of the columns can change). For proper format, please refer the example files provided with the package.**
+**The input files should have the following columns (the header is required, but the order of the columns can change). Example input files are provided with the package.**
 
-`1]. mut_data`: __simple somatic substitutions data__
+`1]. mut_data`: __somatic mutation data__
 
 * `Sample`: Sample identifier. Any alphanumeric string.
 * `Type`: Mutation type [SNV/Indel].
@@ -40,7 +39,7 @@ one for **copy number information** and a thrid supplementary file with **sample
 * `Tumor_Depth`: Tumor sample sequencing depth at the position.
 * `Normal_Depth`: Normal sample sequencing depth at the position.
 * `Gene_Name`: OPTIONAL column for representing mutated gene name.
-* `Driver`: OPTIONAL column indicating the driver events to be annotated in oncogenic timeline plots.
+* `Driver`: OPTIONAL column indicating the driver events to be annotated in tumor history plots.
 
 `2]. cna_data`: __copy number alteration data__
 
@@ -66,7 +65,7 @@ one for **copy number information** and a thrid supplementary file with **sample
 `4]. sv_data`: __structural variant data__
 
 * `Sample`: Sample identifier. Any alphanumeric string.
-* `Type`: Type of structural variant: [INV/DEL//DUP/BND](https://samtools.github.io/hts-specs/VCFv4.1.pdf).
+* `Type`: Type of structural variant: [INV/DEL/DUP/BND](https://samtools.github.io/hts-specs/VCFv4.1.pdf).
 * `CHROM_1`: Chromosome of the first breakpoint. Between chr1 and chr22 or the chrX or chrY ('chr' prefix required).
 * `POS_1`: Position of the first breakpoint. A positive integer.
 * `CHROM_2`: Chromosome of the second breakpoint. Between chr1 and chr22 or the chrX or chrY ('chr' prefix required).
@@ -74,7 +73,7 @@ one for **copy number information** and a thrid supplementary file with **sample
 * `Tumor_Varcount`: Column for variant allele count information.
 * `Tumor_Depth`: Column for tumor sequencing depth information.
 * `Normal_Depth`: Column for normal sequencing depth information.
-* `Driver`: OPTIONAL column indicating the driver events to be annotated in oncogenic timeline plots.
+* `Driver`: OPTIONAL column indicating the driver events to be annotated in tumor history plots.
 
 
 Running Palimpsest
