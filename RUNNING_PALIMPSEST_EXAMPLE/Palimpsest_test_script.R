@@ -24,8 +24,10 @@ load(file.path(datadir,"cna_data.RData")) # Example CNA data from Letouzé L, Sh
 load(file.path(datadir,"annot_data.RData")) # Example Sample annotation data from Letouzé L, Shinde J et al.
 load(file.path(datadir,"sv_data.RData")) # Example structural variants data from Letouzé L, Shinde J et al.
 
-library(BSgenome.Hsapiens.UCSC.hg19)
+library(BSgenome.Hsapiens.UCSC.hg19) # Reference genome of choice
 ref_genome <- BSgenome.Hsapiens.UCSC.hg19
+load(file.path(datadir,"ensgene_hg19.RData")) # Ensembl genes table (ensgene)
+load(file.path(datadir,"cyto_hg19.RData")) # cytoband table (cyto)
 
 #-------------------------------------------------------------------------------------------------
 # 2] De novo mutational signature analysis
