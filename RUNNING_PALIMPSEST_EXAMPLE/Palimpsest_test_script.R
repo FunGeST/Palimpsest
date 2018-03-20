@@ -13,7 +13,7 @@ library(Palimpsest)
 
 # Define working directories:
 datadir <- "Palimpsest/RUNNING_PALIMPSEST_EXAMPLE/LiC1162" # Path to directory containing data files
-resdir <- "Palimpsest/Results";if(!file.exists(resdir))	dir.create(resdir) # Path to directory where to export results
+resdir <- "Results";if(!file.exists(resdir))	dir.create(resdir) # Path to directory where to export results
 
 
 #-------------------------------------------------------------------------------------------------
@@ -26,8 +26,8 @@ load(file.path(datadir,"sv_data.RData")) # Example structural variants data from
 
 library(BSgenome.Hsapiens.UCSC.hg19) # Reference genome of choice
 ref_genome <- BSgenome.Hsapiens.UCSC.hg19
-load(file.path(datadir,"ensgene_hg19.RData")) # Ensembl genes table (ensgene)
-load(file.path(datadir,"cyto_hg19.RData")) # cytoband table (cyto)
+load("Palimpsest/data/ensgene_hg19.RData") # Ensembl genes table (ensgene)
+load("Palimpsest/data/cytoband_hg19.RData") # cytoband table (cyto)
 
 #-------------------------------------------------------------------------------------------------
 # 2] De novo mutational signature analysis
