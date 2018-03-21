@@ -12,7 +12,7 @@ library(Palimpsest)
 #-------------------------------------------------------------------------------------------------
 
 # Define working directories:
-datadir <- "Palimpsest/RUNNING_PALIMPSEST_EXAMPLE/LiC1162" # Path to directory containing data files
+datadir <- "Palimpsest/RUNNING_PALIMPSEST_EXAMPLE/LiC1162/" # Path to directory containing data files
 resdir <- "Results";if(!file.exists(resdir))	dir.create(resdir) # Path to directory where to export results
 
 
@@ -54,7 +54,8 @@ signatures_exp <- deconvolution_fit(vcf=vcf,type = "SNV",input_data = propMutsBy
 
 # Plotting the exposures of signatures across the series:
 pdf(file.path(resdir.,"signature_content_plot.pdf"),width=10,height=7)
-deconvolution_exposure(signatures_exp$sig_nums,signatures_exp$sig_props,sig_cols = mycol)
+signature_content_plot <- deconvolution_exposure(signatures_exp$sig_nums,signatures_exp$sig_props,sig_cols = mycol)
+print(signature_content_plot)
 dev.off()
 
 
@@ -76,7 +77,8 @@ signatures_exp <- deconvolution_fit(vcf=vcf,type = "SNV",input_data = propMutsBy
 
 # Plotting the exposures of signatures across the series:
 pdf(file.path(resdir.,"signature_content_plot.pdf"),width=10,height=7)
-deconvolution_exposure(signatures_exp$sig_nums,signatures_exp$sig_props,sig_cols = mycol)
+signature_content_plot <- deconvolution_exposure(signatures_exp$sig_nums,signatures_exp$sig_props,sig_cols = mycol)
+print(signature_content_plot)
 dev.off()
 
 
@@ -178,7 +180,8 @@ SVsignatures_exp <- deconvolution_fit(vcf=sv.vcf,type = "SV",input_data = propSV
 
 # Plotting the exposures of signatures across the series:
 pdf(file.path(resdir.,"signature_content_plot.pdf"),width=10,height=7)
-deconvolution_exposure(SVsignatures_exp$sig_nums,SVsignatures_exp$sig_props,sig_cols = mycol.sv)
+signature_content_plot <- deconvolution_exposure(SVsignatures_exp$sig_nums,SVsignatures_exp$sig_props,sig_cols = mycol.sv)
+print(signature_content_plot)
 dev.off()
 
 # Estimate the probability of each event being due to each process
