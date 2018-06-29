@@ -82,7 +82,13 @@ Running Palimpsest
 
 * The RUNNING_PALIMPSEST_EXAMPLE folder contains example data and an R script for a typical Palimpsest analysis. Please try!</br>
 * [*Introduction to Palimpsest*](http://nbviewer.jupyter.org/github/FunGeST/Palimpsest/blob/master/Files/vignette_palimpsest.pdf) provides a comprehensive example of the Palimpsest workflow with detailed  explanations of each function.</br> 
-* Please refer to the following paper for extensive description of the statistical methods used in the package: [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumorigenesis](https://www.nature.com/articles/s41467-017-01358-x), with authors Letouzé, E#, Shinde, J.#, Renault, V., Couchy, G., Blanc, J.-F., Tubacher, E., Bayard, Q., Bacq, D., Meyer, V., Semhoun, J., Bioulac-Sage, P., Prévôt, S., Azoulay, D., Paradis, V., Imbeaud, S., Deleuze, J.-F. and Zucman-Rossi, J. 
+* Please refer to the following paper for extensive description of the statistical methods used in the package: Letouzé, E., Shinde, J. *et al.* Nat. Commun. (2017) [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumorigenesis.](https://www.nature.com/articles/s41467-017-01358-x)
+
+Refernce
+================
+
+Shinde, J. *et al.* Bioinformatics (2018) [Palimpsest: an R package for studying mutational and structural variant signatures along clonal evolution in cancer.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty388/4996591)
+
 
 <p align="center">
   <a href="https://github.com/FunGeST/Palimpsest">
