@@ -280,23 +280,31 @@ palimpsest_addSVcategoriesToVcf <- function (sv = sv, type.col = "Type", sample.
 #' @export
 #' @import Biostrings
 #' @examples
-palimpsest_addMutationContextToVR <- function (vr, ref, k = 3, check.ref = TRUE, check.strand = FALSE, unify = TRUE)
+palimpsest_addMutationContextToVR <- function (vr, ref, k = 3, check.ref = TRUE, check.strand = FALSE, 
+                                               unify = TRUE) 
 {
-  requireNamespace("Biostrings", quietly = TRUE);
-  if (any(width(vr)) != 1) stop("SNVs must have width of 1.")
-  if (k%%2 != 1) stop("'k' must be odd.")
+  requireNamespace("Biostrings", quietly = TRUE)
+  requireNamespace("GenomicRanges", quietly = TRUE)
+  
+  if (any(width(vr)) != 1) 
+    stop("SNVs must have width of 1.")
+  if (k%%2 != 1) 
+    stop("'k' must be odd.")
   mid = (k + 1)/2
   gr = granges(vr)
   strand.mut = strand(gr)
-  if (any(strand.mut == "*")) stop("The strand must be explicit, in order to read the correct strand.")
-  ranges = resize(gr, k, fix = "center")
+  if (any(strand.mut == "*")) 
+    stop("The strand must be explicit, in order to read the correct strand.")
+  ranges = GenomicRanges::resize(gr, k, fix = "center")
   context = getSeq(ref, ranges)
   ref_base = DNAStringSet(ref(vr))
   alt_base = DNAStringSet(alt(vr))
   if (check.ref) {
     ref0 = subseq(context, mid, mid)
     idx_invalid = (ref0 != ref_base)
-    if (any(idx_invalid)) warning(sprintf("References do not match in %d cases",sum(idx_invalid)))
+    if (any(idx_invalid)) 
+      warning(sprintf("References do not match in %d cases", 
+                      sum(idx_invalid)))
   }
   if (check.strand) {
     idx_minus = (strand.mut == "-")
@@ -306,14 +314,17 @@ palimpsest_addMutationContextToVR <- function (vr, ref, k = 3, check.ref = TRUE,
     strand.mut[idx_minus] = "+"
   }
   if (unify) {
-    idx_complement = as.character(ref_base) %in% c("A", "G")
+    idx_complement = as.character(ref_base) %in% c("A", 
+                                                   "G")
     context[idx_complement] = reverseComplement(context[idx_complement])
     ref_base[idx_complement] = reverseComplement(ref_base[idx_complement])
     alt_base[idx_complement] = reverseComplement(alt_base[idx_complement])
     strand.mut[idx_complement] = "-"
   }
-  alteration = as.character(xscat(ref_base, alt_base));alteration[idx_invalid] <- NA
-  context = as.character(context);context[idx_invalid] <- NA
+  alteration = as.character(xscat(ref_base, alt_base))
+  alteration[idx_invalid] <- NA
+  context = as.character(context)
+  context[idx_invalid] <- NA
   vr$alteration = alteration
   vr$context = context
   vr@strand = Rle(strand.mut)
