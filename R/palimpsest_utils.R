@@ -115,7 +115,7 @@ palimpsest_distCosine <- function(m)
   as.dist(1-res)
 }
 
-#' palimpsest_tationContextToVcf
+#' palimpsest_addMutationContextToVcf
 #'
 #' Function to add mutation contexts to vcf
 #' @param vcf vcf data frame containing the SNVs
