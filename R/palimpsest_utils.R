@@ -115,7 +115,7 @@ palimpsest_distCosine <- function(m)
   as.dist(1-res)
 }
 
-#' palimpsest_addMutationContextToVcf
+#' palimpsest_tationContextToVcf
 #'
 #' Function to add mutation contexts to vcf
 #' @param vcf vcf data frame containing the SNVs
@@ -160,7 +160,7 @@ palimpsest_addMutationContextToVcf <- function(vcf,
     nostrand <- which(is.na(vcf[,strand.gene.col]) | vcf[,strand.gene.col]=="*")
     vcf[nostrand,strand.gene.col] <- "+"
     vr <- VRanges(seqnames=vcf[,chrom.col],ranges=IRanges(start=vcf[,start.col],end=vcf[,end.col]),ref=vcf[,ref.col],alt=vcf[,alt.col],sampleNames=vcf[,sample.col])
-    vr@strand <- Rle(vcf[,strand.mut.col])
+    vr@strand <- Rle(strand(vcf[, strand.mut.col]))
     vr3 <- palimpsest_addMutationContextToVR(vr,ref=Reference_Genome, k=3,unify = TRUE)
     vr5 <- palimpsest_addMutationContextToVR(vr,ref=Reference_Genome, k=5, unify = TRUE)
     vcf[,strand.mut.col] <- as.character(vr3@strand)
