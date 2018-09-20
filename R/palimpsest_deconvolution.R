@@ -201,7 +201,9 @@ deconvolution_nmf <- function (input_data = NULL, type = NULL, range_of_sigs = N
                                nrun = nrun, method = "brunet", plot_sigs = TRUE, resdir = resdir)
 {
   requireNamespace("NMF", quietly = TRUE)
-  input_data <- input_data +  0.0000000001
+  sumRows <- rowSums(input_data);sort(sumRows);zeroes <- which(sumRows==0)
+  if(length(zeroes)){input_data[zeroes,1] <- 1e-10}
+
   if(num_of_sigs=="auto"){
   print("Estimating the optimal number of mutational signatures...")
   estimate <- nmfEstimateRank(x = input_data, range_of_sigs,
