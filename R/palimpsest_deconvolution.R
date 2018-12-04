@@ -201,9 +201,6 @@ deconvolution_nmf <- function (input_data = NULL, type = NULL, range_of_sigs = N
                                nrun = nrun, method = "brunet", plot_sigs = TRUE, resdir = resdir)
 {
   requireNamespace("NMF", quietly = TRUE)
-  sumRows <- rowSums(input_data);sort(sumRows);zeroes <- which(sumRows==0)
-  if(length(zeroes)){input_data[zeroes,1] <- 1e-10}
-
   if(num_of_sigs=="auto"){
   print("Estimating the optimal number of mutational signatures...")
   estimate <- nmfEstimateRank(x = input_data, range_of_sigs,
@@ -217,7 +214,9 @@ deconvolution_nmf <- function (input_data = NULL, type = NULL, range_of_sigs = N
   print(p)
   dev.off()
   z <- estimate$measures$cophenetic[which(diff(estimate$measures$cophenetic) < 0)]
-  steep_index <- which(estimate$measures$cophenetic==z[ which(abs(diff(z))==max(abs(diff(z))) )]); steep_index <- steep_index[length(steep_index)]
+  if(length(z)==1) steep_index <- which(estimate$measures$cophenetic==z)
+  if(length(z)> 1) steep_index <- which(estimate$measures$cophenetic==z[ which(abs(diff(z))==max(abs(diff(z))) )]); 
+  steep_index <- steep_index[length(steep_index)]
   estimated_rank <- estimate$measures$rank[steep_index]
   }
   else{
