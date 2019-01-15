@@ -47,7 +47,13 @@ palimpsest_dfPosXSegm <- function(dfPos=NULL,
         tmp <- which(dfSegm.[[chr]][,dfSegm.start.col] <= pos & dfSegm.[[chr]][,dfSegm.end.col] >= pos)
         if(length(tmp)==1)	tmp else{NA}
       }))
-      dfPos.[[chr]][,namesColsToAdd] <- dfSegm.[[chr]][ind,colsToAdd]
+      if (all(is.na(ind)) == TRUE)
+        dfPos.[[chr]][, namesColsToAdd] <-
+        NA
+      if (all(is.na(ind)) != TRUE) {
+        dfPos.[[chr]][, namesColsToAdd] <- dfSegm.[[chr]][ind,
+                                                          colsToAdd]
+      }
     }
     close(pb)
 
