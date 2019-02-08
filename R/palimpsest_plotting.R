@@ -369,36 +369,36 @@ palimpsest_DissectSigs <- function(vcf=NULL,
                                    signatures_exp_subclonal=NULL,
                                    sig_cols=NULL,
                                    resdir=NULL)
-  {
-    substype <- c("CA","CG","CT","TA","TC","TG");substype_cols <- c("skyblue3", "black", "red", "grey", "green", "pink")
-    for (samp in unique(vcf[,"Sample"])) {
-		vcf. <- vcf[which(vcf$Sample==samp & vcf$Type=="SNV"),]
-		resdir. <- file.path(resdir,samp);if(!file.exists(resdir.)){dir.create(resdir.)}
-  		mat <- matrix(0,6,2);rownames(mat) <- substype;colnames(mat)<-c("clonal","subclonal");
-  		tt <- table(vcf.[,"substype"],vcf.[,"Clonality"])
-  		mat[rownames(tt),colnames(tt)] <- tt
-  		ptt <- prop.table(mat,2)
-  		nearly <- sum(vcf.[,"Clonality"]=="clonal",na.rm=T);nlate <- sum(vcf.[,"Clonality"]=="subclonal",na.rm=T)
-  		pdf(file.path(resdir.,"Clonal_vs_Subclonal_6_substitution_types.pdf"),width=4,height=4)
-  		barplot(ptt,col=substype_cols,las=1,ylab="Proportion of mutations",names.arg=c(paste("clonal\nn=",nearly,sep=""),paste("subclonal\nn=",nlate,sep="")),xlim=c(0,4))
-  		title(paste("p=",chisq.test(tt)$p.value))
-  		legend("topright",legend=c("C>A","C>G","C>T","T>A","T>C","T>G"),fill=substype_cols,bty="n")
-  		dev.off()
-  		pdf(file.path(resdir.,"Clonal_vs_Subclonal_96_substitution_types.pdf"),width=24,height=10)
-  		layout(matrix(1:2,2))
-  		plot96mutationSpectrumFromVcf(vcf.[which(vcf.[,"Clonality"]=="clonal"),],sample.col="Sample")
-  		plot96mutationSpectrumFromVcf(vcf.[which(vcf.[,"Clonality"]=="subclonal"),],sample.col="Sample")
-  		dev.off()
-  		pdf(file.path(resdir.,"Clonal_vs_Subclonal_signatures.pdf"),width=5,height=4)
-		mat <- t(as.matrix(rbind(signatures_exp_clonal$sig_nums[samp,],signatures_exp_subclonal$sig_nums[samp,])))
-		ind <- which(apply(mat,1,sum) > 0)
-		mat <- matrix(mat[ind,],ncol=ncol(mat),byrow=F,dimnames=list(rownames(mat)[ind],colnames(mat)))
-		ptt <- prop.table(mat,2)
-		barplot(ptt,col=mycol[rownames(mat)],las=1,ylab="Proportion of mutations",names.arg=c(paste("clonal\nn=",nearly,sep=""),paste("subclonal\nn=",nlate,sep="")),xlim=c(0,4.5))
-  		title(paste("p=",chisq.test(mat)$p.value))
-  		legend("topright",legend=rownames(mat),fill=mycol[rownames(mat)],bty="n")
-		dev.off()
-  	}
+{
+  substype <- c("CA","CG","CT","TA","TC","TG");substype_cols <- c("skyblue3", "black", "red", "grey", "green", "pink")
+  for (samp in unique(vcf[,"Sample"])) {
+    vcf. <- vcf[which(vcf$Sample==samp & vcf$Type=="SNV"),]
+    resdir. <- file.path(resdir,samp);if(!file.exists(resdir.)){dir.create(resdir.)}
+    mat <- matrix(0,6,2);rownames(mat) <- substype;colnames(mat)<-c("clonal","subclonal");
+    tt <- table(vcf.[,"substype"],vcf.[,"Clonality"])
+    mat[rownames(tt),colnames(tt)] <- tt
+    ptt <- prop.table(mat,2)
+    nearly <- sum(vcf.[,"Clonality"]=="clonal",na.rm=T);nlate <- sum(vcf.[,"Clonality"]=="subclonal",na.rm=T)
+    pdf(file.path(resdir.,"Clonal_vs_Subclonal_6_substitution_types.pdf"),width=4,height=4)
+    barplot(ptt,col=substype_cols,las=1,ylab="Proportion of mutations",names.arg=c(paste("clonal\nn=",nearly,sep=""),paste("subclonal\nn=",nlate,sep="")),xlim=c(0,4))
+    title(paste("p=",chisq.test(tt)$p.value))
+    legend("topright",legend=c("C>A","C>G","C>T","T>A","T>C","T>G"),fill=substype_cols,bty="n")
+    dev.off()
+    pdf(file.path(resdir.,"Clonal_vs_Subclonal_96_substitution_types.pdf"),width=24,height=10)
+    layout(matrix(1:2,2))
+    plot96mutationSpectrumFromVcf(vcf.[which(vcf.[,"Clonality"]=="clonal"),],sample.col="Sample")
+    plot96mutationSpectrumFromVcf(vcf.[which(vcf.[,"Clonality"]=="subclonal"),],sample.col="Sample")
+    dev.off()
+    pdf(file.path(resdir.,"Clonal_vs_Subclonal_signatures.pdf"),width=5,height=4)
+    mat <- t(as.matrix(rbind(signatures_exp_clonal$sig_nums[samp,],signatures_exp_subclonal$sig_nums[samp,])))
+    ind <- which(apply(mat,1,sum) > 0)
+    mat <- matrix(mat[ind,],ncol=ncol(mat),byrow=F,dimnames=list(rownames(mat)[ind],colnames(mat)))
+    ptt <- prop.table(mat,2)
+    barplot(ptt,col=sig_cols[rownames(mat)],las=1,ylab="Proportion of mutations",names.arg=c(paste("clonal\nn=",nearly,sep=""),paste("subclonal\nn=",nlate,sep="")),xlim=c(0,4.5))
+    title(paste("p=",chisq.test(mat)$p.value))
+    legend("topright",legend=rownames(mat),fill=sig_cols[rownames(mat)],bty="n")
+    dev.off()
+  }
 }
 
 #' cnaCCF_plots
