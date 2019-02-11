@@ -770,7 +770,7 @@ palimpsest_clonalitySigsCompare <- function(clonsig=clonsig,subsig=subsig,msigco
   par(mfrow=c(1,2),xpd=NA)
   pie(avclon,col=msigcol[names(avclon)],border = msigcol[names(avclon)],labels=sub("Signature.","",names(avclon)),main = "CLONAL")
   pie(avsub,col=msigcol[names(avsub)],border = msigcol[names(avsub)],labels=sub("Signature.","",names(avsub)),main = "SUBCLONAL")
-  legend(-3.8,-1.35,legend = names(mycol),ncol = 5,fill=mycol,border = mycol,bty = "n",cex=1)
+  legend(-3.8,-1.35,legend = names(msigcol),ncol = 5,fill=msigcol,border = msigcol,bty = "n",cex=1)
   dev.off()
 }
 
