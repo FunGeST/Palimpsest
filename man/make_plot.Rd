@@ -7,7 +7,13 @@
 make_plot(translocs, others, Sample_to_plot, resdir)
 }
 \arguments{
-\item{resdir}{}
+\item{translocs}{translocs}
+
+\item{others}{others}
+
+\item{Sample_to_plot}{Sample_to_plot}
+
+\item{resdir}{resdir}
 }
 \description{
 make_plot

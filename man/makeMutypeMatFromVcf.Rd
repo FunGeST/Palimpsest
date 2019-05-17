@@ -4,13 +4,20 @@
 \alias{makeMutypeMatFromVcf}
 \title{makeMutypeMatFromVcf}
 \usage{
-makeMutypeMatFromVcf(vcf, sample.col = "sample", mutcat.col = "mutcat3",
-  mutypes = c("CA", "CG", "CT", "TA", "TC", "TG"), proportion = TRUE)
+makeMutypeMatFromVcf(vcf, sample.col = "sample",
+  mutcat.col = "mutcat3", mutypes = c("CA", "CG", "CT", "TA", "TC",
+  "TG"), proportion = TRUE)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations/SVs}
 
-\item{proportion}{}
+\item{sample.col}{sample.col}
+
+\item{mutcat.col}{mutcat.col}
+
+\item{mutypes}{mutypes}
+
+\item{proportion}{proportion}
 }
 \description{
 Function to create a matrix in mutation type x sample format with either counts or proportions

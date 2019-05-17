@@ -5,8 +5,8 @@
 \title{deconvolution_fit}
 \usage{
 deconvolution_fit(vcf = vcf, type = NULL, input_data = data,
-  threshold = 5, input_signatures = COSMIC_Signatures, sig_cols = mycol,
-  plot = TRUE, resdir = resdir)
+  threshold = 5, input_signatures = COSMIC_Signatures,
+  sig_cols = mycol, plot = TRUE, resdir = resdir)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations/SVs}

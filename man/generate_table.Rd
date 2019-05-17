@@ -7,7 +7,7 @@
 generate_table(table)
 }
 \arguments{
-\item{table}{}
+\item{table}{a table I guess?}
 }
 \description{
 generate_table

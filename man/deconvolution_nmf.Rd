@@ -4,9 +4,9 @@
 \alias{deconvolution_nmf}
 \title{deconvolution_nmf}
 \usage{
-deconvolution_nmf(input_data = NULL, type = NULL, range_of_sigs = NULL,
-  num_of_sigs = "auto", nrun = nrun, method = "brunet",
-  plot_sigs = TRUE, resdir = resdir)
+deconvolution_nmf(input_data = NULL, type = NULL,
+  range_of_sigs = NULL, num_of_sigs = "auto", nrun = nrun,
+  method = "brunet", plot_sigs = TRUE, resdir = resdir)
 }
 \arguments{
 \item{input_data}{Matrix in mutation type x sample format in proportions}

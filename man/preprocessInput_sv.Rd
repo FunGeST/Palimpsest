@@ -4,7 +4,8 @@
 \alias{preprocessInput_sv}
 \title{preprocessInput_sv}
 \usage{
-preprocessInput_sv(input_data = NULL, ensgene = ensgene, resdir = resdir)
+preprocessInput_sv(input_data = NULL, ensgene = ensgene,
+  resdir = resdir)
 }
 \arguments{
 \item{input_data}{Table describing somatic structural rearrangements.}

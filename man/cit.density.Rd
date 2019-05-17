@@ -11,6 +11,8 @@ cit.density(x, doplot = FALSE, pc = 0.05, ...)
 
 \item{doplot}{boolean}
 
+\item{pc}{?}
+
 \item{...}{}
 }
 \description{

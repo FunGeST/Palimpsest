@@ -5,10 +5,19 @@
 \title{cit.peaks}
 \usage{
 cit.peaks(x, percentHighestPeak = 0.2, maxNbPeaks = NULL,
-  minDeltaBetweenPeaks = 0.03, deltaApproach = 1, doplot = FALSE, ...)
+  minDeltaBetweenPeaks = 0.03, deltaApproach = 1, doplot = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{a numeric vector}
+
+\item{percentHighestPeak}{percentHighestPeak}
+
+\item{maxNbPeaks}{maxNbPeaks}
+
+\item{minDeltaBetweenPeaks}{minDeltaBetweenPeaks}
+
+\item{deltaApproach}{deltaApproach}
 
 \item{doplot}{boolean}
 

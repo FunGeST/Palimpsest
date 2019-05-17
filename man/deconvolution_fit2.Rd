@@ -4,12 +4,12 @@
 \alias{deconvolution_fit2}
 \title{deconvolution_fit2}
 \usage{
-deconvolution_fit2(Type = NULL, input_matrixes = NULL,
-  input_signatures = NULL, threshold = 6, sig_cols = NA,
-  doplot = TRUE, save_signatures_exp = TRUE, resdir = resdir)
+deconvolution_fit2(input_matrices = NULL, input_signatures = NULL,
+  threshold = 6, sig_cols = NA, doplot = TRUE,
+  save_signatures_exp = TRUE, resdir = resdir)
 }
 \arguments{
-\item{Type}{Mutation type (SBS, DBS, ID or SV).}
+\item{input_matrices}{Palimpsest input list of mutation number and proportion matrices.}
 
 \item{input_signatures}{Matrix of the mutational signatures to fit within the provided cohort of samples.}
 
@@ -22,14 +22,12 @@ deconvolution_fit2(Type = NULL, input_matrixes = NULL,
 \item{save_signatures_exp}{Logical indicating whether or not signatures_exp object should be saved in the redsir (defaults to TRUE).}
 
 \item{resdir}{Results directory.}
-
-\item{input_matrices}{Palimpsest input list of mutation number and proportion matrices.}
 }
 \description{
 Function to calculate the number and proportion of each signature in each sample, in addition to plotting each sample's mutational profile and its signature contribution.
 }
 \examples{
-signatures_exp <- deconvolution_fit2(Type = "SBS",input_matrixes = SBS_input,
+signatures_exp <- deconvolution_fit2(input_matrices = SBS_input,
                                          threshold = 6,input_signatures = SBS_liver,
                                            sig_cols = sig_cols,plot = T,resdir = resdir)
 

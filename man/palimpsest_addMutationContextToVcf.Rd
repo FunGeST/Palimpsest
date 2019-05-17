@@ -4,9 +4,9 @@
 \alias{palimpsest_addMutationContextToVcf}
 \title{palimpsest_addMutationContextToVcf}
 \usage{
-palimpsest_addMutationContextToVcf(vcf, Reference_Genome, chrom.col = "chr",
-  start.col = "start", end.col = "end", ref.col = "ref",
-  alt.col = "alt", strand.mut.col = "strand.mut",
+palimpsest_addMutationContextToVcf(vcf, Reference_Genome,
+  chrom.col = "chr", start.col = "start", end.col = "end",
+  ref.col = "ref", alt.col = "alt", strand.mut.col = "strand.mut",
   strand.gene.col = "strand.gene", sample.col = "samplenames",
   strand.ts.output.col = "strand.ts", substype.output.col = "substype",
   ctx3.output.col = "context3", ctx5.output.col = "context5",

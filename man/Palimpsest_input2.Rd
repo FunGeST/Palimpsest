@@ -17,6 +17,6 @@ Palimpsest_input2(vcf = NULL, Type = NULL, mutypes = NA)
 Creates the input matrices of the numbers and proportions of each mutation category (of one mutation type, e.g. SBS mutation categories) in each sample.
 }
 \examples{
-DBS_matrix <- Palimpsest_input2(vcf=vcf, Type = "DBS", proportion = TRUE)
+DBS_matrix <- Palimpsest_input2(vcf=vcf, Type = "DBS")
 }
 \keyword{Signatures}

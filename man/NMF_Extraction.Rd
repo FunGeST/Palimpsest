@@ -4,14 +4,12 @@
 \alias{NMF_Extraction}
 \title{NMF_Extraction}
 \usage{
-NMF_Extraction(input_matrices = NULL, Type = NULL,
-  range_of_sigs = NULL, num_of_sigs = "auto", nrun = 10,
-  method = "brunet", plot_sigs = TRUE, resdir = NA)
+NMF_Extraction(input_matrices = NULL, range_of_sigs = NULL,
+  num_of_sigs = "auto", nrun = 10, method = "brunet",
+  plot_sigs = TRUE, resdir = NA)
 }
 \arguments{
 \item{input_matrices}{Palimpsest input list of mutation number and proportion matrices.}
-
-\item{Type}{Mutation type (SBS, DBS, ID or SV).}
 
 \item{range_of_sigs}{Numerical range of signatures. If "num_of_sigs" is set to auto, NMF will estiamte the optimal number of signatures in the input within this range before extracting with this number.}
 
@@ -27,6 +25,6 @@ NMF_Extraction(input_matrices = NULL, Type = NULL,
 Extracts mutational signatures de novo using NMF. Also estimates the optimal number of mutational signatures in the input.
 }
 \examples{
-SBS_denovo_signatures <- NMF_Extraction(input_matrices = SBS_input,Type = "SBS",range_of_sigs = 1:20,nrun = 10, num_of_sigs = "auto", method = "brunet",plot_sigs=TRUE,resdir = resdir)
+SBS_denovo_signatures <- NMF_Extraction(input_matrices = SBS_input, range_of_sigs = 1:20,nrun = 10,resdir = resdir)
 }
 \keyword{Signatures}

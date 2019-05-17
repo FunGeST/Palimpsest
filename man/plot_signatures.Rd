@@ -4,19 +4,14 @@
 \alias{plot_signatures}
 \title{plot_signatures}
 \usage{
-plot_signatures(input_data = NULL, Title = NULL, Individual = NULL,
-  Type = NULL, label = "Full")
+plot_signatures(input_data = NULL, Title = NA, label = "Full")
 }
 \arguments{
-\item{input_data}{Matrix of signature(s) to plot, or an individual sample's proportion of each mutation category.}
+\item{input_data}{Matrix of signature(s) to plot, or an individual sample's proportion of each mutation category. If you receive an input_data related error retry with t(input_data).}
 
 \item{Title}{List (must be same length as number of input signatures) or single title to use. Leave blank to use rownames from input matrix. Use " " for no title.}
 
-\item{Individual}{TRUE for single sample, FALSE for 2 or more signature input.}
-
-\item{Type}{Mutation type (SBS, DBS, ID or SNV).}
-
-\item{label}{"Full" for all labels, "Top" for just coloured bars atop the plot; "None" for just bar graph.}
+\item{label}{"Full" for all labels (default), "Top" for just coloured bars atop the plot; "None" for just bar graph.}
 }
 \description{
 Function to plot signature profiles of all mutation types (SBS, DBS, Indel & SV). 
@@ -24,7 +19,7 @@ N.B. recommended width to height ratio of 24:7 must be maintained to keep labels
 }
 \examples{
 pdf(file=paste0(resdir,"SBS_liver_signature_profiles.pdf"),width=24,height=7)
-plot_signatures(input_data = SBS_liver,Title = rownames(SBS_liver),Type = "SBS",Individual = F,label = "Full")
+plot_signatures(input_data = SBS_liver,Title = rownames(SBS_liver),Individual = F,label = "Full")
 dev.off()
 }
 \keyword{Signatures}
