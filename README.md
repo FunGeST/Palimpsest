@@ -30,11 +30,11 @@ Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (
 `1]. mut_data`: __somatic mutation data__
 
 * `Sample`: Sample identifier. Any alphanumeric string.
-* `Type`: Mutation type [SNV/Indel].
+* `Type`: Mutation type [SNV (e.g. C > A), INS for insertions (e.g. C > CAAA), DEL for deletions (e.g. CTAC > C)]. Although Palimpsest has double base substitution (DBS) extraction and analysis capacaties, DBS mutations are encoded by 2 consecutive lines of SNVs and so their type should remain as such. 
 * `CHROM`: Chromosome. Between chr1 and chr22 or the chrX or chrY ('chr' prefix required).
 * `POS`: Mutation position. A positive integer.
-* `REF`: Reference base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted. The value in the POS field refers to the position of the first base in the string.
-* `ALT`: Alternate base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted. The value in the POS field refers to the position of the first base in the string.
+* `REF`: Reference base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted for deletions only. The value in the POS field refers to the position of the first base in the string.
+* `ALT`: Alternate base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted for insertions only. The value in the POS field refers to the position of the first base in the string.
 * `Tumor_Varcount`: Number of variant bases at the position in the tumor sample.
 * `Tumor_Depth`: Tumor sample sequencing depth at the position.
 * `Normal_Depth`: Normal sample sequencing depth at the position.
