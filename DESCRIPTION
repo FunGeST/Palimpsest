@@ -1,0 +1,49 @@
+Package: Palimpsest
+Title: Package
+Version: 2.0.0
+Authors@R: c(person("Jayendra", "Shinde", email = "jayendra.shinde91@gmail.com", role =
+    c("aut", "cre")),person("Eric", "Letouzé", email = "eric.letouze@inserm.fr", role = 
+    "aut"))
+Author: Jayendra Shinde, Eric Letouzé
+Maintainer: Jayendra Shinde <jayendra.shinde91@gmail.com>,
+    Eric Letouzé <eric.letouze@inserm.fr>
+Description: An R package for studying mutational and structural variant signatures
+    along clonal evolution in cancer.
+License: MIT + file LICENSE
+Imports:
+    reshape2 (>= 1.4.1),
+    plyr (>= 1.8.3),
+    ggplot2 (>= 2.1.0),
+    gtools,
+    lsa,
+    gplots,       
+    IRanges (>= 2.6.0),
+    RCircos,
+    plotrix,
+    Rgraphviz,
+    Biostrings (>= 2.40.0),
+    VariantAnnotation,
+    Biobase,
+    registry,
+    doParallel,
+    RColorBrewer, 
+    scales,
+    spgs,
+    tibble,
+    ggpubr
+Depends:
+    R (>= 3.3.2),
+    dplyr,
+    NMF,
+    BiocInstaller,
+    GenomicRanges
+Suggests:
+    BiocStyle (>= 2.0.3),
+    BSgenome.Hsapiens.UCSC.hg19 (>= 1.4.0),
+    biomaRt (>= 2.28.0),
+    testthat
+biocViews: SomaticMutation
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+RoxygenNote: 6.1.1.9000
