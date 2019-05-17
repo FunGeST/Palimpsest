@@ -1,7 +1,6 @@
 #' deconvolution_fit2
 #'
 #' Function to calculate the number and proportion of each signature in each sample, in addition to plotting each sample's mutational profile and its signature contribution. 
-#' @param Type Mutation type (SBS, DBS, ID or SV).
 #' @param input_matrices Palimpsest input list of mutation number and proportion matrices.
 #' @param input_signatures Matrix of the mutational signatures to fit within the provided cohort of samples.
 #' @param threshold Signatures contributing less then this percentage of total mutations within a sample will be discarded (e.g. if set to 6 and signature X contributes 5% of a sample's mutations, signature X will not be reported as being present in this sample).
@@ -14,16 +13,19 @@
 #' @import tibble
 #' @import NMF
 #' @examples
-#' signatures_exp <- deconvolution_fit2(Type = "SBS",input_matrixes = SBS_input,
+#' signatures_exp <- deconvolution_fit2(input_matrices = SBS_input,
 #'                                          threshold = 6,input_signatures = SBS_liver,
 #'                                            sig_cols = sig_cols,plot = T,resdir = resdir)
 #' 
 
-deconvolution_fit2 <- function (Type = NULL, input_matrixes = NULL,
+deconvolution_fit2 <- function (input_matrices = NULL,
                                  input_signatures = NULL, threshold = 6, sig_cols = NA,
                                  doplot = TRUE, save_signatures_exp = TRUE, resdir = resdir) {
   requireNamespace("tibble", quietly = TRUE);requireNamespace("NMF", quietly = TRUE)
-  prop_matrix <- input_matrixes$mut_props; num_matrix <- input_matrixes$mut_nums
+  prop_matrix <- input_matrices$mut_props; num_matrix <- input_matrices$mut_nums
+  if(nrow(prop_matrix) %!in% c(38,78,83,96)) stop("input_matrices format incorrect")
+  if(nrow(prop_matrix)==96) Type <- "SBS"; if(nrow(prop_matrix)==78) Type <- "DBS"; if(nrow(prop_matrix)==83) Type <- "ID"; if(nrow(prop_matrix)==38) Type <- "SV" 
+  
   resdir_parent <- resdir
   if (doplot == TRUE) {
     print(paste("Plotting the contribution of",Type,"signatures in each sample.."),quote = F)
@@ -39,8 +41,8 @@ deconvolution_fit2 <- function (Type = NULL, input_matrixes = NULL,
         dir.create(resdir..)
       }
       pdf(file=paste0(resdir..,"/",s,"_",Type,"_profile.pdf"),width=24,height=7)
-      Mean_plot_input <- as.data.frame(prop_matrix[,s]); rownames(Mean_plot_input) <- rownames(prop_matrix)
-      plot_signatures(input_data = Mean_plot_input, Title = paste(s), Individual = TRUE, Type = Type, label = "Full")
+      Mean_plot_input <- as.matrix(prop_matrix[,s]); rownames(Mean_plot_input) <- rownames(prop_matrix)
+      plot_signatures(input_data = Mean_plot_input, Title = paste(s))
       dev.off()
     }
     res <- fcnnls(as.matrix(t(input_signatures)), prop_matrix[,s], verbose = TRUE, pseudo = FALSE)

@@ -5,10 +5,8 @@
 #' @param cna_data Data frame with Copy Number Alteration Information
 #' @param cyto Cytoband description table
 #'
-#' @return
 #' @export
 #'
-#' @examples
 chrTime_annot <- function (vcf = NULL, 
 						   cna_data = NULL,
                            cyto = cyto)

@@ -6,10 +6,8 @@
 #' @param plot.file File to which the plot should be saved (if left NULL, plot will be sent directly to the active window)
 #' @param ...
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 plotSubstypeNumberPerSample <- function(vcf,
                                         sample.col="sample",
                                         substype.col="substype",
@@ -33,10 +31,8 @@ plotSubstypeNumberPerSample <- function(vcf,
 #' @param averageProp If TRUE, the proportions returned will be the average of sample-wise proportions, otherwise the general proportion over the vcf is used (induces slight changes)
 #' @param plot.file File to which the plot should be saved (if left NULL, plot will be sent directly to the active window)
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 plot6mutationSpectrumFromVcf <- function(vcf,
                                          sample.col="sample",
                                          substype.col="substype",
@@ -65,10 +61,7 @@ plot6mutationSpectrumFromVcf <- function(vcf,
 #' @param averageProp If TRUE, the proportions returned will be the average of sample-wise proportions, otherwise the general proportion over the vcf is used (induces slight changes)
 #' @param plot.file File to which the plot should be saved (if left NULL, plot will be sent directly to the active window)
 #'
-#' @return
 #' @export
-#'
-#' @examples
 plot96mutationSpectrumFromVcf <- function(vcf,
                                           sample.col="sample",
                                           mutcat3.col="mutcat3",
@@ -111,10 +104,8 @@ plot96mutationSpectrumFromVcf <- function(vcf,
 #' @param strand.ts.col Name of column containing indicating whether mutations are on the transcribed or untranscribed strand
 #' @param plot.file File to which the plot should be saved (if left NULL, plot will be sent directly to the active window)
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 plotStrandBias6types <- function(vcf,
                                  substype.col="substype",
                                  strand.ts.col="strand.ts",
@@ -143,10 +134,8 @@ plotStrandBias6types <- function(vcf,
 #' @param strand.ts.col Name of column containing indicating whether mutations are on the transcribed or untranscribed strand
 #' @param plot.file File to which the plot should be saved (if left NULL, plot will be sent directly to the active window)
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 plotStrandBias96types <- function(vcf,
                                   mutcat3.col="mutcat3",
                                   strand.ts.col="strand.ts",
@@ -187,10 +176,8 @@ plotStrandBias96types <- function(vcf,
 #' @param cyto required
 #' @param resdir Result directory
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 rainfallz_plot <- function (vcf,mutype.col = "mutype",cyto = NULL, resdir = resdir)
 {
   chrom.col = "CHROM"; pos.col = "POS"; sample.col = "Sample"; mutdist.col = "mutdist";colmut.col = "colmut"
@@ -224,10 +211,8 @@ rainfallz_plot <- function (vcf,mutype.col = "mutype",cyto = NULL, resdir = resd
 #' @param point.mut.time Timing of chromosome duplications in point mutation time, as obtained using chrTime_annot function
 #' @param resdir Result directory
 #'
-#' @return
 #' @export
 #'
-#' @examples
 chrTime_plot <- function(vcf = NULL,
 						 point.mut.time = NULL,
 						 resdir=resdir)
@@ -266,10 +251,8 @@ chrTime_plot <- function(vcf = NULL,
 #' @param vcf vcf data frame containing the mutations
 #' @param VAF.color vector of colors for the VAF plot (optionnal).
 #'
-#' @return
 #' @export
 #'
-#' @examples
 palimpsest_cnvProfile <- function(vcf=NULL,
 								  VAF.color=NULL
 )
@@ -296,10 +279,8 @@ palimpsest_cnvProfile <- function(vcf=NULL,
 #' @param LogR.col LogR information column name in vcf.
 #' @param nPurity.col Tumor purity column name in vcf.
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 palimpsest_Fireworks <- function(vcf=NULL,
                                   CHROM.col="CHROM",
                                   POS.col="POS",
@@ -329,10 +310,8 @@ palimpsest_Fireworks <- function(vcf=NULL,
 #' @param VAF.col Variant Allele Fraction information column name in vcf.
 #' @param clonality.col Clonaility information column name in vcf.
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 palimpsest_CCFplot <- function(vcf=NULL,
                             CHROM.col="CHROM",
                             VAF.col="Tumor_Varprop",
@@ -360,10 +339,8 @@ palimpsest_CCFplot <- function(vcf=NULL,
 #' @param sig_cols Character vector indicating the colors representing each signature in graphical outputs. Must match to the total number of provided signatures
 #' @param resdir Result directory
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 palimpsest_DissectSigs <- function(vcf=NULL,
                                    signatures_exp_clonal=NULL,
                                    signatures_exp_subclonal=NULL,
@@ -406,9 +383,8 @@ palimpsest_DissectSigs <- function(vcf=NULL,
 #' @param vcf vcf data frame containing the mutations
 #' @param resdir Result directory
 #'
-#' @return
 #' @export
-#' @examples
+
 cnaCCF_plots <- function (vcf = NULL, resdir = resdir)
 {
   sample.col = "Sample"; CHROM.col = "CHROM";
@@ -441,14 +417,13 @@ cnaCCF_plots <- function (vcf = NULL, resdir = resdir)
 #' @param mutSign_props Matrix in sample x mutational signature exposure format in proportions
 #' @param sig_cols Character vector indicating the colors representing each signature in graphical outputs. Must match to the total number of provided signatures
 #'
-#' @return
 #' @export
 #' @import ggplot2
 #' @importFrom ggplot2 theme_bw
 #' @import gplots
 #' @import reshape2
 #' @importFrom reshape2 melt
-#' @examples
+
 deconvolution_exposure <- function(mutSign_nums,mutSign_props,sig_cols=colclust) {
   scale<-1
   .theme_ss <- theme_bw(base_size=14) +
@@ -493,10 +468,9 @@ deconvolution_exposure <- function(mutSign_nums,mutSign_props,sig_cols=colclust)
 #' Function to plot single nucleotide variants signatures (96 nucleotide type)
 #' @param spec Matrix of mutational signatures x  mutation types
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
+
 plot.SNV.sigs <- function(spec){
   bases <- c("A", "C", "G", "T")
   ctxt16 <- paste(rep(bases, each = 4), rep(bases, 4), sep = ".")
@@ -526,36 +500,78 @@ plot.SNV.sigs <- function(spec){
 #' Function to plot structural variants signatures (38 sv categories type)
 #' @param sigs Matrix of mutational signatures x  mutation types
 #'
-#' @return
 #' @export
-#'
-#' @examples
-plot.SV.sigs <- function(sigs){
+
+plot.SV.sigs <- function(sigs)
+{
   sigs <- t(sigs)
-  col15 <- rep(c(rep("red",6),rep("olivedrab1", 6), rep("lightskyblue", 6),"grey"),2)
-  myord <- c("DEL_0-1kb_clust_1","DEL_1-10kb_clust_1","DEL_10-100kb_clust_1","DEL_100kb-1Mb_clust_1","DEL_1-10Mb_clust_1","DEL_>10Mb_clust_1","DUP_0-1kb_clust_1","DUP_1-10kb_clust_1","DUP_10-100kb_clust_1","DUP_100kb-1Mb_clust_1","DUP_1-10Mb_clust_1","DUP_>10Mb_clust_1","INV_0-1kb_clust_1","INV_1-10kb_clust_1","INV_10-100kb_clust_1","INV_100kb-1Mb_clust_1","INV_1-10Mb_clust_1","INV_>10Mb_clust_1","BND_clust_1","DEL_0-1kb_clust_0","DEL_1-10kb_clust_0","DEL_10-100kb_clust_0","DEL_100kb-1Mb_clust_0","DEL_1-10Mb_clust_0","DEL_>10Mb_clust_0","DUP_0-1kb_clust_0","DUP_1-10kb_clust_0","DUP_10-100kb_clust_0","DUP_100kb-1Mb_clust_0","DUP_1-10Mb_clust_0","DUP_>10Mb_clust_0","INV_0-1kb_clust_0","INV_1-10kb_clust_0","INV_10-100kb_clust_0","INV_100kb-1Mb_clust_0","INV_1-10Mb_clust_0","INV_>10Mb_clust_0","BND_clust_0")
-  labs=rep(c(rep("del",6),rep("tds",6),rep("inv",6),"trans"),2)
-  sigs <- matrix(sigs[myord,],ncol=ncol(sigs),dimnames=dimnames(sigs),byrow=F)
-  if(max(range(sigs)) > 1) {axis_name <- "Number of mutations"}
-  if(max(range(sigs)) <= 1) {axis_name <- "Percentage of mutations"}
-  for(siggy in colnames(sigs))
-  {
-    par(mai=c(1.2,1,2,1))
-    mylim <- max(sigs[,siggy])*1.2
-    bp <- barplot(sigs[,siggy], col = col15, border = col15, las = 2, space = c(rep(1,19),5,rep(1,18)),ylim=c(0,mylim), xaxt = "n", ylab = axis_name, main = siggy)
-    abline(v=mean(bp[19:20]))
-    axis(1, at = bp, labels = sub("clust","",sapply(myord,function(z)	unlist(strsplit(z,"_"))[2])), pos = 0, las = 2, cex.axis = 1.5, tick = T, cex.axis = 1)
+  col15 <- rep(c(rep("red", 6), rep("olivedrab1", 6), rep("lightskyblue",
+                                                          6), "grey"), 2)
+  myord <- c("DEL_0-1kb_clust_1", "DEL_1-10kb_clust_1", "DEL_10-100kb_clust_1",
+             "DEL_100kb-1Mb_clust_1", "DEL_1-10Mb_clust_1", "DEL_>10Mb_clust_1",
+             "DUP_0-1kb_clust_1", "DUP_1-10kb_clust_1", "DUP_10-100kb_clust_1",
+             "DUP_100kb-1Mb_clust_1", "DUP_1-10Mb_clust_1", "DUP_>10Mb_clust_1",
+             "INV_0-1kb_clust_1", "INV_1-10kb_clust_1", "INV_10-100kb_clust_1",
+             "INV_100kb-1Mb_clust_1", "INV_1-10Mb_clust_1", "INV_>10Mb_clust_1",
+             "BND_clust_1", "DEL_0-1kb_clust_0", "DEL_1-10kb_clust_0",
+             "DEL_10-100kb_clust_0", "DEL_100kb-1Mb_clust_0", "DEL_1-10Mb_clust_0",
+             "DEL_>10Mb_clust_0", "DUP_0-1kb_clust_0", "DUP_1-10kb_clust_0",
+             "DUP_10-100kb_clust_0", "DUP_100kb-1Mb_clust_0", "DUP_1-10Mb_clust_0",
+             "DUP_>10Mb_clust_0", "INV_0-1kb_clust_0", "INV_1-10kb_clust_0",
+             "INV_10-100kb_clust_0", "INV_100kb-1Mb_clust_0", "INV_1-10Mb_clust_0",
+             "INV_>10Mb_clust_0", "BND_clust_0")
+  # myord = c("BND_clust_0", "BND_clust_1", "DEL_0-1kb_clust_0", "DEL_0-1kb_clust_1",
+  #           "DEL_100kb-1Mb_clust_0", "DEL_100kb-1Mb_clust_1", "DEL_10-100kb_clust_0",
+  #           "DEL_10-100kb_clust_1", "DEL_>10Mb_clust_0", "DEL_>10Mb_clust_1",
+  #           "DEL_1-10kb_clust_0", "DEL_1-10kb_clust_1", "DEL_1-10Mb_clust_0",
+  #           "DEL_1-10Mb_clust_1", "DUP_0-1kb_clust_0", "DUP_100kb-1Mb_clust_0",
+  #           "DUP_100kb-1Mb_clust_1", "DUP_10-100kb_clust_0", "DUP_10-100kb_clust_1",
+  #           "DUP_>10Mb_clust_0", "DUP_>10Mb_clust_1", "DUP_1-10kb_clust_0",
+  #           "DUP_1-10kb_clust_1", "DUP_1-10Mb_clust_0", "DUP_1-10Mb_clust_1",
+  #           "INV_0-1kb_clust_0", "INV_0-1kb_clust_1", "INV_100kb-1Mb_clust_0",
+  #           "INV_100kb-1Mb_clust_1", "INV_10-100kb_clust_0", "INV_10-100kb_clust_1",
+  #           "INV_>10Mb_clust_0", "INV_>10Mb_clust_1", "INV_1-10kb_clust_0",
+  #           "INV_1-10kb_clust_1", "INV_1-10Mb_clust_0", "INV_1-10Mb_clust_1",
+  #           "DUP_0-1kb_clust_1")
+  
+  labs = rep(c(rep("del", 6), rep("tds", 6), rep("inv", 6),
+               "trans"), 2)
+  sigs <- matrix(sigs[myord, ], ncol = ncol(sigs), dimnames = dimnames(sigs),
+                 byrow = F)
+  for (siggy in colnames(sigs)) {
+    par(mai = c(1.2, 1, 2, 1))
+    # mylim <- max(sigs[, siggy]) * 1.2
+    mylim = 0.8 ## ICI pour fixer le ylim
+    bp <- barplot(sigs[, siggy], col = col15, border = col15,
+                  las = 2, space = c(rep(1, 19), 5, rep(1, 18)), ylim = c(0,
+                                                                          mylim), xaxt = "n", ylab = "Percentage of mutations",
+                  main = siggy)
+    abline(v = mean(bp[19:20]))
+    axis(1, at = bp, labels = sub("clust", "", sapply(myord,
+                                                      function(z) unlist(strsplit(z, "_"))[2])), pos = 0,
+         las = 2, cex.axis = 1.5, tick = T, cex.axis = 1)
     for (i in seq(1, 13, by = 6)) {
-      rect(bp[i], par()$usr[4], bp[i]+10, par()$usr[4] - 0.05 * diff(par()$usr[3:4]), col = col15[i], border = col15[i])
-      text((bp[i] + bp[i]+8)/2, par()$usr[4] + 0.09 * diff(par()$usr[3:4]), labels = labs[i], xpd = TRUE, cex = 1)
+      rect(bp[i], par()$usr[4], bp[i] + 10, par()$usr[4] -
+             0.05 * diff(par()$usr[3:4]), col = col15[i],
+           border = col15[i])
+      text((bp[i] + bp[i] + 8)/2, par()$usr[4] + 0.09 *
+             diff(par()$usr[3:4]), labels = labs[i], xpd = TRUE,
+           cex = 1)
     }
     for (i in seq(20, 32, by = 6)) {
-      rect(bp[i], par()$usr[4], bp[i]+10, par()$usr[4] - 0.05 * diff(par()$usr[3:4]), col = col15[i], border = col15[i])
-      text((bp[i] + bp[i]+8)/2, par()$usr[4] + 0.09 * diff(par()$usr[3:4]), labels = labs[i-16], xpd = TRUE, cex = 1)
+      rect(bp[i], par()$usr[4], bp[i] + 10, par()$usr[4] -
+             0.05 * diff(par()$usr[3:4]), col = col15[i],
+           border = col15[i])
+      text((bp[i] + bp[i] + 8)/2, par()$usr[4] + 0.09 *
+             diff(par()$usr[3:4]), labels = labs[i - 16],
+           xpd = TRUE, cex = 1)
     }
-    for (i in c(19,38)) {
-      rect(bp[i]-1, par()$usr[4], bp[i]+1, par()$usr[4] - 0.05 * diff(par()$usr[3:4]), col = "grey", border = "grey")
-      text((bp[i]-1 + bp[i]+1)/2, par()$usr[4] + 0.09 * diff(par()$usr[3:4]), labels = "trans", xpd = TRUE, cex = 1)
+    for (i in c(19, 38)) {
+      rect(bp[i] - 1, par()$usr[4], bp[i] + 1, par()$usr[4] -
+             0.05 * diff(par()$usr[3:4]), col = "grey", border = "grey")
+      text((bp[i] - 1 + bp[i] + 1)/2, par()$usr[4] + 0.09 *
+             diff(par()$usr[3:4]), labels = "trans", xpd = TRUE,
+           cex = 1)
     }
   }
 }
@@ -573,13 +589,12 @@ plot.SV.sigs <- function(sigs){
 #' @param msigcol.sv Color codes for SV signatures
 #' @param spacechar Space for characters in the legends
 #' @param ystep Step between annotation lines
-#' @param resdir
-#' @return
+#' @param resdir Results directory.
 #' @export
 #' @importFrom Rgraphviz pieGlyph
 #' @importFrom plotrix draw.circle
 #' @import plotrix
-#' @examples
+
 palimpsest_plotTumorHistories <- function(vcf=NULL,
 							 sv.vcf=NULL,
 							 cna_data=NULL,
@@ -742,9 +757,8 @@ palimpsest_plotTumorHistories <- function(vcf=NULL,
 #' @param msigcol list of colors to for plotting signature contribution. Must match to the total number of provided signatures
 #' @param resdir Result directory
 #'
-#' @return
 #' @export
-#' @examples
+
 palimpsest_clonalitySigsCompare <- function(clonsig=clonsig,subsig=subsig,msigcol=msigcol,resdir=resdir){
   clonsigp <- clonsig/apply(clonsig,1,sum)
   subsigp <- subsig/apply(subsig,1,sum)
@@ -777,21 +791,19 @@ palimpsest_clonalitySigsCompare <- function(clonsig=clonsig,subsig=subsig,msigco
 
 #' RCircos.Heatmap.Plot_1
 #'
-#' @param heatmap.data
-#' @param data.col
-#' @param track.num
-#' @param side
-#' @param min.value
-#' @param max.value
-#' @param inside.pos
-#' @param outside.pos
-#' @param genomic.columns
-#' @param is.sorted
+#' @param heatmap.data heatmap.data
+#' @param data.col data.col
+#' @param track.num track.num
+#' @param side side
+#' @param min.value min.value
+#' @param max.value max.value
+#' @param inside.pos inside.pos
+#' @param outside.pos outside.pos
+#' @param genomic.columns genomic.columns
+#' @param is.sorted is.sorted
 #'
-#' @return
 #' @export
 #' @import RCircos
-#' @examples
 RCircos.Heatmap.Plot_1 <- function(heatmap.data=NULL, data.col=NULL,
                                    track.num=NULL, side=c("in", "out"), min.value=NULL, max.value=NULL,
                                    inside.pos=NULL, outside.pos=NULL, genomic.columns=3, is.sorted=TRUE)
@@ -849,18 +861,17 @@ RCircos.Heatmap.Plot_1 <- function(heatmap.data=NULL, data.col=NULL,
 
 #' RCircos.Link.Plot_1
 #'
-#' @param link.data
-#' @param track.num
-#' @param by.chromosome
-#' @param start.pos
-#' @param genomic.columns
-#' @param is.sorted
-#' @param lineWidth
+#' @param link.data link.data
+#' @param track.num track.num
+#' @param by.chromosome by.chromosome
+#' @param start.pos start.pos
+#' @param genomic.columns genomic.columns
+#' @param is.sorted is.sorted
+#' @param lineWidth lineWidth
 #'
-#' @return
 #' @export
 #' @import RCircos
-#' @examples
+
 RCircos.Link.Plot_1 <- function(link.data=NULL, track.num=NULL,
                                 by.chromosome=FALSE, start.pos=NULL,
                                 genomic.columns=3, is.sorted=TRUE,
@@ -907,12 +918,11 @@ RCircos.Link.Plot_1 <- function(link.data=NULL, track.num=NULL,
 
 #' generate_table
 #'
-#' @param table
+#' @param table a table I guess?
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
+
 generate_table <- function(table){
   tumor = "Sample";chr1 = "CHROM_1";chr2 = "CHROM_2";pos1 = "POS_1";pos2 = "POS_2";event = "Type";
   translocs = table[which(table$Type == "BND"),]
@@ -930,15 +940,14 @@ generate_table <- function(table){
 
 #' make_plot
 #'
-#' @param translocs
-#' @param others
-#' @param Sample_to_plot
-#' @param resdir
+#' @param translocs translocs
+#' @param others others
+#' @param Sample_to_plot Sample_to_plot
+#' @param resdir resdir
 #'
-#' @return
 #' @export
 #' @import RCircos
-#' @examples
+
 make_plot <- function(translocs, others, Sample_to_plot,resdir){
   tumor = "Sample";chr1 = "CHROM_1";chr2 = "CHROM_2";pos1 = "POS_1";pos2 = "POS_2";event = "Type";
   requireNamespace("RCircos", quietly = TRUE)

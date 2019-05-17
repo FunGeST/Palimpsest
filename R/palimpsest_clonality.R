@@ -7,10 +7,9 @@
 #' @param cna_data Data frame with Copy Number Alteration Information
 #' @param CCF_boundary percentage boundary threshold for clonal mutations
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
+
 cnaCCF_annot <- function (vcf = NULL, annot_data = NULL, cna_data = NULL, CCF_boundary = 0.95)
 {
   sample.col = "Sample"; CHROM.col = "CHROM"; POS.col = "POS"; VAF.col = "Tumor_Varprop"; VarCount.col = "Tumor_Varcount";

@@ -2,15 +2,14 @@
 #'
 #' Function to create a matrix in mutation type x sample format with either counts or proportions
 #' @param vcf vcf data frame containing the mutations/SVs
-#' @param sample.col
-#' @param mutcat.col
-#' @param mutypes
-#' @param proportion
+#' @param sample.col sample.col
+#' @param mutcat.col mutcat.col
+#' @param mutypes mutypes
+#' @param proportion proportion
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
+
 makeMutypeMatFromVcf <- function (vcf,
                                   sample.col = "sample",
                                   mutcat.col = "mutcat3",
@@ -39,10 +38,9 @@ makeMutypeMatFromVcf <- function (vcf,
 #' @param mutcat.col Mutation category column name in vcf
 #' @param proportion If TRUE, the output matrix will indicate mutation proportions instead of numbers
 #'
-#' @return
 #' @export
 #' @import reshape2
-#' @examples
+
 palimpsestInput <- function(vcf,
 						   type="SNV",
                            sample.col = "Sample",
@@ -105,10 +103,9 @@ palimpsestInput <- function(vcf,
 #' @param plot Logical indicating whether graphical outputs should be generated
 #' @param resdir Result directory
 #'
-#' @return
 #' @export
 #' @import NMF
-#' @examples
+
 deconvolution_fit <- function (vcf = vcf, type = NULL, input_data = data,
                                threshold = 5, input_signatures = COSMIC_Signatures,
                                sig_cols = mycol, plot = TRUE, resdir = resdir)
@@ -191,12 +188,11 @@ deconvolution_fit <- function (vcf = vcf, type = NULL, input_data = data,
 #' @param plot_sigs If TRUE, will output the extracted mutational signature plots
 #' @param resdir Result directory
 #'
-#' @return
 #' @export
 #' @import NMF
 #' @import registry
 #' @import doParallel
-#' @examples
+
 deconvolution_nmf <- function (input_data = NULL, type = NULL, range_of_sigs = NULL, num_of_sigs ="auto",
                                nrun = nrun, method = "brunet", plot_sigs = TRUE, resdir = resdir)
 {
@@ -253,10 +249,9 @@ deconvolution_nmf <- function (input_data = NULL, type = NULL, range_of_sigs = N
 #' @param new_signatures Data frame of de-novo extracted mutational signatures
 #' @param COSMIC_Signatures Data frame of already published mutational signatures (Example: Alexandrov et.al,2013)
 #'
-#' @return
 #' @export
 #' @import lsa
-#' @examples
+
 deconvolution_compare <- function (new_signatures, COSMIC_Signatures)
 {
   rownames(new_signatures) <- rep(paste("DeNovo", rownames(new_signatures),sep = "_"))
@@ -290,10 +285,9 @@ deconvolution_compare <- function (new_signatures, COSMIC_Signatures)
 #' @param signature_contribution Matrix in sample x mutational signature exposure format in proportions
 #' @param input_signatures Data frame describing the mutational signatures to fit within the provided cohort of samples
 #'
-#' @return
+
 #' @export
-#'
-#' @examples
+
 palimpsestOrigin <- function(vcf=vcf, type = "SV",
                               sample.col="Sample", mutcat.col="Category1",
                               signature_contribution=nmf_signatures$sig_nums,

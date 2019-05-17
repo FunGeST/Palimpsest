@@ -12,10 +12,9 @@
 #' @param namesColsToAdd Column names to give in the columns added to dfPos
 #' @param multseg required
 #'
-#' @return
 #' @export
 #' @import gtools
-#' @examples
+
 palimpsest_dfPosXSegm <- function(dfPos=NULL,
                                dfPos.chrom.col="chrom",
                                dfPos.pos.col="pos",
@@ -100,12 +99,11 @@ palimpsest_dfPosXSegm <- function(dfPos=NULL,
 #' palimpsest_distCosine
 #'
 #' Function to calculate cosine distance
-#' @param required
+#' @param required m 
 #'
-#' @return
 #' @export
 #' @importFrom lsa cosine
-#' @examples
+
 palimpsest_distCosine <- function(m)
 {
   nsamp <- nrow(m)
@@ -141,10 +139,9 @@ palimpsest_distCosine <- function(m)
 #' @param mutcat3.output.col Name of added column with 3 nucleotide categories (includes substitution type and context)
 #' @param mutcat5.output.col Name of added column with 5 nucleotide categories (includes substitution type and context)
 #'
-#' @return
 #' @export
 #' @import VariantAnnotation
-#' @examples
+
 palimpsest_addMutationContextToVcf <- function(vcf,
                                                Reference_Genome,
                                                chrom.col="chr",
@@ -198,10 +195,8 @@ palimpsest_addMutationContextToVcf <- function(vcf,
 #' @param POS_2.col End position column name in sv
 #' @param resdir Result directory
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 palimpsest_addSVcategoriesToVcf <- function (sv = sv, type.col = "Type", sample.col = "Sample",
                                              CHROM_1.col = "CHROM", CHROM_2.col = "CHROM", POS_1.col = "POS",
                                              POS_2.col = "POS", resdir = resdir)
@@ -282,10 +277,9 @@ palimpsest_addSVcategoriesToVcf <- function (sv = sv, type.col = "Type", sample.
 #' @param check.strand Should mutations on the minus strand be converted (only useful if the input file contains minus strand mutations)
 #' @param unify Should substition types be unified to the common 6 mutation types (CA, CG, CT, TA, TC, TG)
 #'
-#' @return
 #' @export
 #' @import Biostrings
-#' @examples
+
 palimpsest_addMutationContextToVR <- function (vr, ref, k = 3, check.ref = TRUE, check.strand = FALSE, 
                                                unify = TRUE) 
 {
@@ -346,10 +340,8 @@ palimpsest_addMutationContextToVR <- function (vr, ref, k = 3, check.ref = TRUE,
 #' @param mutypes List of categories to be included in the output
 #' @param proportion If TRUE, the output matrix will indicate mutation proportions instead of numbers
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 palimpsest_makeMutypeMatFromVcf <- function(vcf,
                                  sample.col="sample",
                                  mutcat.col="mutcat3",
@@ -371,10 +363,8 @@ palimpsest_makeMutypeMatFromVcf <- function(vcf,
 #' @param x bed file
 #' @param sort required
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 bed2index <- function(x, sort = TRUE) {
   index <- paste0(
     x[, 1],
@@ -398,10 +388,8 @@ bed2index <- function(x, sort = TRUE) {
 #' @param endPos the column in d giving the end base pair position
 #' @param chromNum the name of added column whith chromosome from 1 to 24
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.genomOrder <- function(d,
                             chrom     = "chrom",
                             pos       = "pos",
@@ -444,10 +432,8 @@ cit.genomOrder <- function(d,
 #' @param absPos name of added column giving absolute pangenomic order
 #' @param chromNum the column in x giving the chromosome position with X = 23 & Y =24
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.pangenomCoord <- function( x,
                                 chrom="chrom",
                                 pos="meanPos",
@@ -548,12 +534,9 @@ cit.pangenomCoord <- function( x,
 #' @param yaxmark  y axis 'at' parameter (considered only if {plotyaxis = TRUE})
 #' @param yaxlab y axis 'labels' parameter (considered only if {plotyaxis = TRUE})
 #' @param chromToPlot a vector of the chromosomes to be plotted (default c(1:22,"X","Y"))
-
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.pangenomPlot <- function(d=NULL,
                               ycol=NULL,
                               chrom="chrom",
@@ -642,10 +625,8 @@ cit.pangenomPlot <- function(d=NULL,
 #' Function to convert factors factors in a data frame to characters
 #' @param d Data frame to be converted
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 factochar <- function(d) {
   for(i in 1:ncol(d)) if(is.factor(d[,i])) d[,i] <- as.character(d[,i])
   d
@@ -657,10 +638,8 @@ factochar <- function(d) {
 #' @param d data.frame which columns include genomic position information
 #' @param chrom the column in \code{d} giving the chromosome position
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.chromString2num <- function (d,
                                   chrom = "chrom",
                                   chromNum  = "chrNum"
@@ -691,13 +670,11 @@ cit.chromString2num <- function (d,
 #' wrapping of the function 'density' adding down and top points to the result
 #' @param x a numeric vector
 #' @param doplot boolean
-#' @param pc
+#' @param pc ?
 #' @param ...
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.density <- function(x,doplot=FALSE,pc=.05,...){
   dx <- density(x,na.rm=TRUE,...)
   ymax <- diff(range(dx$y))
@@ -724,17 +701,15 @@ cit.density <- function(x,doplot=FALSE,pc=.05,...){
 #'
 #' wrapping of the function 'cit.density' to control the maximum number of peaks
 #' @param x a numeric vector
-#' @param percentHighestPeak
-#' @param maxNbPeaks
-#' @param minDeltaBetweenPeaks
-#' @param deltaApproach
+#' @param percentHighestPeak percentHighestPeak
+#' @param maxNbPeaks maxNbPeaks
+#' @param minDeltaBetweenPeaks minDeltaBetweenPeaks
+#' @param deltaApproach deltaApproach
 #' @param doplot boolean
 #' @param ...
-#'
-#' @return
+#' 
 #' @export
-#'
-#' @examples
+
 cit.peaks <- function(x,
                        percentHighestPeak=.2,
                        maxNbPeaks=NULL,
@@ -849,10 +824,8 @@ cit.peaks <- function(x,
 #' @param quant if TRUE (default FALSE) the \code{x} is discretize by quantile and \code{lim} is considered as cut-off(s) for quantile, ie 0<lim<1
 #' @param addlevels add character levels indicating the cut-offs (i.e. for un cut-off iqq levels=c("<iqq",">=iqq") )
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.discretize <- function(x, lim, quant = FALSE, addlevels = FALSE){
 
   lim <- sort(lim)
@@ -889,10 +862,8 @@ cit.discretize <- function(x, lim, quant = FALSE, addlevels = FALSE){
 #' @param d Data frame to be converted
 #' @param ncmax Maximum number of characters for numeric fields
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 factoall <- function (d, ncmax = 10)
 {
   n <- ncol(d)

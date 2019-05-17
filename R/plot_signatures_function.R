@@ -2,24 +2,22 @@
 #'
 #' Function to plot signature profiles of all mutation types (SBS, DBS, Indel & SV). 
 #' N.B. recommended width to height ratio of 24:7 must be maintained to keep labels at the correct size.
-#' @param input_data Matrix of signature(s) to plot, or an individual sample's proportion of each mutation category. 
+#' @param input_data Matrix of signature(s) to plot, or an individual sample's proportion of each mutation category. If you receive an input_data related error retry with t(input_data).
 #' @param Title List (must be same length as number of input signatures) or single title to use. Leave blank to use rownames from input matrix. Use " " for no title. 
-#' @param Individual TRUE for single sample, FALSE for 2 or more signature input.
-#' @param Type Mutation type (SBS, DBS, ID or SNV).
-#' @param label "Full" for all labels, "Top" for just coloured bars atop the plot; "None" for just bar graph.
+#' @param label "Full" for all labels (default), "Top" for just coloured bars atop the plot; "None" for just bar graph.
 #' @keywords Signatures
 #' @export
 #' @import scales
 #' @import ggplot2
 #' @examples
 #' pdf(file=paste0(resdir,"SBS_liver_signature_profiles.pdf"),width=24,height=7)
-#' plot_signatures(input_data = SBS_liver,Title = rownames(SBS_liver),Type = "SBS",Individual = F,label = "Full")
+#' plot_signatures(input_data = SBS_liver,Title = rownames(SBS_liver),Individual = F,label = "Full")
 #' dev.off()
 
-plot_signatures <- function (input_data = NULL, Title = NULL,
-                             Individual = NULL, Type = NULL, label = "Full") {
-   requireNamespace("scales", quietly = TRUE)
-  if(label %!in% c("Full","Top","Bottom","None")) stop("label must be Full, Top, Bottom or None")
+plot_signatures <- function (input_data = NULL, Title = NA, label = "Full") {
+  requireNamespace("scales", quietly = TRUE); requireNamespace("ggplot2", quietly = TRUE)
+  if(label %!in% c("Full","Top","Bottom","None")) stop("label must be 'Full', 'Top', 'Bottom' or 'None'")
+  Individual <- ifelse(1 %in% dim(input_data),TRUE,FALSE)
   if (Individual == FALSE) num_of_sigs = nrow(input_data)
   if (Individual == TRUE) num_of_sigs = 1
   input_data <- as.matrix(input_data)
@@ -27,15 +25,22 @@ plot_signatures <- function (input_data = NULL, Title = NULL,
   for (i in 1:num_of_sigs) {
     
     if (Individual == FALSE){
+      if(ncol(input_data) %!in% c(38,78,83,96)) stop("input_data format incorrect")
+      if(ncol(input_data)==96) Type <- "SBS"; if(ncol(input_data)==78) Type <- "DBS"; if(ncol(input_data)==83) Type <- "ID"; if(ncol(input_data)==38) Type <- "SV" 
       Context <- colnames(input_data)
       plot_input <- as.data.frame(input_data[i,])
       if(length(Title)==1) plot_title <- paste(Title,i,sep=".")
       if(length(Title)>1) plot_title <- Title[i]
+      if(is.na(Title[1])) plot_title <- ""
     }
     if (Individual == TRUE){
+      if(nrow(input_data)==1) input_data <- t(input_data)
+      if(nrow(input_data) %!in% c(38,78,83,96)) stop("input_data format incorrect")
+      if(nrow(input_data)==96) Type <- "SBS"; if(nrow(input_data)==78) Type <- "DBS"; if(nrow(input_data)==83) Type <- "ID"; if(nrow(input_data)==38) Type <- "SV" 
       Context <- rownames(input_data)
       plot_input <- data.frame(input_data)
-      plot_title <- Title
+      if(!is.na(Title))plot_title <- Title
+      if(is.na(Title)) plot_title <- ""
     }
     
     colnames(plot_input)[1] <- "freq"; max.y = max(plot_input$freq)
@@ -52,11 +57,8 @@ plot_signatures <- function (input_data = NULL, Title = NULL,
                "Context_numerical" = c(1:nrow(plot_input)),
                "Substype_numerical" = c(as.numeric(as.factor(Substype))),
                "Start_pos" = c(rep(1,9),rep(10,6),rep(16,9),rep(25,6),rep(31,9),rep(40,6),rep(46,6),rep(52,9),rep(61,9),rep(70,9) ),
-               "Substype_length" = c(rep(9,9),rep(6,6),rep(9,9),rep(6,6),rep(9,9),rep(6,6),rep(6,6),rep(9,9),rep(9,9),rep(9,9)) ) #%>% 
-        # group_by(Substype) %>% 
-        # mutate("Start_pos" = Context_numerical[1],
-        #        "Substype_length" = length(Substype)
-        # ) 
+               "Substype_length" = c(rep(9,9),rep(6,6),rep(9,9),rep(6,6),rep(9,9),rep(6,6),rep(6,6),rep(9,9),rep(9,9),rep(9,9)) ) 
+
       
       prev <- "n'importe quoi"
       for(j in 1:nrow(plot_input)){
@@ -82,10 +84,7 @@ plot_signatures <- function (input_data = NULL, Title = NULL,
                "Start_pos" = c(rep(1,16), rep(17,16), rep(33,16), rep(49,16), rep(65,16), rep(81,16) ),
                "Substype_length" = 16,
                "Substype_numerical" = c(as.numeric(as.factor(Substype))) ) #%>% 
-      #group_by(Substype_numerical) %>% 
-      # mutate("Start_pos" = Context_numerical[1],
-      #        "Substype_length" = length(Substype)
-      #) 
+
       
       prev <- "n'importe quoi"
       for(j in 1:nrow(plot_input)){
@@ -116,11 +115,7 @@ plot_signatures <- function (input_data = NULL, Title = NULL,
                "Context_numerical" = c(1:nrow(plot_input)),
                "Start_pos" = c(rep(1,6),rep(7,6),rep(13,6),rep(19,6),rep(25,6),rep(31,6),rep(37,6),rep(43,6),rep(49,6),rep(55,6),rep(61,6),rep(67,6),73,rep(74,2),rep(76,3),rep(79,5)),#Context_numerical[1],
                "Substype_length" = c(rep(6,72),1,2,2,3,3,3,5,5,5,5,5) 
-        ) #%>% 
-      # group_by(Substype) %>% 
-      # mutate("Start_pos" = c(rep(1,6),rep(7,6),rep(13,6),rep(19,6),rep(25,6),rep(31,6),rep(37,6),rep(43,6),rep(49,6),rep(54,6),rep(60,6),rep(60,6),67,rep(68,2),rep(70,3),rep(73,5)),#Context_numerical[1],
-      #        "Substype_length" = c(6,6,6,6,6,6,6,6,6,6,6,6,1,2,3,5)
-      # )  
+        ) 
       
       indel_lab <- as.data.frame(matrix(nrow=16,ncol = 0))
       indel_lab$Substype <- c(1:16)
@@ -146,8 +141,8 @@ plot_signatures <- function (input_data = NULL, Title = NULL,
       
       theme_bw() + theme(panel.border = element_blank(),
                          panel.grid.major.x = element_blank(),
-                         panel.grid.major.y  = element_blank(),#element_line(colour = "black",size = 0.5),
-                         panel.grid.minor.y = element_blank(),#element_line(colour = "black",size = 0.5),
+                         panel.grid.major.y  = element_blank(),
+                         panel.grid.minor.y = element_blank(),
                          axis.line = element_line(colour = "black"),
                          axis.text.x = element_blank(),
                          panel.background = element_blank(), plot.background = element_blank(),
@@ -286,7 +281,7 @@ plot_signatures <- function (input_data = NULL, Title = NULL,
     } 
     if(label=="None"){
       plot_output = plot_output +
-        scale_y_continuous(expand = c(0, 0), limits = c(-1, max.y*1.42),#breaks = seq(from=0,to=max.y,by=max.y/2),labels = scales::number_format(accuracy = 0.01),
+        scale_y_continuous(expand = c(0, 0), limits = c(-1, max.y*1.42),
                            sec.axis = sec_axis(~.+0,labels = NULL)) +
         geom_hline(yintercept = max.y*1.3) +
         theme(axis.text.y = element_blank(),
@@ -294,7 +289,7 @@ plot_signatures <- function (input_data = NULL, Title = NULL,
     }
     if(label == "Top"){
       plot_output = plot_output +
-        scale_y_continuous(expand = c(0, 0), limits = c(-1, max.y*1.5),#breaks = seq(from=0,to=max.y,by=max.y/2),labels = scales::number_format(accuracy = 0.01),
+        scale_y_continuous(expand = c(0, 0), limits = c(-1, max.y*1.5),
                            sec.axis = sec_axis(~.+0,labels = NULL)) +
         geom_hline(yintercept = max.y*1.3) +
         theme(axis.text.y = element_blank(),
@@ -306,15 +301,13 @@ plot_signatures <- function (input_data = NULL, Title = NULL,
     }
     if(label == "Bottom"){
       plot_output = plot_output +
-        scale_y_continuous(expand = c(0, 0), limits = c(0, max.y*1.5),#breaks = seq(from=0,to=max.y,by=max.y/2),labels = scales::number_format(accuracy = 0.01),
+        scale_y_continuous(expand = c(0, 0), limits = c(0, max.y*1.5),
                            sec.axis = sec_axis(~.+0,labels = NULL)) +
         geom_hline(yintercept = max.y*1.3) +
         theme(axis.text.y = element_blank(),
               axis.ticks = element_blank()) +
         geom_rect(mapping = aes(xmin = (plot_input$Start_pos - 0.5), ymin = max.y*-0.2, xmax = (plot_input$Start_pos  + xmax_correction),
-                                ymax= 0), fill = plot_input$Colours, color = "white", size = 2.5) #+
-      # geom_rect(mapping = aes(xmin = nrow(plot_input)+0.5, ymin = max.y*-0.1, xmax = nrow(plot_input)+5,
-      #                         ymax= max.y*-0.225), fill = "white", color = "white", size = 2.5)
+                                ymax= 0), fill = plot_input$Colours, color = "white", size = 2.5) 
     }
     plot(plot_output)
   }

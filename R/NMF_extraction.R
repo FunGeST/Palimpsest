@@ -2,7 +2,6 @@
 #'
 #' Extracts mutational signatures de novo using NMF. Also estimates the optimal number of mutational signatures in the input. 
 #' @param input_matrices Palimpsest input list of mutation number and proportion matrices.
-#' @param Type Mutation type (SBS, DBS, ID or SV).
 #' @param range_of_sigs Numerical range of signatures. If "num_of_sigs" is set to auto, NMF will estiamte the optimal number of signatures in the input within this range before extracting with this number.
 #' @param num_of_sigs The number of mutational signatures to extract. If left to default "auto" value, the appropriate number of signatures will be estimated from NMF metrics (which are plotted in resdir). "auto" is recommended on the first run, but once the optimal number of signatures is known, setting this argument to that value will make the extraction quicker.
 #' @param method Specification of the NMF algorithm. ‘brunet’ method corresponds to the standard NMF algorithm from Brunet et al. (2004, PNAS).
@@ -13,14 +12,16 @@
 #' @export
 #' @import NMF
 #' @examples
-#' SBS_denovo_signatures <- NMF_Extraction(input_matrices = SBS_input,Type = "SBS",range_of_sigs = 1:20,nrun = 10, num_of_sigs = "auto", method = "brunet",plot_sigs=TRUE,resdir = resdir)
+#' SBS_denovo_signatures <- NMF_Extraction(input_matrices = SBS_input, range_of_sigs = 1:20,nrun = 10,resdir = resdir)
 
 
-NMF_Extraction <- function (input_matrices = NULL, Type = NULL, range_of_sigs = NULL, 
+NMF_Extraction <- function (input_matrices = NULL, range_of_sigs = NULL, 
           num_of_sigs = "auto", nrun = 10, method = "brunet", plot_sigs = TRUE, 
           resdir = NA) 
 {
   input_data <- as.matrix(input_matrices$mut_props)
+  if(nrow(input_data) %!in% c(38,78,83,96)) stop("input_matrices format incorrect")
+  if(nrow(input_data)==96) Type <- "SBS"; if(nrow(input_data)==78) Type <- "DBS"; if(nrow(input_data)==83) Type <- "ID"; if(nrow(input_data)==38) Type <- "SV"  
   requireNamespace("NMF", quietly = TRUE)
   sumRows <- rowSums(input_data)
   sort(sumRows)
@@ -64,7 +65,7 @@ NMF_Extraction <- function (input_matrices = NULL, Type = NULL, range_of_sigs = 
     }
     if (Type %in% c("SBS","DBS","ID")) {
       pdf(file=paste0(resdir,Type,"_Denovo_Signature_Profiles.pdf"),width=24,height=7)
-      plot_signatures(input_data = spec,Title = rownames(spec),Type = Type,Individual = F,label = "Full")
+      plot_signatures(input_data = spec,Title = rownames(spec))
       dev.off()
     }
   }

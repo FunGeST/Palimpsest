@@ -7,7 +7,7 @@
 #' @keywords Signatures
 #' @export
 #' @examples
-#' DBS_matrix <- Palimpsest_input2(vcf=vcf, Type = "DBS", proportion = TRUE)
+#' DBS_matrix <- Palimpsest_input2(vcf=vcf, Type = "DBS")
 
 
 
@@ -153,7 +153,7 @@ count_triplets <- function(vcf, ordering, mutypes){
     tmp <- res[((3*i)-2):(3*i),]
     if(length(unique(tmp$CHROM))==1) newres[((3*i)-2):(3*i),] <- tmp
   }
-  res <- newres[-which(is.na(newres[,1])),]
+  res <- newres[which(!is.na(newres$Sample)),]
   res$rm <- NA
   for(i in 2:(nrow(res)-1)){
     if(res$DBS_cat[i] == res$DBS_cat[i-1] & res$Sample[i]==res$Sample[i-1] &  res$CHROM[i]==res$CHROM[i-1]){
