@@ -3,10 +3,11 @@ Title: Package
 Version: 2.0.0
 Authors@R: c(person("Jayendra", "Shinde", email = "jayendra.shinde91@gmail.com", role =
     c("aut", "cre")),person("Eric", "Letouzé", email = "eric.letouze@inserm.fr", role = 
-    "aut"))
-Author: Jayendra Shinde, Eric Letouzé
+    "aut","cre"),person("Benedict", "Monteiro", email = "benedictmonteiro1@gmail.com", role = 
+    "aut","cre"))
+Author: Jayendra Shinde, Eric Letouzé, Benedict Monteiro
 Maintainer: Jayendra Shinde <jayendra.shinde91@gmail.com>,
-    Eric Letouzé <eric.letouze@inserm.fr>
+    Eric Letouzé <eric.letouze@inserm.fr>, Benedict Monteiro <benedictmonteiro1@gmail.com>
 Description: An R package for studying mutational and structural variant signatures
     along clonal evolution in cancer.
 License: MIT + file LICENSE
