@@ -215,7 +215,7 @@ rainfallz_plot <- function (vcf,mutype.col = "mutype",cyto = NULL, resdir = resd
 #'
 chrTime_plot <- function(vcf = NULL,
 						 point.mut.time = NULL,
-						 resdir=resdir)
+						 resdir=resdir, cyto = cytoband_hg19)
   {
   sample.col <- "Sample"
   point.mut.time <- factoall(point.mut.time)
@@ -240,7 +240,7 @@ chrTime_plot <- function(vcf = NULL,
     	vcf. <- vcf[which(vcf$Sample==samp),]
     	VAF.color <- c("darkgrey","red","royalblue")[match(vcf.[,"Timing"],c(NA,"early","late"))]
     	png(file.path(resdir., "Somatic_mutations_logR_VAF.png"), width = 2400, height = 1600, res = 200)
-    	palimpsest_cnvProfile(vcf = vcf.,VAF.color = VAF.color)
+    	palimpsest_cnvProfile(vcf = vcf.,VAF.color = VAF.color, cyto = cyto)
     	dev.off()
   }
 }
@@ -254,7 +254,7 @@ chrTime_plot <- function(vcf = NULL,
 #' @export
 #'
 palimpsest_cnvProfile <- function(vcf=NULL,
-								  VAF.color=NULL
+								  VAF.color=NULL, cyto = NULL
 )
 {
   CHROM.col <- "CHROM";POS.col <- "POS";VAF.col <- "Tumor_Varprop";LogR.col = "LogR";ntot.col="ntot";nMin.col="Nmin"
@@ -350,6 +350,7 @@ palimpsest_DissectSigs <- function(vcf=NULL,
   substype <- c("CA","CG","CT","TA","TC","TG");substype_cols <- c("skyblue3", "black", "red", "grey", "green", "pink")
   for (samp in unique(vcf[,"Sample"])) {
     vcf. <- vcf[which(vcf$Sample==samp & vcf$Type=="SNV"),]
+    vcf.$substype <- substr(vcf.$SBS_cat3,1,2)
     resdir. <- file.path(resdir,samp);if(!file.exists(resdir.)){dir.create(resdir.)}
     mat <- matrix(0,6,2);rownames(mat) <- substype;colnames(mat)<-c("clonal","subclonal");
     tt <- table(vcf.[,"substype"],vcf.[,"Clonality"])
@@ -363,8 +364,8 @@ palimpsest_DissectSigs <- function(vcf=NULL,
     dev.off()
     pdf(file.path(resdir.,"Clonal_vs_Subclonal_96_substitution_types.pdf"),width=24,height=10)
     layout(matrix(1:2,2))
-    plot96mutationSpectrumFromVcf(vcf.[which(vcf.[,"Clonality"]=="clonal"),],sample.col="Sample")
-    plot96mutationSpectrumFromVcf(vcf.[which(vcf.[,"Clonality"]=="subclonal"),],sample.col="Sample")
+    plot96mutationSpectrumFromVcf(vcf.[which(vcf.[,"Clonality"]=="clonal"),],sample.col="Sample",mutcat3.col = "SBS_cat3")
+    plot96mutationSpectrumFromVcf(vcf.[which(vcf.[,"Clonality"]=="subclonal"),],sample.col="Sample", mutcat3.col = "SBS_cat3")
     dev.off()
     pdf(file.path(resdir.,"Clonal_vs_Subclonal_signatures.pdf"),width=5,height=4)
     mat <- t(as.matrix(rbind(signatures_exp_clonal$sig_nums[samp,],signatures_exp_subclonal$sig_nums[samp,])))
@@ -973,4 +974,82 @@ make_plot <- function(translocs, others, Sample_to_plot,resdir){
   dev.off()
 }
 
+
+
+
+
+
+plot.SV.sigs_2 = function (sigs)
+{
+  sigs <- t(sigs)
+  col15 <- rep(c(rep("red", 6), rep("olivedrab1", 6), rep("lightskyblue",
+                                                          6), "grey"), 2)
+  myord <- c("DEL_0-1kb_clust_1", "DEL_1-10kb_clust_1", "DEL_10-100kb_clust_1",
+             "DEL_100kb-1Mb_clust_1", "DEL_1-10Mb_clust_1", "DEL_>10Mb_clust_1",
+             "DUP_0-1kb_clust_1", "DUP_1-10kb_clust_1", "DUP_10-100kb_clust_1",
+             "DUP_100kb-1Mb_clust_1", "DUP_1-10Mb_clust_1", "DUP_>10Mb_clust_1",
+             "INV_0-1kb_clust_1", "INV_1-10kb_clust_1", "INV_10-100kb_clust_1",
+             "INV_100kb-1Mb_clust_1", "INV_1-10Mb_clust_1", "INV_>10Mb_clust_1",
+             "BND_clust_1", "DEL_0-1kb_clust_0", "DEL_1-10kb_clust_0",
+             "DEL_10-100kb_clust_0", "DEL_100kb-1Mb_clust_0", "DEL_1-10Mb_clust_0",
+             "DEL_>10Mb_clust_0", "DUP_0-1kb_clust_0", "DUP_1-10kb_clust_0",
+             "DUP_10-100kb_clust_0", "DUP_100kb-1Mb_clust_0", "DUP_1-10Mb_clust_0",
+             "DUP_>10Mb_clust_0", "INV_0-1kb_clust_0", "INV_1-10kb_clust_0",
+             "INV_10-100kb_clust_0", "INV_100kb-1Mb_clust_0", "INV_1-10Mb_clust_0",
+             "INV_>10Mb_clust_0", "BND_clust_0")
+  # myord = c("BND_clust_0", "BND_clust_1", "DEL_0-1kb_clust_0", "DEL_0-1kb_clust_1",
+  #           "DEL_100kb-1Mb_clust_0", "DEL_100kb-1Mb_clust_1", "DEL_10-100kb_clust_0",
+  #           "DEL_10-100kb_clust_1", "DEL_>10Mb_clust_0", "DEL_>10Mb_clust_1",
+  #           "DEL_1-10kb_clust_0", "DEL_1-10kb_clust_1", "DEL_1-10Mb_clust_0",
+  #           "DEL_1-10Mb_clust_1", "DUP_0-1kb_clust_0", "DUP_100kb-1Mb_clust_0",
+  #           "DUP_100kb-1Mb_clust_1", "DUP_10-100kb_clust_0", "DUP_10-100kb_clust_1",
+  #           "DUP_>10Mb_clust_0", "DUP_>10Mb_clust_1", "DUP_1-10kb_clust_0",
+  #           "DUP_1-10kb_clust_1", "DUP_1-10Mb_clust_0", "DUP_1-10Mb_clust_1",
+  #           "INV_0-1kb_clust_0", "INV_0-1kb_clust_1", "INV_100kb-1Mb_clust_0",
+  #           "INV_100kb-1Mb_clust_1", "INV_10-100kb_clust_0", "INV_10-100kb_clust_1",
+  #           "INV_>10Mb_clust_0", "INV_>10Mb_clust_1", "INV_1-10kb_clust_0",
+  #           "INV_1-10kb_clust_1", "INV_1-10Mb_clust_0", "INV_1-10Mb_clust_1",
+  #           "DUP_0-1kb_clust_1")
+  
+  labs = rep(c(rep("del", 6), rep("tds", 6), rep("inv", 6),
+               "trans"), 2)
+  sigs <- matrix(sigs[myord, ], ncol = ncol(sigs), dimnames = dimnames(sigs),
+                 byrow = F)
+  for (siggy in colnames(sigs)) {
+    par(mai = c(1.2, 1, 2, 1))
+    # mylim <- max(sigs[, siggy]) * 1.2
+    mylim = 0.8 ## ICI pour fixer le ylim
+    bp <- barplot(sigs[, siggy], col = col15, border = col15,
+                  las = 2, space = c(rep(1, 19), 5, rep(1, 18)), ylim = c(0,
+                                                                          mylim), xaxt = "n", ylab = "Percentage of mutations",
+                  main = siggy)
+    abline(v = mean(bp[19:20]))
+    axis(1, at = bp, labels = sub("clust", "", sapply(myord,
+                                                      function(z) unlist(strsplit(z, "_"))[2])), pos = 0,
+         las = 2, cex.axis = 1.5, tick = T, cex.axis = 1)
+    for (i in seq(1, 13, by = 6)) {
+      rect(bp[i], par()$usr[4], bp[i] + 10, par()$usr[4] -
+             0.05 * diff(par()$usr[3:4]), col = col15[i],
+           border = col15[i])
+      text((bp[i] + bp[i] + 8)/2, par()$usr[4] + 0.09 *
+             diff(par()$usr[3:4]), labels = labs[i], xpd = TRUE,
+           cex = 1)
+    }
+    for (i in seq(20, 32, by = 6)) {
+      rect(bp[i], par()$usr[4], bp[i] + 10, par()$usr[4] -
+             0.05 * diff(par()$usr[3:4]), col = col15[i],
+           border = col15[i])
+      text((bp[i] + bp[i] + 8)/2, par()$usr[4] + 0.09 *
+             diff(par()$usr[3:4]), labels = labs[i - 16],
+           xpd = TRUE, cex = 1)
+    }
+    for (i in c(19, 38)) {
+      rect(bp[i] - 1, par()$usr[4], bp[i] + 1, par()$usr[4] -
+             0.05 * diff(par()$usr[3:4]), col = "grey", border = "grey")
+      text((bp[i] - 1 + bp[i] + 1)/2, par()$usr[4] + 0.09 *
+             diff(par()$usr[3:4]), labels = "trans", xpd = TRUE,
+           cex = 1)
+    }
+  }
+}
 

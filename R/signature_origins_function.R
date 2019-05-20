@@ -15,7 +15,7 @@ signature_origins <- function (input = NULL, Type = Type,
                                signature_contribution = signatures_exp, input_signatures = NULL){
   signature_contribution <- signature_contribution$sig_nums
   
-  if(Type == "SBS") mutcat.col <- "SBS_cat3"; if(Type == "DBS") mutcat.col <- "DBS_cat"; if(Type == "ID") mutcat.col <- "ID_cat"
+  if(Type == "SBS") mutcat.col <- "SBS_cat3"; if(Type == "DBS") mutcat.col <- "DBS_cat"; if(Type == "ID") mutcat.col <- "ID_cat"; if(Type == "SV") mutcat.col <- "Category1"
   if(mutcat.col %!in% colnames(input)) stop(paste("vcf is missing the <<",mutcat.col,">> mutation category column. Use the << annotate_VCF >> function to add the appropriate column."))
   
   Sig.max.col <- paste0(Type,".Sig.max"); Sig.max.prob.col <- paste0(Type,".Sig.max.prob") 

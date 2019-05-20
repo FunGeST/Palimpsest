@@ -24,7 +24,7 @@ deconvolution_fit2 <- function (input_matrices = NULL,
   requireNamespace("tibble", quietly = TRUE);requireNamespace("NMF", quietly = TRUE)
   prop_matrix <- input_matrices$mut_props; num_matrix <- input_matrices$mut_nums
   if(nrow(prop_matrix) %!in% c(38,78,83,96)) stop("input_matrices format incorrect")
-  if(nrow(prop_matrix)==96) Type <- "SBS"; if(nrow(prop_matrix)==78) Type <- "DBS"; if(nrow(prop_matrix)==83) Type <- "ID"; if(nrow(prop_matrix)==38) Type <- "SV" 
+  if(nrow(prop_matrix)==96) Type <- "SBS"; if(nrow(prop_matrix)==78) Type <- "DBS"; if(nrow(prop_matrix)==83) Type <- "ID"; if(nrow(prop_matrix)==38) stop("this isn't the SV function")
   
   resdir_parent <- resdir
   if (doplot == TRUE) {

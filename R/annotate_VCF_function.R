@@ -34,8 +34,8 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     vcf$strand.gene <- NA
     vcf$gene_name <- NA
     print("Adding gene, strand and SBS category annotations ..", quote = F)
-    if(genome_build == "hg19") ensgene <- Palimpsest:::ensgene_hg19
-    if(genome_build == "hg38") ensgene <- Palimpsest:::ensgene_hg38
+    if(genome_build == "hg19") ensgene <- ensgene_hg19
+    if(genome_build == "hg38") ensgene <- ensgene_hg38
     ensgene_split <- split(ensgene,ensgene$Chromosome.Name)
     vcf_split <- split(vcf,vcf$CHROM)
     chr_listy <- gtools::mixedsort(intersect(names(ensgene_split),names(vcf_split)))

@@ -106,7 +106,7 @@ palimpsestInput <- function(vcf,
 #' @export
 #' @import NMF
 
-deconvolution_fit <- function (vcf = vcf, type = NULL, input_data = data,
+deconvolution_fit_SV <- function (vcf = vcf, type = NULL, input_data = data,
                                threshold = 5, input_signatures = COSMIC_Signatures,
                                sig_cols = mycol, plot = TRUE, resdir = resdir)
 {
@@ -136,7 +136,7 @@ deconvolution_fit <- function (vcf = vcf, type = NULL, input_data = data,
         rownames(df) <- s
         pdf(file.path(resdir.., "Mean_proportion_38_sv_types.pdf"),
             width = 24, height = 6)
-        plot.SV.sigs(df)
+        plot.SV.sigs_2(df)
         dev.off()
         make_plot(translocs, others, s,resdir = resdir..)
       }

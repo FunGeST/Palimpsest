@@ -30,8 +30,8 @@ NMF_Extraction <- function (input_matrices = NULL, range_of_sigs = NULL,
     input_data[zeroes, 1] <- 1e-10
   }
   if (num_of_sigs == "auto") {
-    print(paste("Estimating the optimal number of mutational signatures in the",ncol(input_data),"input samples.. (be patient!)"),quote = F)
-    estimate <- nmfEstimateRank(x = input_data, range_of_sigs, 
+    print(paste("Estimating the optimal number of",Type,"mutational signatures in the",ncol(input_data),"input samples.. (be patient!)"),quote = F)
+    estimate <- nmfEstimateRank(x = input_data, range_of_sigs,
                                 method = method, nrun = nrun, seed = 123456)
     pdf(paste0(resdir, "NMF_Rank_Estimates.pdf"), width = 8, 
         height = 6)

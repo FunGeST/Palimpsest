@@ -13,7 +13,7 @@
 
 Palimpsest_input2 <- function(vcf = NULL, Type = NULL, mutypes = NA){
   
-  if(Type == "SBS") mutcat.col <- "SBS_cat3"; if(Type == "DBS") mutcat.col <- "DBS_cat"; if(Type == "ID") mutcat.col <- "ID_cat"
+  if(Type == "SBS") mutcat.col <- "SBS_cat3"; if(Type == "DBS") mutcat.col <- "DBS_cat"; if(Type == "ID") mutcat.col <- "ID_cat"; if(Type == "SV") mutcat.col <-"Category1"
   if(mutcat.col %!in% colnames(vcf)) stop(paste("vcf is missing the",Type,"mutation category column. Use the << annotate_VCF >> function to add the appropriate column."))
   
   ordering <- unique(vcf$Sample)
@@ -78,10 +78,10 @@ Palimpsest_input2 <- function(vcf = NULL, Type = NULL, mutypes = NA){
       data = rbind(data, assign(i, rep(0, ncol(data))))
       rownames(data)[nrow(data)] = i
     }
-    if (proportion) {
-      data <- prop.table(data, 2)
-    }
-    return(as.data.frame(data))
+   
+      props <- prop.table(data, 2)
+      res = list(mut_nums = data, mut_props = props)
+    return(res)
   }else{
     tmp <- split(vcf, vcf$Sample)
     truenames <- names(tmp)
