@@ -292,7 +292,7 @@ plot_signatures <- function (input_data = NULL, Title = NA, label = "Full") {
 } 
 
 
-#' deconvolution_exposure_2
+#' deconvolution_exposure
 #'
 #' Plots the exposure of signatures across the series (bargraphs of the number and proportion of each signature in each sample).
 #' @param signature_contribution List of signatures exposure numbers and proportions matrices (output from deconvolution_fit function).
@@ -304,10 +304,10 @@ plot_signatures <- function (input_data = NULL, Title = NA, label = "Full") {
 #' @import reshape2
 #' @examples
 #' pdf(file.path(resdir.,"signature_content_plot.pdf"),width=12,height=7)
-#' signature_content_plot <- deconvolution_exposure_2(signature_contribution = SBS_signatures_exp, rm_samples = "CHC892T", sig_cols = sig_cols)
+#' signature_content_plot <- deconvolution_exposure(signature_contribution = SBS_signatures_exp, rm_samples = "CHC892T", sig_cols = sig_cols)
 #' dev.off()
 
-deconvolution_exposure_2 <- function(signature_contribution = signatures_exp, rm_samples = NA,sig_cols = NA){
+deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_samples = NA,sig_cols = NA){
   
   requireNamespace("ggpubr", quietly = TRUE); requireNamespace("reshape2", quietly = TRUE)
   sig_nums <- signature_contribution$sig_nums; sig_props <- signature_contribution$sig_props

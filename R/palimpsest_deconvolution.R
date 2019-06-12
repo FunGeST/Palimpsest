@@ -47,7 +47,7 @@ NMF_Extraction <- function (input_matrices = NULL, range_of_sigs = 1:20,
                            z[which(abs(diff(z)) == max(abs(diff(z))))])
     steep_index <- steep_index[length(steep_index)]
     estimated_rank <- estimate$measures$rank[steep_index]
-    print(estimated_rank,"is the optimal number of",Type,"signatures.")
+    print(paste0("The optimal number of ",Type," signatures is ",estimated_rank,"."), quote = F)
   }
   else {
     estimated_rank <- num_of_sigs
@@ -348,7 +348,7 @@ deconvolution_fit_SV <- function (vcf = vcf, input_data = data,
         rownames(df) <- s
         pdf(file.path(resdir.., "Mean_proportion_38_sv_types.pdf"),
             width = 24, height = 6)
-        plot.SV.sigs_2(df)
+        plot.SV.sigs(df)
         dev.off()
         make_plot(translocs, others, s,resdir = resdir..)
     }

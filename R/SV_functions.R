@@ -128,7 +128,7 @@ palimpsest_dfPosXSegm_2 = function (dfPos = NULL, dfPos.chrom.col = "chrom", dfP
 
 palimpsest_addSVcategoriesToVcf = function (sv = sv, type.col = "Type", sample.col = "Sample",
                                               CHROM_1.col = "CHROM", CHROM_2.col = "CHROM", POS_1.col = "POS",
-                                              POS_2.col = "POS", resdir = resdir, genome_build =  genome_build)
+                                              POS_2.col = "POS", resdir = resdir, genome_build =  "hg19")
 {
   if(genome_build == "hg19") cyto <- cytoband_hg19
   if(genome_build == "hg38") cyto <- cytoband_hg38
