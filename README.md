@@ -5,8 +5,7 @@
   <h1 align="center">Palimpsest</h1>
 </p>
 
-Cancer genomes are altered by various mutational processes and, like palimpsests,
-bear the signatures of these successive processes. The Palimpsest R package provides a complete workflow for the characterisation and visualisation of mutational signatures and their evolution along tumour development. The package covers a wide range of functions for extracting single base (SBS), double base (DBS) and indel substitution and structural variant (SV) signatures, inferring the clonality of each alteration and analyzing the evolution of mutational processes between early clonal and late subclonal events. Palimpsest also estimates the probability of each mutation being due to each process to predict the mechanisms at the origin of driver events. Palimpsest is an easy-to-use toolset for reconstructing the natural history of a tumor using whole exome or whole genome sequencing data.
+Cancer genomes are altered by various mutational processes and, like palimpsests, bear the signatures of these successive processes. The Palimpsest R package provides a complete workflow for the characterisation and visualisation of mutational signatures and their evolution along tumour development. The package covers a wide range of functions for extracting single base (SBS), double base (DBS) and indel substitution signatures as well as structural variant (SV) signatures, inferring the clonality of each alteration and analysing the evolution of mutational processes between early clonal and late subclonal events. Palimpsest also estimates the probability of each mutation being due to each process to predict the mechanisms at the origin of driver events. Palimpsest is an easy-to-use toolset for reconstructing the natural history of a tumor using whole exome or whole genome sequencing data.
 
 Installation
 ========
