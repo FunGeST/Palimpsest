@@ -12,11 +12,11 @@ annotate_VCF(vcf = vcf, add_strand_and_SBS_cats = T,
 \arguments{
 \item{vcf}{Input VCF to annotate.}
 
-\item{add_strand_and_SBS_cats}{Logical indicating whether or not strand, gene and SBS category annotations are to be added.}
+\item{add_strand_and_SBS_cats}{Logical indicating whether or not strand, gene and SBS category annotations are to be added (defaults to TRUE).}
 
-\item{add_DBS_cats}{Logical indicating whether or not DBS category annotations are to be added.}
+\item{add_DBS_cats}{Logical indicating whether or not DBS category annotations are to be added (defaults to TRUE).}
 
-\item{add_ID_cats}{Logical indicating whether or not Indel category annotations are to be added.}
+\item{add_ID_cats}{Logical indicating whether or not Indel category annotations are to be added (defaults to TRUE).}
 
 \item{genome_build}{Enter either "hg19" or "hg38".}
 
@@ -24,7 +24,7 @@ annotate_VCF(vcf = vcf, add_strand_and_SBS_cats = T,
 
 \item{ref_fasta}{File path to FASTA file compatable with input VCF positions and chromosomes.}
 
-\item{ref_genome}{Name of reference genome object.}
+\item{ref_genome}{Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19).}
 }
 \value{
 vcf

@@ -4,27 +4,32 @@
 \alias{deconvolution_fit}
 \title{deconvolution_fit}
 \usage{
-deconvolution_fit(vcf = vcf, type = NULL, input_data = data,
-  threshold = 5, input_signatures = COSMIC_Signatures,
-  sig_cols = mycol, plot = TRUE, resdir = resdir)
+deconvolution_fit(input_matrices = NULL, input_signatures = NULL,
+  threshold = 6, sig_cols = NA, doplot = TRUE,
+  save_signatures_exp = TRUE, resdir = resdir)
 }
 \arguments{
-\item{vcf}{vcf data frame containing the mutations/SVs}
+\item{input_matrices}{Palimpsest input list of mutation number and proportion matrices.}
 
-\item{type}{SNV for single nucleotide variant signatures, SV for structural variant signatures}
+\item{input_signatures}{Matrix of the mutational signatures to fit within the provided cohort of samples.}
 
-\item{input_data}{Matrix in mutation type x sample format in proportions}
+\item{threshold}{Signatures contributing less then this percentage of total mutations within a sample will be discarded (e.g. if set to 6 and signature X contributes 5% of a sample's mutations, signature X will not be reported as present in this sample).}
 
-\item{threshold}{Discard signatures contributing less then this percent of total mutations within each sample}
+\item{sig_cols}{Character vector of R-compatible colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. Use the signature_colour_generator() function to generate colours for new signatures.}
 
-\item{input_signatures}{Data frame describing the mutational signatures to fit within the provided cohort of samples}
+\item{doplot}{Logical indicating whether graphical outputs should be generated (defaults to TRUE).}
 
-\item{sig_cols}{Character vector indicating the colors representing each signature in graphical outputs. Must match to the total number of provided signatures}
+\item{save_signatures_exp}{Logical indicating whether or not signatures_exp object should be saved in the redsir (defaults to TRUE).}
 
-\item{plot}{Logical indicating whether graphical outputs should be generated}
-
-\item{resdir}{Result directory}
+\item{resdir}{Results directory.}
 }
 \description{
-Function to identify the weighted combination of the input signatures explaining each tumor's mutational profile
+Function to calculate the number and proportion of each SBS, DBS or indel signature in each sample, in addition to plotting each sample's mutational profile and its signature contribution.
 }
+\examples{
+signatures_exp <- deconvolution_fit(input_matrices = SBS_input,
+                                         threshold = 8,input_signatures = SBS_liver,
+                                           sig_cols = sig_cols,resdir = resdir)
+
+}
+\keyword{Signatures}
