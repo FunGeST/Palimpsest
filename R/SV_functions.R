@@ -47,7 +47,9 @@ preprocessInput_sv = function (input_data = NULL, Sample.col = "Sample", CHROM_1
 }
 
 
-
+#' palimpsest_dfPosXSegm_2
+#'
+#' Annotating the mutation data with necessary fields for further analysis
 
 palimpsest_dfPosXSegm_2 = function (dfPos = NULL, dfPos.chrom.col = "chrom", dfPos.pos.col = "pos",
                                     dfSegm = NULL, dfSegm.chrom.col = "chrom", dfSegm.start.col = "start",
@@ -125,6 +127,20 @@ palimpsest_dfPosXSegm_2 = function (dfPos = NULL, dfPos.chrom.col = "chrom", dfP
   dfPos
 }
 
+
+#' palimpsest_addSVcategoriesToVcf
+#'
+#' Function to add SV mutation categories to vcf
+#' @param sv vcf data frame containing the SVs
+#' @param type.col SV type description column name in mutation_data ["DEL","DUP","INV"]
+#' @param sample.col Sample column name in sv
+#' @param CHROM_1.col Start chromosome column name in sv
+#' @param CHROM_2.col End chromosome column name in sv
+#' @param POS_1.col Start position column name in sv
+#' @param POS_2.col End position column name in sv
+#' @param resdir Result directory
+#'
+#' @export
 
 palimpsest_addSVcategoriesToVcf = function (sv = sv, type.col = "Type", sample.col = "Sample",
                                               CHROM_1.col = "CHROM", CHROM_2.col = "CHROM", POS_1.col = "POS",

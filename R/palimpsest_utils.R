@@ -757,8 +757,6 @@ factoall <- function (d, ncmax = 10)
 #' @examples
 #' SBS_colours <- signature_colour_generator(signature_names = rownames(SBS_denovo_sigs))
 
-
-
 signature_colour_generator <- function(signature_names = NULL){
   requireNamespace("RColorBrewer",quietly = T)
   qual_col_pals <- brewer.pal.info[brewer.pal.info$category == 'qual',]
@@ -768,6 +766,9 @@ signature_colour_generator <- function(signature_names = NULL){
 }
 
 
+#' load2object
+#'
+#' loads object to a particular name. 
 
 load2object <- function (filename) 
 {
@@ -805,6 +806,9 @@ palimpsest_distCosine <- function(m)
 }
 
 
+#' compare_results
+#'
+#' compare the results of a de novo extraction to a set of reference signatures (e.g. SBS de novo result to COSMIC de novo signatures)
 
 compare_results <- function(reference_sigs = NA, extraction_1 = NA, extraction_2 = NULL, extraction_1_name ="Palimp", extraction_2_name = NA, lower_threshold = 0.6, upper_threshold = 0.9){
 

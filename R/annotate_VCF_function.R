@@ -119,7 +119,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
 #' @import Biostrings
 #' @import GenomicRanges
 #' @examples
-#' vr3 <- palimpsest_addMutationContextToVR(vr = vr, ref_genome = ref_genome, k = 3, unify = TRUE,num_of_DELs = delet_this)
+#' vr3 <- palimpsest_addMutationContextToVR(vr = vr, ref_genome = ref_genome, k = 3, num_of_DELs = delet_this)
 
 
 
