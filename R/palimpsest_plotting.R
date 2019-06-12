@@ -411,171 +411,7 @@ cnaCCF_plots <- function (vcf = NULL, resdir = resdir)
   }
 }
 
-#' deconvolution_exposure
-#'
-#' Function to plot the exposure of mutational signatures in samples across the entire series
-#' @param mutSign_nums Matrix in sample x mutational signature exposure format in numbers
-#' @param mutSign_props Matrix in sample x mutational signature exposure format in proportions
-#' @param sig_cols Character vector indicating the colors representing each signature in graphical outputs. Must match to the total number of provided signatures
-#'
-#' @export
-#' @import ggplot2
-#' @importFrom ggplot2 theme_bw
-#' @import gplots
-#' @import reshape2
-#' @importFrom reshape2 melt
 
-deconvolution_exposure <- function(mutSign_nums,mutSign_props,sig_cols=colclust) {
-  scale<-1
-  .theme_ss <- theme_bw(base_size=14) +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, size=8*scale, family="mono"),
-          axis.text.y = element_text(hjust = 0.5,size=12*scale, family="mono"),
-          axis.text = element_text(size = 12*scale, family = "mono"))
-  ordering <- order(colSums(t(mutSign_nums)),decreasing=T)
-  mutSign_nums <- t(mutSign_nums)
-  mutSign_props <- t(mutSign_props)
-  mutSign_nums <- mutSign_nums[,ordering]
-  mutSign_props <- mutSign_props[,ordering]
-  sample.ordering <- colnames(mutSign_nums)
-  x1 <- melt(mutSign_nums)
-  x2 <- melt(mutSign_props)
-  colnames(x1) <- c("Signature","Sample","Activity")
-  colnames(x2) <- c("Signature","Sample","Activity")
-  x1[,"class0"] <- c("Counts")
-  x2[,"class0"] <- c("Proportions")
-  df2 <- rbind(x1,x2)
-  df2$class0 <- factor(df2$class0,c("Counts","Proportions"))
-  df2$Sample <- factor(df2$Sample,sample.ordering)
-  p = ggplot(df2,aes(x=factor(Sample),y=Activity,fill=Signature))
-  p = p+geom_bar(stat="identity",position='stack')
-  p = p + scale_fill_manual(values=sig_cols)
-  p = p + ggtitle("Mutational Signature Exposures")
-  p = p + facet_grid(class0 ~ ., scale = "free_y")
-  p = p + theme(plot.title=element_text(lineheight=1.0,face="bold",size=15*scale))
-  p = p + xlab("Samples") + ylab("Mutational Signature Content")
-  p = p + theme(axis.title.x = element_text(face="bold",colour="black",size=15*scale))
-  p = p + theme(axis.title.y = element_text(face="bold",colour="black",size=15*scale))
-  p = p + theme(axis.text.x = element_text(angle=90,vjust=0.5,size=12*scale,face="bold",colour="black"))
-  p = p + theme(axis.text.y = element_text(size=10*scale,face="bold",colour="black"))
-  p = p + theme(legend.title=element_blank())
-  p = p + .theme_ss
-  p = p + theme(legend.position="top")
-  return(p)
-}
-
-
-#' plot.SNV.sigs
-#'
-#' Function to plot single nucleotide variants signatures (96 nucleotide type)
-#' @param spec Matrix of mutational signatures x  mutation types
-#'
-#' @export
-
-
-plot.SNV.sigs <- function(spec){
-  bases <- c("A", "C", "G", "T")
-  ctxt16 <- paste(rep(bases, each = 4), rep(bases, 4), sep = ".")
-  mt <- c("CA", "CG", "CT", "TA", "TC", "TG")
-  types96 <- paste(rep(mt, each = 16), rep(ctxt16, 6), sep = "_")
-  types96 <- sapply(types96, function(z) {
-    sub("\\.", substr(z, 1, 1), z)
-  })
-  context <- substr(types96, 4, 6)
-  col96 <- c(rep("skyblue3",16),rep("black",16),rep("red",16),rep("grey",16),rep("green",16),rep("pink",16))
-  labs <-c(rep("C>A",16),rep("C>G",16),rep("C>T",16),rep("T>A",16),rep("T>C",16),rep("T>G",16))
-  colclust <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928","gray36", "#bd18ea", "#2ef4ca", "#f4cced", "#f4cc03", "#05188a","mediumvioletred", "#e5a25a", "#06f106", "#85848f", "#000000", "blue","#076f25", "#93cd7f", "#4d0776", "darkred", "yellow","cadetblue1")
-  for(i in 1:nrow(spec)){
-    ymax <- ceiling(max(spec[i,])*100)/100
-    bp <- barplot(as.numeric(spec[i,]),col=col96,border=col96,las=2,width=1,space=1,yaxt="n",xaxt="n",ylim=c(0,ymax*1.2),xlab = rownames(spec)[i],cex.lab=1.4,ylab="Percentage of mutations")
-    axis(1,at=bp,labels=context,pos=0,las=2,cex.axis=1.5,tick=T,cex.axis=1)
-    axis(2,at=round(seq(0,ceiling(ymax*100),length.out=3),digits=1)/100,pos=0,las=1,cex.axis=1.5)
-    for(i in seq(1,81,by=16)){
-      rect(bp[i],par()$usr[4],bp[i+15],par()$usr[4]-0.05*diff(par()$usr[3:4]),col=col96[i],border=col96[i])
-      text((bp[i]+bp[i+15])/2,par()$usr[4]+0.09*diff(par()$usr[3:4]),labels=labs[i], xpd= TRUE, cex = 2)
-    }
-  }
-}
-
-#' plot.SV.sigs
-#'
-#' Function to plot structural variants signatures (38 sv categories type)
-#' @param sigs Matrix of mutational signatures x  mutation types
-#'
-#' @export
-
-plot.SV.sigs <- function(sigs)
-{
-  sigs <- t(sigs)
-  col15 <- rep(c(rep("red", 6), rep("olivedrab1", 6), rep("lightskyblue",
-                                                          6), "grey"), 2)
-  myord <- c("DEL_0-1kb_clust_1", "DEL_1-10kb_clust_1", "DEL_10-100kb_clust_1",
-             "DEL_100kb-1Mb_clust_1", "DEL_1-10Mb_clust_1", "DEL_>10Mb_clust_1",
-             "DUP_0-1kb_clust_1", "DUP_1-10kb_clust_1", "DUP_10-100kb_clust_1",
-             "DUP_100kb-1Mb_clust_1", "DUP_1-10Mb_clust_1", "DUP_>10Mb_clust_1",
-             "INV_0-1kb_clust_1", "INV_1-10kb_clust_1", "INV_10-100kb_clust_1",
-             "INV_100kb-1Mb_clust_1", "INV_1-10Mb_clust_1", "INV_>10Mb_clust_1",
-             "BND_clust_1", "DEL_0-1kb_clust_0", "DEL_1-10kb_clust_0",
-             "DEL_10-100kb_clust_0", "DEL_100kb-1Mb_clust_0", "DEL_1-10Mb_clust_0",
-             "DEL_>10Mb_clust_0", "DUP_0-1kb_clust_0", "DUP_1-10kb_clust_0",
-             "DUP_10-100kb_clust_0", "DUP_100kb-1Mb_clust_0", "DUP_1-10Mb_clust_0",
-             "DUP_>10Mb_clust_0", "INV_0-1kb_clust_0", "INV_1-10kb_clust_0",
-             "INV_10-100kb_clust_0", "INV_100kb-1Mb_clust_0", "INV_1-10Mb_clust_0",
-             "INV_>10Mb_clust_0", "BND_clust_0")
-  # myord = c("BND_clust_0", "BND_clust_1", "DEL_0-1kb_clust_0", "DEL_0-1kb_clust_1",
-  #           "DEL_100kb-1Mb_clust_0", "DEL_100kb-1Mb_clust_1", "DEL_10-100kb_clust_0",
-  #           "DEL_10-100kb_clust_1", "DEL_>10Mb_clust_0", "DEL_>10Mb_clust_1",
-  #           "DEL_1-10kb_clust_0", "DEL_1-10kb_clust_1", "DEL_1-10Mb_clust_0",
-  #           "DEL_1-10Mb_clust_1", "DUP_0-1kb_clust_0", "DUP_100kb-1Mb_clust_0",
-  #           "DUP_100kb-1Mb_clust_1", "DUP_10-100kb_clust_0", "DUP_10-100kb_clust_1",
-  #           "DUP_>10Mb_clust_0", "DUP_>10Mb_clust_1", "DUP_1-10kb_clust_0",
-  #           "DUP_1-10kb_clust_1", "DUP_1-10Mb_clust_0", "DUP_1-10Mb_clust_1",
-  #           "INV_0-1kb_clust_0", "INV_0-1kb_clust_1", "INV_100kb-1Mb_clust_0",
-  #           "INV_100kb-1Mb_clust_1", "INV_10-100kb_clust_0", "INV_10-100kb_clust_1",
-  #           "INV_>10Mb_clust_0", "INV_>10Mb_clust_1", "INV_1-10kb_clust_0",
-  #           "INV_1-10kb_clust_1", "INV_1-10Mb_clust_0", "INV_1-10Mb_clust_1",
-  #           "DUP_0-1kb_clust_1")
-  
-  labs = rep(c(rep("del", 6), rep("tds", 6), rep("inv", 6),
-               "trans"), 2)
-  sigs <- matrix(sigs[myord, ], ncol = ncol(sigs), dimnames = dimnames(sigs),
-                 byrow = F)
-  for (siggy in colnames(sigs)) {
-    par(mai = c(1.2, 1, 2, 1))
-    # mylim <- max(sigs[, siggy]) * 1.2
-    mylim = 0.8 ## ICI pour fixer le ylim
-    bp <- barplot(sigs[, siggy], col = col15, border = col15,
-                  las = 2, space = c(rep(1, 19), 5, rep(1, 18)), ylim = c(0,
-                                                                          mylim), xaxt = "n", ylab = "Percentage of mutations",
-                  main = siggy)
-    abline(v = mean(bp[19:20]))
-    axis(1, at = bp, labels = sub("clust", "", sapply(myord,
-                                                      function(z) unlist(strsplit(z, "_"))[2])), pos = 0,
-         las = 2, cex.axis = 1.5, tick = T, cex.axis = 1)
-    for (i in seq(1, 13, by = 6)) {
-      rect(bp[i], par()$usr[4], bp[i] + 10, par()$usr[4] -
-             0.05 * diff(par()$usr[3:4]), col = col15[i],
-           border = col15[i])
-      text((bp[i] + bp[i] + 8)/2, par()$usr[4] + 0.09 *
-             diff(par()$usr[3:4]), labels = labs[i], xpd = TRUE,
-           cex = 1)
-    }
-    for (i in seq(20, 32, by = 6)) {
-      rect(bp[i], par()$usr[4], bp[i] + 10, par()$usr[4] -
-             0.05 * diff(par()$usr[3:4]), col = col15[i],
-           border = col15[i])
-      text((bp[i] + bp[i] + 8)/2, par()$usr[4] + 0.09 *
-             diff(par()$usr[3:4]), labels = labs[i - 16],
-           xpd = TRUE, cex = 1)
-    }
-    for (i in c(19, 38)) {
-      rect(bp[i] - 1, par()$usr[4], bp[i] + 1, par()$usr[4] -
-             0.05 * diff(par()$usr[3:4]), col = "grey", border = "grey")
-      text((bp[i] - 1 + bp[i] + 1)/2, par()$usr[4] + 0.09 *
-             diff(par()$usr[3:4]), labels = "trans", xpd = TRUE,
-           cex = 1)
-    }
-  }
-}
 
 #' palimpsest_plotTumorHistories
 #'
@@ -805,6 +641,7 @@ palimpsest_clonalitySigsCompare <- function(clonsig=clonsig,subsig=subsig,msigco
 #'
 #' @export
 #' @import RCircos
+
 RCircos.Heatmap.Plot_1 <- function(heatmap.data=NULL, data.col=NULL,
                                    track.num=NULL, side=c("in", "out"), min.value=NULL, max.value=NULL,
                                    inside.pos=NULL, outside.pos=NULL, genomic.columns=3, is.sorted=TRUE)
@@ -978,8 +815,15 @@ make_plot <- function(translocs, others, Sample_to_plot,resdir){
 
 
 
+#' plot.SV.sigs
+#'
+#' Function to plot structural variants signatures (38 sv categories type)
+#' @param sigs Matrix of mutational signatures x  mutation types
+#'
+#' @export
 
-plot.SV.sigs_2 = function (sigs)
+
+plot.SV.sigs = function (sigs)
 {
   sigs <- t(sigs)
   col15 <- rep(c(rep("red", 6), rep("olivedrab1", 6), rep("lightskyblue",
