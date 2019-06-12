@@ -6,8 +6,7 @@
 </p>
 
 Cancer genomes are altered by various mutational processes and, like palimpsests,
-bear the signatures of these successive processes. The Palimpsest R package provides a complete workflow for the characterization and visualization of mutational signatures and their evolution along tumor development. The package covers a wide range of functions for extracting both base substitution and structural variant signatures, inferring the clonality of each alteration and analyzing the evolution of mutational processes between early clonal and late subclonal events. Palimpsest also estimates the probability of each mutation being due to each process to predict the mechanisms at the
-origin of driver events. Palimpsest is an easy-to-use toolset for reconstructing the natural history of a tumor using whole exome or whole genome sequencing data.
+bear the signatures of these successive processes. The Palimpsest R package provides a complete workflow for the characterization and visualization of mutational signatures and their evolution along tumour development. The package covers a wide range of functions for extracting single base, double base and indel substitution and structural variant signatures, inferring the clonality of each alteration and analyzing the evolution of mutational processes between early clonal and late subclonal events. Palimpsest also estimates the probability of each mutation being due to each process to predict the mechanisms at the origin of driver events. Palimpsest is an easy-to-use toolset for reconstructing the natural history of a tumor using whole exome or whole genome sequencing data.
 
 Installation
 ========
@@ -20,6 +19,8 @@ Install from the GitHub repository using devtools:
 Dependencies
 ========
 The R package "bedr" is required to perform structural variant signature analysis. The bedr API gives access to "BEDTools" and offers additional utilities for genomic region processing. To gain the functionality of bedr package you will need to have the [BEDTools](http://bedtools.readthedocs.io/en/latest/content/installation.html) program installed and in your default PATH.
+
+To add indel mutation categories we use a python script that is called by the R function "annotate_VCF()". For this to work the VCF must be annotated in a Unix environment (i.e. Mac or Linux). The other aspects of this function, and indeed all other functions, work in on a Windows operating system.
 
 Input files
 ========
@@ -84,7 +85,7 @@ Running Palimpsest
 * [*Introduction to Palimpsest*](http://nbviewer.jupyter.org/github/FunGeST/Palimpsest/blob/master/Files/vignette_palimpsest.pdf) provides a comprehensive example of the Palimpsest workflow with detailed  explanations of each function.</br> 
 * Please refer to the following paper for extensive description of the statistical methods used in the package: Letouzé, E., Shinde, J. *et al.* Nat. Commun. (2017) [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumorigenesis.](https://www.nature.com/articles/s41467-017-01358-x)
 
-Refernce
+Reference
 ================
 
 Shinde, J. *et al.* Bioinformatics (2018) [Palimpsest: an R package for studying mutational and structural variant signatures along clonal evolution in cancer.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty388/4996591)
