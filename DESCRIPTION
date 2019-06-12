@@ -36,7 +36,6 @@ Depends:
     R (>= 3.3.2),
     dplyr,
     NMF,
-    BiocInstaller,
     GenomicRanges
 Suggests:
     BiocStyle (>= 2.0.3),
