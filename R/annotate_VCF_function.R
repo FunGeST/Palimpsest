@@ -20,7 +20,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
                          ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19){
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5) stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
-  !all(unique(vcf_china$Type) %in% c("SNV","INS","DEL")) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions makered 'INS', please change accordingly")
+  if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions makered 'INS', please change accordingly")
   vcf <- order_vcf(vcf)
   
   chroms <- unique(vcf$CHROM)
