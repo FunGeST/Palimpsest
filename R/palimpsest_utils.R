@@ -734,9 +734,9 @@ factoall <- function (d, ncmax = 10)
 }
 
 
-#' "%!in%" 
+#' "Not in" function 
 #'
-#' The opposite of "%in%"
+#' The opposite of << %in% >>, used by several palimpsest functions.
 #' @keywords Signatures
 #' @export
 #' @examples
