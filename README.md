@@ -19,7 +19,7 @@ Dependencies
 ========
 The R package "bedr" is required to perform structural variant signature analysis. The bedr API gives access to "BEDTools" and offers additional utilities for genomic region processing. To gain the functionality of bedr package you will need to have the [BEDTools](http://bedtools.readthedocs.io/en/latest/content/installation.html) program installed and in your default PATH.
 
-To add indel mutation categories we use a python script that is called by the R function "annotate_VCF()". For this to work the VCF must be annotated in a Unix environment (i.e. Mac or Linux). The other aspects of this function, and indeed all other functions, work in on a Windows operating system.
+To add indel mutation categories we use a python script that is called by the R function "annotate_VCF()". For this to work the VCF must be annotated in a Unix environment (i.e. Mac or Linux) with python 2.7 installed. The other aspects of this function, and indeed all other functions, work in on a Windows operating system.
 
 Input files
 ========
