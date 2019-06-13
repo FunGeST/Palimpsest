@@ -8,14 +8,13 @@
 #-------------------------------------------------------------------------------------------------
 ##################################################################################################
 # Load Palimpsest library
-library(Palimpsest,lib.loc = "~/Documents/Code/Palimpsest2/")
+library(Palimpsest)
 library(BSgenome.Hsapiens.UCSC.hg19) # Reference genome of choice
 
 #-------------------------------------------------------------------------------------------------
 
 # Define working directories:
-palimpdir <- "~/Documents/Code/Palimpsest2/"  ### Path Palimpsest master directory, folder structure must remain unchanged for Palimpsest to function.
-resdir_parent <- paste0("~/Documents/Results/delet/Palimpsest2_test_script_",gsub("-","",Sys.Date()),"/");if(!file.exists(resdir_parent))	dir.create(resdir_parent) ## Path to parent results directory
+resdir_parent <- paste0("~/Documents/Results/delet/Palimpsest2_test_script_",gsub("-","",Sys.Date()),"a/");if(!file.exists(resdir_parent))	dir.create(resdir_parent) ## Path to parent results directory
 
 
 #-------------------------------------------------------------------------------------------------
@@ -28,8 +27,8 @@ vcf <- load2object("/Volumes/HEPATO PARTAGE/GENOMIC_DATA/WGS/RData/Somatic_mutat
   filter(Sample %in% unique(Sample)[1:20]) %>% 
   mutate(Type = ifelse(Type == "SNP","SNV",Type))
 
-vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,palimpdir = palimpdir,
-                    ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta",add_strand_and_SBS_cats = F)
+vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
+                    ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta",add_strand_and_SBS_cats = F,add_DBS_cats = F)
 
 
 #-------------------------------------------------------------------------------------------------
