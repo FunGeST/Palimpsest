@@ -374,17 +374,18 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
   
   python_vcf = vcf %>% 
     filter(Type != "SNV") %>% 
-    mutate(Start = POS +1, End = POS+1,col0="x", col3 = "y", Genome = "GRCh37",col11 = "1",col12 = "2", CHROM = sub("chr", "", CHROM)) %>% 
+    mutate(Start = POS, End = POS,col0="x", col3 = "y", Genome = "GRCh37",col11 = "1",col12 = "2", CHROM = sub("chr", "", CHROM)) %>% 
     order_vcf() %>% 
     dplyr::select(col0,Unique,col3,Genome,Type,CHROM,Start,End,REF,ALT,col11,col12)
-  
-  python_vcf$Start[python_vcf$Type=="INS"] = python_vcf$Start[python_vcf$Type=="INS"] %>% -1
-  
-  python_vcf[python_vcf$Type=="INS",] = python_vcf[python_vcf$Type=="INS",] %>% 
-    mutate(REF = "-", ALT =  substr(ALT,2,nchar(ALT)))
-  
-  python_vcf[python_vcf$Type=="DEL",] = python_vcf[python_vcf$Type=="DEL",] %>% 
-    mutate(REF =  substr(REF,2,nchar(REF)), ALT = "-")
+
+  if("-" %!in% vcf$REF[vcf$Type == "INS"]){
+    python_vcf[python_vcf$Type=="INS",] = python_vcf[python_vcf$Type=="INS",] %>% 
+      mutate(REF = "-", ALT =  substr(ALT,2,nchar(ALT)), End = End + 1)
+  }
+  if("-" %!in% vcf$ALT[vcf$Type == "DEL"]){
+    python_vcf[python_vcf$Type=="DEL",] = python_vcf[python_vcf$Type=="DEL",] %>% 
+      mutate(REF =  substr(REF,2,nchar(REF)), ALT = "-", End = End + 1, Start = Start + 1)
+  }
   
   vcf_output <- paste0(tmpdir,"python_vcf_indel.simple")
   
@@ -402,7 +403,7 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
   # system2("python",c(tool,argus))
   system(paste(tool,c(argus)))
   warning("Indel category extraction with PCAWG7-data-preparation-version-1.5 python script is finished 
-          (if there are error messages above it has not been successful)")
+  (if there are error messages above it has not been successful)")
   
 
   # load output and add categories to vcf
