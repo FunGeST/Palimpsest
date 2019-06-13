@@ -9,7 +9,7 @@ import get_reference
 import in_target
 
 _beddir = os.path.dirname(sys.argv[0])
-_beddir = _beddir + '/annotation'
+_beddir = _beddir 
 # _beddir = '/gpfs/nextgen1/pipeline/targets'
 grch37_bed_file = _beddir + '/GENCODE_transcripts.v19.hs37.bed'
 grch38_bed_file = _beddir + '/GENCODE_transcripts.v20.grch38.bed'

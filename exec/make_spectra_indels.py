@@ -37,7 +37,7 @@ from getopt import getopt
 
 
 script_dir = os.path.dirname(sys.argv[0])
-annotation_dir = script_dir + '/annotation'
+annotation_dir = script_dir 
 sys.path.append(annotation_dir)
 import lookups_indels
 
