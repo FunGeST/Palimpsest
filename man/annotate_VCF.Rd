@@ -6,8 +6,7 @@
 \usage{
 annotate_VCF(vcf = vcf, add_strand_and_SBS_cats = T,
   add_DBS_cats = T, add_ID_cats = T, genome_build = "hg19",
-  palimpdir = NULL, ref_fasta = NULL,
-  ref_genome = BSgenome.Hsapiens.UCSC.hg19)
+  ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19)
 }
 \arguments{
 \item{vcf}{Input VCF to annotate.}
@@ -19,8 +18,6 @@ annotate_VCF(vcf = vcf, add_strand_and_SBS_cats = T,
 \item{add_ID_cats}{Logical indicating whether or not Indel category annotations are to be added (defaults to TRUE).}
 
 \item{genome_build}{Enter either "hg19" or "hg38".}
-
-\item{palimpdir}{File path to Palimpsest master folder.}
 
 \item{ref_fasta}{File path to FASTA file compatable with input VCF positions and chromosomes.}
 

@@ -4,7 +4,7 @@
 \alias{add_ID_cats_ToVCF}
 \title{add_ID_cats_ToVCF}
 \usage{
-add_ID_cats_ToVCF(vcf = NULL, palimpdir = palimpdir, ref_fasta = NA)
+add_ID_cats_ToVCF(vcf = NULL, ref_fasta = NA)
 }
 \arguments{
 \item{vcf}{VCF to which Indel mutation categories are to be added.}
@@ -12,13 +12,11 @@ add_ID_cats_ToVCF(vcf = NULL, palimpdir = palimpdir, ref_fasta = NA)
 \item{ref_fasta}{Path to fasta file for reference genome of choice (e.g. hg19 genome).}
 
 \item{tool_dir}{Path to folder containing PCAWG7-data-preparation-version-1.5 tool.}
-
-\item{tmpdir}{Path to folder where temporary files are stored.}
 }
 \description{
 Adds Indel mutation categories to a VCF.
 }
 \examples{
-vcf <- add_ID_cats_ToVCF(vcf = vcf,palimpdir = palimpdir, ref_fasta = ref_fasta)
+vcf <- add_ID_cats_ToVCF(vcf = vcf,ref_fasta = ref_fasta)
 }
 \keyword{Signatures}
