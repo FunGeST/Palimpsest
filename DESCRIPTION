@@ -1,9 +1,9 @@
 Package: Palimpsest
 Title: Package
 Version: 2.0.0
-Authors@R: c(person(given = "Jayendra", family = "Shinde", email = "jayendra.shinde91@gmail.com", role =
-    c("aut", "cre")),person(given = "Eric", family = "Letouzé", email = "eric.letouze@inserm.fr", role = 
-    "aut","cre"),person(given = "Benedict", family = "Monteiro", email = "benedictmonteiro1@gmail.com", role = 
+Authors@R: c(person(given = "Jayendra", ,family = "Shinde", email = "jayendra.shinde91@gmail.com", role =
+    c("aut", "cre")),person(given = "Eric", ,family = "Letouzé", email = "eric.letouze@inserm.fr", role = 
+    "aut","cre"),person(given = "Benedict", ,family = "Monteiro", email = "benedictmonteiro1@gmail.com", role = 
     "aut","cre"))
 Author: Jayendra Shinde, Eric Letouzé, Benedict Monteiro
 Maintainer: Jayendra Shinde <jayendra.shinde91@gmail.com>,
