@@ -242,7 +242,7 @@ signature_origins <- function (input = NULL, Type = Type,
 #' Function to calculate the number and proportion of each SBS, DBS or indel signature in each sample, in addition to plotting each sample's mutational profile and its signature contribution. 
 #' @param input_matrices Palimpsest input list of mutation number and proportion matrices.
 #' @param input_signatures Matrix of the mutational signatures to fit within the provided cohort of samples.
-#' @param threshold Signatures contributing less then this percentage of total mutations within a sample will be discarded (e.g. if set to 6 and signature X contributes 5% of a sample's mutations, signature X will not be reported as present in this sample).
+#' @param threshold Signatures contributing less then this percentage of total mutations within a sample will be discarded (e.g. if set to 6 and signature X contributes 5 per cent of a sample's mutations, signature X will not be reported as present in this sample).
 #' @param sig_cols Character vector of R-compatible colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. Use the "signature_colour_generator" function to generate colours for new signatures.
 #' @param doplot Logical indicating whether graphical outputs should be generated (defaults to TRUE). 
 #' @param resdir Results directory.
