@@ -20,7 +20,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
                          ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19){
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5) stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
-  if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions makered 'INS', please change accordingly")
+  if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions marked 'INS', please change accordingly")
   vcf <- order_vcf(vcf)
   
   chroms <- unique(vcf$CHROM)
@@ -354,7 +354,7 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
         print("ERROR: The Palimpsest package directory could not be located in the following default R library/libraries:", quote = F)
         print(.libPaths())
         print(" ", quote = F)
-        print("This function needs the location of the Palimpsest directory (containing the 'exec' folder) to launch the 
+        print("This function needs the location of the up-to-date Palimpsest directory (containing the 'exec' folder) to launch the 
               indel category extraction in python, please find and enter the file path manually", quote = F)
       }
       if(i > 1){
@@ -381,8 +381,10 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
 
   if("-" %!in% vcf$REF[vcf$Type == "INS"]){
     python_vcf[python_vcf$Type=="INS",] = python_vcf[python_vcf$Type=="INS",] %>% 
-      mutate(REF = "-", ALT =  substr(ALT,2,nchar(ALT)), End = End + 1)
+      mutate(REF = "-", ALT =  substr(ALT,2,nchar(ALT)))
   }
+  python_vcf[python_vcf$Type=="INS",] = python_vcf[python_vcf$Type=="INS",] %>% mutate(End = End + 1)
+
   if("-" %!in% vcf$ALT[vcf$Type == "DEL"]){
     python_vcf[python_vcf$Type=="DEL",] = python_vcf[python_vcf$Type=="DEL",] %>% 
       mutate(REF =  substr(REF,2,nchar(REF)), ALT = "-", End = End + 1, Start = Start + 1)
