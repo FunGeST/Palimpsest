@@ -12,7 +12,7 @@ order_vcf(vcf, Project_col = NA)
 \item{Project_col}{Name of the Project column in the VCF (if any) (e.g. may contain "ICGC"). If a value is given, the samples are sorted by project first, then sample etc..}
 }
 \description{
-Orders a VCF by Sample name, then genomic position and project (if project argument given).
+Orders a VCF by Sample name, then genomic position within each sample and project (if project argument given).
 }
 \examples{
 vcf <- order_vcf(vcf, Project_col = "Project")

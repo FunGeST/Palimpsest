@@ -7,10 +7,10 @@
 extract_dbs_from_vcf(vcf = NULL)
 }
 \arguments{
-\item{vcf}{The nput VCF from which DBS mutations are to be extracted}
+\item{vcf}{The input VCF from which DBS mutations are to be extracted}
 }
 \description{
-Extracts lines corresponding to DBS mutations from a VCF. N.B. The VCF must be ordered by sample, CHROM and position for this function to work.
+returns lines of a VCF corresponding to DBS mutations. The VCF must be ordered by sample, CHROM and position for this function to work (can be performed by the "order_vcf()" function.
 }
 \examples{
 vcf_dbs <- extract_dbs_from_vcf(vcf = vcf)
