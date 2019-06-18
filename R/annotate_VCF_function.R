@@ -4,7 +4,7 @@
 #' @param vcf Input VCF to annotate.
 #' @param add_strand_and_SBS_cats Logical indicating whether or not strand, gene and SBS category annotations are to be added (defaults to TRUE).
 #' @param add_DBS_cats Logical indicating whether or not DBS category annotations are to be added (defaults to TRUE).
-#' @param add_ID_cats Logical indicating whether or not Indel category annotations are to be added (defaults to TRUE).
+#' @param add_ID_cats Logical indicating whether or not Indel category annotations are to be added (defaults to TRUE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).
 #' @param genome_build Enter either "hg19" or "hg38".
 #' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes.
 #' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19).
@@ -21,11 +21,11 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5) stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
   if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions marked 'INS', please change accordingly")
+  if(genome_build %!in% c("hg19","hg38")) stop("genome_build must be either hg19 or hg38")
   vcf <- order_vcf(vcf)
   
   chroms <- unique(vcf$CHROM)
-  if (1 %in% chroms == TRUE)  vcf$CHROM <- paste("chr", vcf$CHROM, sep = "")
-  
+  if (1 %in% chroms == TRUE)  vcf$CHROM <- paste0("chr", vcf$CHROM)
   
   remove_chrs <- c("chrM", "chrMT")
   vcf <- vcf[which(vcf$CHROM %!in% remove_chrs), ]
@@ -53,9 +53,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
       }
     }
   
-    
     vcf <- unsplit(vcf_split,vcf$CHROM)
-    
     
     vcf$strand.gene <- c("-", NA, "+")[ensgene[match(vcf$gene_name, ensgene$Associated.Gene.Name), "Strand"] + 2]
     
@@ -104,7 +102,6 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta)
   }
   if(add_ID_cats == TRUE & .Platform$OS.type == "windows") warning("Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.). All other Palimpsest functions work on windows.")
-
   return(vcf)
 }
 
@@ -113,7 +110,6 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
 #' palimpsest_addMutationContextToVR
 #'
 #' Function used within annotate_VCF to add mutation context to SBS mutations. 
-
 #' @return vcf
 #' @import gtools
 #' @import Biostrings
@@ -180,8 +176,8 @@ palimpsest_addMutationContextToVR <- function (vr =NULL, ref_genome = NULL, k = 
 
 #' extract_dbs_from_vcf
 #'
-#' Extracts lines corresponding to DBS mutations from a VCF. N.B. The VCF must be ordered by sample, CHROM and position for this function to work.
-#' @param vcf The nput VCF from which DBS mutations are to be extracted
+#' returns lines of a VCF corresponding to DBS mutations. The VCF must be ordered by sample, CHROM and position for this function to work (can be performed by the "order_vcf()" function.
+#' @param vcf The input VCF from which DBS mutations are to be extracted
 #' @keywords Signatures
 #' @export
 #' @examples
@@ -214,7 +210,7 @@ extract_dbs_from_vcf <- function(vcf=NULL){
 
 #' order_vcf
 #'
-#' Orders a VCF by Sample name, then genomic position and project (if project argument given).
+#' Orders a VCF by Sample name, then genomic position within each sample and project (if project argument given).
 #' @param vcf The VCF to be ordered.
 #' @param Project_col Name of the Project column in the VCF (if any) (e.g. may contain "ICGC"). If a value is given, the samples are sorted by project first, then sample etc..
 #' @keywords Signatures
