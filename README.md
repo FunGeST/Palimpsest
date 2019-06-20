@@ -27,7 +27,7 @@ Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (
 
 **The input files should have the following columns (the header is required, but the order of the columns can change). Example input files are provided with the package.**
 
-`1]. mut_data`: __somatic mutation data__
+`1]. VCF `: __somatic mutation data__
 
 * `Sample`: Sample identifier. Any alphanumeric string.
 * `Type`: Mutation type [SNV (e.g. C > A), INS for insertions (e.g. C > CAAA), DEL for deletions (e.g. CTAC > C)]. Although Palimpsest has double base substitution (DBS) extraction and analysis capacaties, DBS mutations are encoded by 2 consecutive lines of SNVs and so their type should remain as such. 
@@ -35,8 +35,8 @@ Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (
 * `POS`: Mutation position. A positive integer.
 * `REF`: Reference base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted for deletions only, where the value in the POS field refers to the position of the first base in the string.
 * `ALT`: Alternate base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted for insertions only, where the value in the POS field refers to the position of the first base in the string.
-* `Tumor_Varcount`: Number of variant bases at the position in the tumor sample.
-* `Tumor_Depth`: Tumor sample sequencing depth at the position.
+* `Tumour_Varcount`: Number of variant bases at the position in the tumor sample.
+* `Tumour_Depth`: Tumour sample sequencing depth at the position.
 * `Normal_Depth`: Normal sample sequencing depth at the position.
 * `Gene_Name`: OPTIONAL column for representing mutated gene name.
 * `Driver`: OPTIONAL column indicating the driver events to be annotated in tumor history plots.
@@ -51,13 +51,13 @@ Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (
 * `Nmin`: Minor allele copy number.
 * `Nmaj`: Major allele copy number.
 * `ntot`: Total copy number of segmented chromosome.
-* `Ploidy`: Tumor ploidy.
+* `Ploidy`: Tumour ploidy.
 
 `3]. annot_data`: __sample annotation data__
 
 * `Sample`: Sample identifier. Any alphanumeric string.
 * `Gender`: Gender information for patient [M/F].
-* `Purity`: Tumor purity estimate (Represented as fraction; ranging between 0.01 - 1).
+* `Purity`: Tumour purity estimate (Represented as fraction; ranging between 0.01 - 1).
 
 **Optional:**
 
@@ -71,8 +71,8 @@ Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (
 * `POS_1`: Position of the first breakpoint. A positive integer.
 * `CHROM_2`: Chromosome of the second breakpoint. Between chr1 and chr22 or the chrX or chrY ('chr' prefix required).
 * `POS_2`: Position of the second breakpoint. A positive integer.
-* `Tumor_Varcount`: Column for variant allele count information.
-* `Tumor_Depth`: Column for tumor sequencing depth information.
+* `Tumour_Varcount`: Column for variant allele count information.
+* `Tumour_Depth`: Column for tumor sequencing depth information.
 * `Normal_Depth`: Column for normal sequencing depth information.
 * `Driver`: OPTIONAL column indicating the driver events to be annotated in tumor history plots.
 
