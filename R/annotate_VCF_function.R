@@ -230,7 +230,7 @@ order_vcf <- function(vcf, Project_col = NA){
     tmp <- as.data.frame(input_split[i])
     colnames(tmp) <- namecols
     tmp <- arrange(tmp,tmp$POS)
-    tmp <- arrange(tmp,tmp$POS)
+    tmp <- arrange(tmp,tmp$CHROM)
     if(i == 1){
       res <- tmp
       next
@@ -312,6 +312,8 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
   }
   if(DBS_mutations_only == TRUE) output <- add_cats
   output <- output[,colnames(output)!="unique"]
+  if(nrow(filter(output, is.na(DBS_cat))) == nrow(output)) warning("No DBS mutations were detected.")
+
   return(output)
 }
 
@@ -336,6 +338,7 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
 add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
   if((Sys.which("python")=="")==TRUE) stop("python must be installed on this device and accessible to R to allow indel categories to be added.
                                            (must be performed in a Unix environment)")
+  if(nrow(filter(vcf, Type != "SNV")) == 0) warning("No rows of the VCF corresponding to insertions or deletions were detected.")
   palimpdir = NA
   for(i in length(.libPaths)){
     if("Palimpsest" %in% c(list.files(.libPaths()[i]))){
