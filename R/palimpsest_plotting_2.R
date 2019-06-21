@@ -11,7 +11,7 @@
 #' @import ggplot2
 #' @examples
 #' pdf(file=paste0(resdir,"SBS_liver_signature_profiles.pdf"),width=24,height=7)
-#' plot_signatures(input_data = SBS_liver,Title = rownames(SBS_liver),Individual = F,label = "Full")
+#' plot_signatures(input_data = SBS_liver,Title = rownames(SBS_liver))
 #' dev.off()
 
 plot_signatures <- function (input_data = NULL, Title = NA, label = "Full") {
@@ -149,7 +149,7 @@ plot_signatures <- function (input_data = NULL, Title = NA, label = "Full") {
                          axis.text.y = element_text(size = 15, colour = "black"),
                          axis.ticks.x = element_blank(),
                          plot.margin=unit(c(1.2,1.6,1.2,1.1),"cm"), # order = top, right, bottom, left (/never eat shredded wheat)
-                         plot.title = element_text(size = 55, face = "bold", hjust = 0.02, vjust = -25)) 
+                         plot.title = element_text(size = 55, face = "bold", hjust = 0.02, vjust = -5)) 
     
     
     
