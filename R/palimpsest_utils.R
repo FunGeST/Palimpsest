@@ -705,6 +705,7 @@ signature_colour_generator <- function(signature_names = NULL){
 #' load2object
 #'
 #' loads object to a particular name. 
+#' @export 
 
 load2object <- function (filename) 
 {
@@ -745,6 +746,7 @@ palimpsest_distCosine <- function(m)
 #' compare_results
 #'
 #' compare the results of a de novo extraction to a set of reference signatures (e.g. SBS de novo result to COSMIC de novo signatures)
+#' @export
 
 compare_results <- function(reference_sigs = NA, extraction_1 = NA, extraction_2 = NULL, extraction_1_name ="Palimp", extraction_2_name = NA, lower_threshold = 0.6, upper_threshold = 0.9){
 
