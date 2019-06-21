@@ -19,7 +19,7 @@ N.B. recommended output width to height ratio of 24:7 must be maintained to keep
 }
 \examples{
 pdf(file=paste0(resdir,"SBS_liver_signature_profiles.pdf"),width=24,height=7)
-plot_signatures(input_data = SBS_liver,Title = rownames(SBS_liver),Individual = F,label = "Full")
+plot_signatures(input_data = SBS_liver,Title = rownames(SBS_liver))
 dev.off()
 }
 \keyword{Signatures}
