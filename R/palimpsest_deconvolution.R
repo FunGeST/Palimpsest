@@ -282,7 +282,7 @@ deconvolution_fit <- function (input_matrices = NULL,
       dev.off()
       if(Type  == "SBS"){
         vcf = filter(input_vcf, Sample == s)
-        plotStrandBias96types(vcf, sample.col="Sample", substype.col= "SBS_cat3",
+        plotStrandBias96types(vcf, sample.col = "Sample", mutcat3.col = "SBS_cat3",
           plot.file = file.path(resdir..,"Strand_bias_96_substitution_types.pdf"))
       }
     }
