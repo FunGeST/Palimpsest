@@ -33,7 +33,7 @@ Imports:
     tibble,
     ggpubr
 Depends:
-    R (>= 3.3.2),
+    R (>= 3.5.0),
     dplyr,
     NMF,
     GenomicRanges
