@@ -4,14 +4,15 @@
 \alias{signature_exposure_plot}
 \title{signature_exposure_plot}
 \usage{
-signature_exposure_plot(mutSign_nums, mutSign_props, sig_cols = NULL)
+signature_exposure_plot(mutSign_nums, mutSign_props,
+  signature_colours = NULL)
 }
 \arguments{
 \item{mutSign_nums}{Matrix in sample x mutational signature exposure format in numbers}
 
 \item{mutSign_props}{Matrix in sample x mutational signature exposure format in proportions}
 
-\item{sig_cols}{Character vector indicating the colors representing each signature in graphical outputs. Must match to the total number of provided signatures}
+\item{signature_colours}{Character vector indicating the colors representing each signature in graphical outputs. Must match to the total number of provided signatures}
 }
 \description{
 Function to plot the exposure of mutational signatures in samples across the entire series
