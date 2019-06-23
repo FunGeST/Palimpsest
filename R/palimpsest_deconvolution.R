@@ -242,7 +242,7 @@ signature_origins <- function (input = NULL, Type = Type,
 #' Function to calculate the number and proportion of each SBS, DBS or indel signature in each sample, in addition to plotting each sample's mutational profile and its signature contribution. 
 #' @param input_matrices Palimpsest input list of mutation number and proportion matrices.
 #' @param input_signatures Matrix of the mutational signatures to fit within the provided cohort of samples.
-#' @param vcf The input VCF. Only required when Type == "SBS" so that the strand bias of SBS mutations can be plotted. 
+#' @param input_vcf The VCF used in the current analysis. Only required when Type == "SBS" so that the strand bias of SBS mutations can be plotted. 
 #' @param threshold Signatures contributing less then this percentage of total mutations within a sample will be discarded (e.g. if set to 6 and signature X contributes 5 per cent of a sample's mutations, signature X will not be reported as present in this sample).
 #' @param signature_colours Character vector of R-compatible colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. Use the "signature_colour_generator" function to generate colours for new signatures.
 #' @param doplot Logical indicating whether graphical outputs should be generated (defaults to TRUE). 
@@ -256,7 +256,7 @@ signature_origins <- function (input = NULL, Type = Type,
 #' signatures_exp <- deconvolution_fit(input_matrices = SBS_input, threshold = 8,input_signatures = SBS_liver,signature_colours = sig_cols,resdir = resdir)
 
 deconvolution_fit <- function (input_matrices = NULL,
-                                 input_signatures = NULL, vcf = NULL, threshold = 6, signature_colours = NA,
+                                 input_signatures = NULL, input_vcf = vcf, threshold = 6, signature_colours = NA,
                                  doplot = TRUE, save_signatures_exp = TRUE, resdir = resdir) {
   requireNamespace("tibble", quietly = TRUE);requireNamespace("NMF", quietly = TRUE)
   prop_matrix <- input_matrices$mut_props; num_matrix <- input_matrices$mut_nums
@@ -281,8 +281,8 @@ deconvolution_fit <- function (input_matrices = NULL,
       plot_signatures(input_data = Mean_plot_input, Title = paste(s))
       dev.off()
       if(Type  == "SBS"){
-        vcf. = filter(vcf, Sample == s)
-        plotStrandBias96types(vcf., plot.file = file.path(resdir..,"Strand_bias_96_substitution_types.pdf"))
+        vcf = filter(input_vcf, Sample == s)
+        plotStrandBias96types(vcf, plot.file = file.path(resdir..,"Strand_bias_96_substitution_types.pdf"))
       }
     }
     res <- fcnnls(as.matrix(t(input_signatures)), prop_matrix[,s], verbose = TRUE, pseudo = FALSE)

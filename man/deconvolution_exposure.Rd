@@ -10,7 +10,7 @@ deconvolution_exposure(signature_contribution = signatures_exp,
 \arguments{
 \item{signature_contribution}{List of signatures exposure numbers and proportions matrices (output from deconvolution_fit function).}
 
-\item{rm_samples}{List of names of samples to remove (if any). Once the signature contribution of hypermutated samples is known, removing these from the grpahical output of this function can make the comparison of the rest of the samples easier.}
+\item{rm_samples}{List of names of samples to remove (if any). Once the signature contribution of hypermutated samples is known e.g CHC892T in the example dataset), removing these from the grpahical output of this function can make the comparison of the rest of the samples easier.}
 
 \item{signature_colours}{Character vector of R-compatable colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work.}
 }

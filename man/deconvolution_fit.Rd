@@ -5,15 +5,15 @@
 \title{deconvolution_fit}
 \usage{
 deconvolution_fit(input_matrices = NULL, input_signatures = NULL,
-  vcf = NULL, threshold = 6, signature_colours = NA, doplot = TRUE,
-  save_signatures_exp = TRUE, resdir = resdir)
+  input_vcf = vcf, threshold = 6, signature_colours = NA,
+  doplot = TRUE, save_signatures_exp = TRUE, resdir = resdir)
 }
 \arguments{
 \item{input_matrices}{Palimpsest input list of mutation number and proportion matrices.}
 
 \item{input_signatures}{Matrix of the mutational signatures to fit within the provided cohort of samples.}
 
-\item{vcf}{The input VCF. Only required when Type == "SBS" so that the strand bias of SBS mutations can be plotted.}
+\item{input_vcf}{The VCF used in the current analysis. Only required when Type == "SBS" so that the strand bias of SBS mutations can be plotted.}
 
 \item{threshold}{Signatures contributing less then this percentage of total mutations within a sample will be discarded (e.g. if set to 6 and signature X contributes 5 per cent of a sample's mutations, signature X will not be reported as present in this sample).}
 
