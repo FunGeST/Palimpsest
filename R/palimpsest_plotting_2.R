@@ -297,17 +297,17 @@ plot_signatures <- function (input_data = NULL, Title = NA, label = "Full") {
 #' Plots the exposure of signatures across the series (bargraphs of the number and proportion of each signature in each sample).
 #' @param signature_contribution List of signatures exposure numbers and proportions matrices (output from deconvolution_fit function).
 #' @param rm_samples List of names of samples to remove (if any). Once the signature contribution of hypermutated samples is known, removing these from the grpahical output of this function can make the comparison of the rest of the samples easier. 
-#' @param sig_cols Character vector of R-compatable colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. 
+#' @param signature_colours Character vector of R-compatable colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. 
 #' @keywords Signatures
 #' @export
 #' @import ggpubr
 #' @import reshape2
 #' @examples
 #' pdf(file.path(resdir.,"signature_content_plot.pdf"),width=12,height=7)
-#' signature_content_plot <- deconvolution_exposure(signature_contribution = SBS_signatures_exp, rm_samples = "CHC892T", sig_cols = sig_cols)
+#' signature_content_plot <- deconvolution_exposure(signature_contribution = SBS_signatures_exp, rm_samples = "CHC892T", signature_colours = sig_cols)
 #' dev.off()
 
-deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_samples = NA,sig_cols = NA){
+deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_samples = NA,signature_colours = NA){
   
   requireNamespace("ggpubr", quietly = TRUE); requireNamespace("reshape2", quietly = TRUE)
   sig_nums <- signature_contribution$sig_nums; sig_props <- signature_contribution$sig_props
@@ -320,7 +320,7 @@ deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_s
   nrows <- ceiling(nsamp/200)
   signature_content_plot <- c()
   if(nrows == 1){
-    content_plot <- signature_exposure_plot(sig_nums, sig_props, sig_cols = sig_cols)
+    content_plot <- signature_exposure_plot(sig_nums, sig_props, signature_colours = signature_colours)
   }
   if(nrows>1){  ## for >200 samples we find it best to sort the plot into several rows to make it easier to view, the rest of the function does this
     
@@ -349,7 +349,7 @@ deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_s
       if(i > 1) n4mes <- names(sort(rowSums(sig_nums)))[((nsamp_new/(nrows/(i-1)))+1):(nsamp_new*i/nrows)]
       sig_nums_tmp <- sig_nums[n4mes,];sig_props_tmp <- sig_props[n4mes,]
       
-      signature_content_plot[[i]] <- signature_exposure_plot(sig_nums_tmp,sig_props_tmp,sig_cols = sig_cols)
+      signature_content_plot[[i]] <- signature_exposure_plot(sig_nums_tmp,sig_props_tmp,signature_colours = signature_colours)
 
     }
     content_plot <-  ggarrange(plotlist =  signature_content_plot[nrows:1], heights = rep(7,nrows), widths = rep(10,nrows),
@@ -364,7 +364,7 @@ deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_s
 #' Function to plot the exposure of mutational signatures in samples across the entire series
 #' @param mutSign_nums Matrix in sample x mutational signature exposure format in numbers
 #' @param mutSign_props Matrix in sample x mutational signature exposure format in proportions
-#' @param sig_cols Character vector indicating the colors representing each signature in graphical outputs. Must match to the total number of provided signatures
+#' @param signature_colours Character vector indicating the colors representing each signature in graphical outputs. Must match to the total number of provided signatures
 #'
 #' @export
 #' @import ggplot2
@@ -374,7 +374,7 @@ deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_s
 #' @importFrom reshape2 melt
 
 
-signature_exposure_plot <- function (mutSign_nums, mutSign_props, sig_cols = NULL) 
+signature_exposure_plot <- function (mutSign_nums, mutSign_props, signature_colours = NULL) 
 {
   scale <- 1
   .theme_ss <- theme_bw(base_size = 14) + theme(axis.text.x = element_text(angle = 90, 
@@ -398,7 +398,7 @@ signature_exposure_plot <- function (mutSign_nums, mutSign_props, sig_cols = NUL
   df2$Sample <- factor(df2$Sample, sample.ordering)
   p = ggplot(df2, aes(x = factor(Sample), y = Activity, fill = Signature))
   p = p + geom_bar(stat = "identity", position = "stack")
-  p = p + scale_fill_manual(values = sig_cols)
+  p = p + scale_fill_manual(values = signature_colours)
   p = p + ggtitle("Mutational Signature Exposures")
   p = p + facet_grid(class0 ~ ., scale = "free_y")
   p = p + theme(plot.title = element_text(lineheight = 1, face = "bold", 

@@ -242,8 +242,9 @@ signature_origins <- function (input = NULL, Type = Type,
 #' Function to calculate the number and proportion of each SBS, DBS or indel signature in each sample, in addition to plotting each sample's mutational profile and its signature contribution. 
 #' @param input_matrices Palimpsest input list of mutation number and proportion matrices.
 #' @param input_signatures Matrix of the mutational signatures to fit within the provided cohort of samples.
+#' @param vcf The input VCF. Only required when Type == "SBS" so that the strand bias of SBS mutations can be plotted. 
 #' @param threshold Signatures contributing less then this percentage of total mutations within a sample will be discarded (e.g. if set to 6 and signature X contributes 5 per cent of a sample's mutations, signature X will not be reported as present in this sample).
-#' @param sig_cols Character vector of R-compatible colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. Use the "signature_colour_generator" function to generate colours for new signatures.
+#' @param signature_colours Character vector of R-compatible colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. Use the "signature_colour_generator" function to generate colours for new signatures.
 #' @param doplot Logical indicating whether graphical outputs should be generated (defaults to TRUE). 
 #' @param resdir Results directory.
 #' @param save_signatures_exp Logical indicating whether or not signatures_exp object should be saved in the redsir (defaults to TRUE).
@@ -252,15 +253,15 @@ signature_origins <- function (input = NULL, Type = Type,
 #' @import tibble
 #' @import NMF
 #' @examples
-#' signatures_exp <- deconvolution_fit(input_matrices = SBS_input, threshold = 8,input_signatures = SBS_liver,sig_cols = sig_cols,resdir = resdir)
+#' signatures_exp <- deconvolution_fit(input_matrices = SBS_input, threshold = 8,input_signatures = SBS_liver,signature_colours = sig_cols,resdir = resdir)
 
 deconvolution_fit <- function (input_matrices = NULL,
-                                 input_signatures = NULL, threshold = 6, sig_cols = NA,
+                                 input_signatures = NULL, vcf = NULL, threshold = 6, signature_colours = NA,
                                  doplot = TRUE, save_signatures_exp = TRUE, resdir = resdir) {
   requireNamespace("tibble", quietly = TRUE);requireNamespace("NMF", quietly = TRUE)
   prop_matrix <- input_matrices$mut_props; num_matrix <- input_matrices$mut_nums
   if(nrow(prop_matrix) %!in% c(38,78,83,96)) stop("input_matrices format incorrect")
-  if(nrow(prop_matrix)==96) Type <- "SBS"; if(nrow(prop_matrix)==78) Type <- "DBS"; if(nrow(prop_matrix)==83) Type <- "ID"; if(nrow(prop_matrix)==38) stop("this isn't the SV function")
+  if(nrow(prop_matrix)==96) Type <- "SBS"; if(nrow(prop_matrix)==78) Type <- "DBS"; if(nrow(prop_matrix)==83) Type <- "ID"; if(nrow(prop_matrix)==38) stop("this isn't the SV function, please use 'deconvolution_fit_SV()' ")
   
   resdir_parent <- resdir
   if (doplot == TRUE) {
@@ -279,6 +280,10 @@ deconvolution_fit <- function (input_matrices = NULL,
       Mean_plot_input <- as.matrix(prop_matrix[,s]); rownames(Mean_plot_input) <- rownames(prop_matrix)
       plot_signatures(input_data = Mean_plot_input, Title = paste(s))
       dev.off()
+      if(Type  == "SBS"){
+        vcf. = filter(vcf, Sample == s)
+        plotStrandBias96types(vcf., plot.file = file.path(resdir..,"Strand_bias_96_substitution_types.pdf"))
+      }
     }
     res <- fcnnls(as.matrix(t(input_signatures)), prop_matrix[,s], verbose = TRUE, pseudo = FALSE)
     sig.tot <- margin.table(res$x, 2)
@@ -300,8 +305,8 @@ deconvolution_fit <- function (input_matrices = NULL,
       pdf(file.path(resdir.., paste0(s,"_",Type,"_Signature_Contribution.pdf")), width = 12, height = 10)
       pie(t(prop.sigs.), labels = rownames(prop.sigs.), 
           main = paste(Type,"Mutational Signatures Contribution in:", colnames(prop.sigs.)), 
-          col = sig_cols[rownames(prop.sigs.)], 
-          border = sig_cols[rownames(prop.sigs.)])
+          col = signature_colours[rownames(prop.sigs.)], 
+          border = signature_colours[rownames(prop.sigs.)])
       dev.off()
     }
     mutSign_props <- rbind(mutSign_props, signature_content)
