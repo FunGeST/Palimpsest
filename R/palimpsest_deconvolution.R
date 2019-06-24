@@ -340,7 +340,8 @@ deconvolution_fit_SV <- function (vcf = vcf, input_data = data,
     print(s)
     vcf. <- vcf[which(vcf[, "Sample"] == s), ]
     if (plot == TRUE) {
-      resdir.. <- file.path(resdir, s)
+      resdir_samp <- paste0(resdir,"Samples/");if (!file.exists(resdir_samp)) dir.create(resdir_samp)
+      resdir.. <- file.path(resdir_samp, s)
       if (!file.exists(resdir..)) {
         dir.create(resdir..)
       }
