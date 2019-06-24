@@ -330,7 +330,7 @@ deconvolution_fit <- function (input_matrices = NULL,
 
 
 deconvolution_fit_SV <- function (vcf = vcf, input_data = data,
-                               threshold = 5, input_signatures = NULL,
+                               threshold = 6, input_signatures = NULL,
                                sig_cols = mycol, plot = TRUE, resdir = NULL)
 {
   "%ni%" <- Negate("%in%");
