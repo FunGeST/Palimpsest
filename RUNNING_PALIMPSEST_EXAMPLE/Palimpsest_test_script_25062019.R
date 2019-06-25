@@ -21,7 +21,7 @@ resdir_parent <- "/Results/"
 if(!file.exists(resdir_parent)) dir.create(resdir_parent)
 
 #-------------------------------------------------------------------------------------------------
-# 1] Load and annotate mutation data
+# 1] Load and annotate mutation data (VCF)
 #-------------------------------------------------------------------------------------------------
 
 vcf_load = load2object(paste0(datadir,"vcf.RData"))
@@ -162,9 +162,9 @@ vcf <- merge(vcf,vcf.cod,all=TRUE,sort=FALSE)
 #-------------------------------------------------------------------------------------------------
 resdir <- file.path(resdir_parent,"Clonality");if(!file.exists(resdir)){dir.create(resdir)}# Defining the results directory
 
+# Load copy number analysis (CNA) and annotation (annot) data
 cna_data = load2object(paste0(datadir,"cna_data.RData"))
 annot = load2object(paste0(datadir,"annot_data.RData"))
-
 
 # Calculate the Cancer Cell Fraction (CCF) of each mutation.
 vcf_cna <- cnaCCF_annot(vcf= vcf, annot_data = annot,cna_data = cna_data, CCF_boundary = 0.95)
@@ -208,7 +208,6 @@ resdir <- file.path(resdir_parent,"ChromosomeDups_timing/");if(!file.exists(resd
 chrom_dup_time <- chrTime_annot(vcf=vcf_cna,cna_data = cna_data,cyto=cytoband_hg19)
 vcf_cna <- chrom_dup_time$vcf;point.mut.time <- chrom_dup_time$point.mut.time;cna_data <- chrom_dup_time$cna_data
 
-
 # Visualising timing plots
 chrTime_plot(vcf = vcf_cna, point.mut.time = point.mut.time, resdir = resdir,cyto = cytoband_hg19)
 
@@ -221,9 +220,8 @@ resdir <- file.path(resdir_parent,"SV_signatures/");if(!file.exists(resdir)){dir
 library(bedr);library(RCircos) # Loading dependencies necessary for SV annotation and CIRCOS plots
 # For the bedr package to function you will need to have the BEDTools programme installed and in your default PATH
 
-
+# Load SV Data
 SV_data = load2object(paste0(datadir,"sv_data.RData"))
-
 
 # Preprocess SV inputs and annotate for further analysis:
 SV.vcf <- preprocessInput_sv(input_data =  SV_data,resdir = resdir)
