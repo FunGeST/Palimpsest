@@ -476,7 +476,7 @@ palimpsest_plotTumorHistories <- function(vcf=NULL,
 		ind <- ind[match(unique(vcf[ind,"Driver"]),vcf[ind,"Driver"])]
 		if(length(ind)){
 			for(i in ind){
-				text(xpos,yposclon,vcf[i,"Driver"],pos=4,col=msigcol[vcf[i,"Sig.max"]])  #vcf[i,"MutSig"]
+				text(xpos,yposclon,vcf[i,"Driver"],pos=4,col=msigcol[vcf[i,"SBS.Sig.max"]])  #vcf[i,"MutSig"]
 				xpos <- xpos+strwidth(vcf[i,"Driver"])*spacechar
 				if(i!=max(ind)){
 					text(xpos,yposclon,",",pos=4,col="black")
@@ -491,7 +491,7 @@ palimpsest_plotTumorHistories <- function(vcf=NULL,
 		ind <- ind[match(unique(vcf[ind,"Driver"]),vcf[ind,"Driver"])]
 		if(length(ind)){
 			for(i in ind){
-				text(xpos,ypossub,vcf[i,"Driver"],pos=4,col=msigcol[vcf[i,"Sig.max"]])  #vcf[i,"MutSig"]
+				text(xpos,ypossub,vcf[i,"Driver"],pos=4,col=msigcol[vcf[i,"SBS.Sig.max"]])  #vcf[i,"MutSig"]
 				xpos <- xpos+strwidth(vcf[i,"Driver"])*spacechar
 				if(i!=max(ind)){
 					text(xpos,yposclon,",",pos=4,col="black")
