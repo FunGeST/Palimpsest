@@ -56,7 +56,8 @@ SBS_col <- signature_colour_generator(rownames(SBS_denovo_sigs))
 
 # Calculate and plot the exposure of the signatures across the series
 SBS_signatures_exp <- deconvolution_fit(input_matrices = SBS_input,input_signatures = SBS_denovo_sigs,
-                                          threshold = 6,resdir = resdir, signature_colours = SBS_col)
+                                        threshold = 6,resdir = resdir, signature_colours = SBS_col,
+                                        input_vcf = vcf)
 
 pdf(file.path(resdir,"signature_content_plot.pdf"),width=15,height=10)
 deconvolution_exposure(signature_colours = SBS_col, signature_contribution = SBS_signatures_exp)
@@ -78,7 +79,8 @@ SBS_liver_sigs <- SBS_cosmic[rownames(SBS_cosmic) %in% SBS_liver_names,]
 
 # calculate and plot the exposure of the signatures across the series
 SBS_signatures_exp <- deconvolution_fit(input_matrices = SBS_input, input_signatures = SBS_liver_sigs,
-                                        threshold = 6, signature_colours = sig_cols,resdir = resdir)
+                                        threshold = 6, signature_colours = sig_cols,resdir = resdir, 
+                                        input_vcf = vcf)
 
 pdf(file.path(resdir,"SBS_signature_content_plot.pdf"),width=15,height=10)
 deconvolution_exposure(signature_contribution = SBS_signatures_exp,signature_colours = sig_cols)
