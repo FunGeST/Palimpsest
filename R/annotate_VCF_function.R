@@ -391,7 +391,7 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
   
   vcf_output <- paste0(tmpdir,"python_vcf_indel.simple")
   
-  write.table(python_vcf,file=vcf_output,col.names = F,row.names=F,sep="\t",quote=F)
+  write.table(format(python_vcf,scientific=FALSE),file=vcf_output,col.names = F,row.names=F,sep="\t",quote=F)
   
   
   ### RUN PCAWG7-data-preparation-version-1.5 IN PYTHON ###
