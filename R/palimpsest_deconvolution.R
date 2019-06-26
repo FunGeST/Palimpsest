@@ -343,7 +343,7 @@ deconvolution_fit <- function (input_matrices = NULL,
 #' @import tibble
 #' @import NMF
 #' @examples
-#' signatures_exp <- SVsignatures_exp <- deconvolution_fit_SV(vcf = SV.vcf,input_data = SV_input$mut_props, input_signatures = SV_denovo_sigs,sig_cols = SV_cols, resdir = resdir)
+#' SVsignatures_exp <- deconvolution_fit_SV(vcf = SV.vcf,input_data = SV_input$mut_props, input_signatures = SV_denovo_sigs,sig_cols = SV_cols, resdir = resdir)
 
 deconvolution_fit_SV <- function (vcf = vcf, input_data = data,
                                threshold = 6, input_signatures = NULL,

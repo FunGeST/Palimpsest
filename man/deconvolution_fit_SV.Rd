@@ -27,6 +27,6 @@ deconvolution_fit_SV(vcf = vcf, input_data = data, threshold = 6,
 Function to calculate the number and proportion of each SBS, DBS or indel signature in each sample, in addition to plotting each sample's mutational profile and its signature contribution.
 }
 \examples{
-signatures_exp <- SVsignatures_exp <- deconvolution_fit_SV(vcf = SV.vcf,input_data = SV_input$mut_props, input_signatures = SV_denovo_sigs,sig_cols = SV_cols, resdir = resdir)
+SVsignatures_exp <- deconvolution_fit_SV(vcf = SV.vcf,input_data = SV_input$mut_props, input_signatures = SV_denovo_sigs,sig_cols = SV_cols, resdir = resdir)
 }
 \keyword{Signatures}
