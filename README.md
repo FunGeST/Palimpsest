@@ -82,7 +82,7 @@ Running Palimpsest
 
 * The RUNNING_PALIMPSEST_EXAMPLE folder contains example data and an R script for a typical Palimpsest analysis. Please try!</br>
 * [*Introduction to Palimpsest*](http://nbviewer.jupyter.org/github/FunGeST/Palimpsest/blob/master/Files/vignette_palimpsest.pdf) provides a comprehensive example of the Palimpsest workflow with detailed  explanations of each function.</br> 
-* Please refer to the following paper for extensive description of the statistical methods used in the package: Letouzé, E., Shinde, J., et al. (2017) [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumourigenesis.](https://www.nature.com/articles/s41467-017-01358-x) _Nat. Commun._.
+* Please refer to the following paper for extensive description of the statistical methods used in the package: Letouzé, E., Shinde, J., et al. (2017) [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumourigenesis.](https://www.nature.com/articles/s41467-017-01358-x) _Nat. Commun._
 
 Reference
 ================
