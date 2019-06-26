@@ -553,7 +553,7 @@ palimpsest_plotTumorHistories <- function(vcf=NULL,
 			text(xpos,yposclon,mut,pos=4)  #vcf[i,"MutSig"]
 			xpos <- xpos+(strwidth(mut)+1)*spacechar
 			for(i in ind){
-				text(xpos,yposclon,sv.vcf[i,"Driver"],pos=4,col=msigcol.sv[sv.vcf[i,"Sig.max"]])  #vcf[i,"MutSig"]
+				text(xpos,yposclon,sv.vcf[i,"Driver"],pos=4,col=msigcol.sv[sv.vcf[i,"SV.Sig.max"]])  #vcf[i,"MutSig"]
 				xpos <- xpos+strwidth(sv.vcf[i,"Driver"])*spacechar
 				if(i!=max(ind)){
 					text(xpos,yposclon,",",pos=4,col="black")
