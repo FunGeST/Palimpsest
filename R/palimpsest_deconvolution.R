@@ -328,6 +328,22 @@ deconvolution_fit <- function (input_matrices = NULL,
   
 }
 
+#' deconvolution_fit_SV
+#'
+#' Function to calculate the number and proportion of each SBS, DBS or indel signature in each sample, in addition to plotting each sample's mutational profile and its signature contribution. 
+#' @param input_data Palimpsest input matrix of mutation proportions
+#' @param input_signatures Matrix of the mutational signatures to fit within the provided cohort of samples.
+#' @param vcf The VCF used in the current analysis. Only required when Type == "SBS" so that the strand bias of SBS mutations can be plotted. 
+#' @param threshold Signatures contributing less then this percentage of total mutations within a sample will be discarded (e.g. if set to 6 and signature X contributes 5 per cent of a sample's mutations, signature X will not be reported as present in this sample).
+#' @param sig_cols Character vector of R-compatible colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. Use the "signature_colour_generator" function to generate colours for new signatures.
+#' @param plot Logical indicating whether graphical outputs should be generated (defaults to TRUE). 
+#' @param resdir Results directory.
+#' @keywords Signatures
+#' @export
+#' @import tibble
+#' @import NMF
+#' @examples
+#' signatures_exp <- SVsignatures_exp <- deconvolution_fit_SV(vcf = SV.vcf,input_data = SV_input$mut_props, input_signatures = SV_denovo_sigs,sig_cols = SV_cols, resdir = resdir)
 
 deconvolution_fit_SV <- function (vcf = vcf, input_data = data,
                                threshold = 6, input_signatures = NULL,
