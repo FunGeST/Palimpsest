@@ -5,7 +5,7 @@
   <h1 align="center">Palimpsest</h1>
 </p>
 
-Cancer genomes are altered by various mutational processes and, like palimpsests, bear the signatures of these successive processes. The Palimpsest R package provides a complete workflow for the characterisation and visualisation of mutational signatures and their evolution along tumour development. The package covers a wide range of functions for extracting single base substitution (SBS), double base substitution (DBS) and indel mutational signatures as well as structural variant (SV) signatures, inferring the clonality of each alteration and analysing the evolution of mutational processes between early clonal and late subclonal events. Palimpsest also estimates the probability of each mutation being due to each process to predict the mechanisms at the origin of driver events. Palimpsest is an easy-to-use toolset for reconstructing the natural history of a tumor using whole exome or whole genome sequencing data.
+ Cancer genomes are altered by various mutational processes and, like [palimpsests](https://en.wikipedia.org/wiki/Palimpsest), bear the signatures of these successive processes. The _Palimpsest_ R package provides a complete workflow for the characterisation and visualisation of mutational signatures and their evolution along tumour development. The package includes a wide range of functions for extracting single base substitution (SBS), double base substitution (DBS) and indel mutational signatures as well as structural variant (SV) signatures. _Palimpsest_ estimates the probability of each mutation being due to each signature, which allows the the analysis of the clonality of each alteration, and the prediction of the mechanism at the origin of each driver event. In short, _Palimpsest_ is an easy-to-use toolset for the reconstruction of the natural history of a tumour using whole exome or whole genome sequencing data. 
 
 Installation
 ========
@@ -17,13 +17,13 @@ Install from the GitHub repository using devtools:
 
 Dependencies
 ========
-The R package "bedr" is required to perform structural variant signature analysis. The bedr API gives access to "BEDTools" and offers additional utilities for genomic region processing. To gain the functionality of bedr package you will need to have the [BEDTools](http://bedtools.readthedocs.io/en/latest/content/installation.html) program installed and in your default PATH.
+To add indel mutation categories we use a python script that is embedded in the R function `annotate_VCF()`. For this to work the function must be run in a Unix environment (i.e. Mac or Linux) with python 2.7 installed. The other aspects of the `annotate_VCF()` function, and indeed all other functions, work on a Windows operating system. The indel aspect of this function also requires you to have a FASTA file compatable with the input VCF genome (including position and chromosome names) accessible in your local environment. If you only wish to work on SBS/DBS/SV signatures you can skip this step.
 
-To add indel mutation categories we use a python script that is called by the R function "annotate_VCF()". For this to work the VCF must be annotated in a Unix environment (i.e. Mac or Linux) with python 2.7 installed. The other aspects of this function, and indeed all other functions, work in on a Windows operating system.
+The R package _bedr_ is required to perform structural variant signature analysis. The bedr API gives access to "BEDTools" and offers additional utilities for genomic region processing. To gain the functionality of bedr package you will need to have the [BEDTools](http://bedtools.readthedocs.io/en/latest/content/installation.html) program installed and in your default PATH.
 
 Input files
 ========
-Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (mut_data) describing somatic mutations in the tumor series, a **copy number alteration** file (cna_data) providing genome-wide absolute copy number estimates, and a minimal **sample annotation** file (annot_data) indicating gender and tumor purity.
+Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (vcf) describing somatic mutations in the tumour series, a **copy number alteration** file (cna_data) providing genome-wide absolute copy number estimates, and a minimal **sample annotation** file (annot_data) indicating gender and tumour purity.
 
 **The input files should have the following columns (the header is required, but the order of the columns can change). Example input files are provided with the package.**
 
@@ -35,11 +35,11 @@ Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (
 * `POS`: Mutation position. A positive integer.
 * `REF`: Reference base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted for deletions only, where the value in the POS field refers to the position of the first base in the string.
 * `ALT`: Alternate base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted for insertions only, where the value in the POS field refers to the position of the first base in the string.
-* `Tumour_Varcount`: Number of variant bases at the position in the tumor sample.
-* `Tumour_Depth`: Tumour sample sequencing depth at the position.
+* `Tumor_Varcount`: Number of variant bases at the position in the tumour sample.
+* `Tumor_Depth`: Tumour sample sequencing depth at the position.
 * `Normal_Depth`: Normal sample sequencing depth at the position.
 * `Gene_Name`: OPTIONAL column for representing mutated gene name.
-* `Driver`: OPTIONAL column indicating the driver events to be annotated in tumor history plots.
+* `Driver`: OPTIONAL column indicating the driver events to be annotated in tumour history plots.
 
 `2]. cna_data`: __copy number alteration data__
 
@@ -71,10 +71,10 @@ Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (
 * `POS_1`: Position of the first breakpoint. A positive integer.
 * `CHROM_2`: Chromosome of the second breakpoint. Between chr1 and chr22 or the chrX or chrY ('chr' prefix required).
 * `POS_2`: Position of the second breakpoint. A positive integer.
-* `Tumour_Varcount`: Column for variant allele count information.
-* `Tumour_Depth`: Column for tumor sequencing depth information.
+* `Tumor_Varcount`: Column for variant allele count information.
+* `Tumor_Depth`: Column for tumour sequencing depth information.
 * `Normal_Depth`: Column for normal sequencing depth information.
-* `Driver`: OPTIONAL column indicating the driver events to be annotated in tumor history plots.
+* `Driver`: OPTIONAL column indicating the driver events to be annotated in tumour history plots.
 
 
 Running Palimpsest
@@ -82,12 +82,12 @@ Running Palimpsest
 
 * The RUNNING_PALIMPSEST_EXAMPLE folder contains example data and an R script for a typical Palimpsest analysis. Please try!</br>
 * [*Introduction to Palimpsest*](http://nbviewer.jupyter.org/github/FunGeST/Palimpsest/blob/master/Files/vignette_palimpsest.pdf) provides a comprehensive example of the Palimpsest workflow with detailed  explanations of each function.</br> 
-* Please refer to the following paper for extensive description of the statistical methods used in the package: Letouzé, E., Shinde, J. *et al.* Nat. Commun. (2017) [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumorigenesis.](https://www.nature.com/articles/s41467-017-01358-x)
+* Please refer to the following paper for extensive description of the statistical methods used in the package: Letouzé, E., Shinde, J., et al. (2017) [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumourigenesis.](https://www.nature.com/articles/s41467-017-01358-x) _Nat. Commun._.
 
 Reference
 ================
 
-Shinde, J. *et al.* Bioinformatics (2018) [Palimpsest: an R package for studying mutational and structural variant signatures along clonal evolution in cancer.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty388/4996591)
+Shinde, J. et al. (2018) [Palimpsest: an R package for studying mutational and structural variant signatures along clonal evolution in cancer.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty388/4996591) _Bioinformatics_.
 
 
 <p align="center">
@@ -97,13 +97,13 @@ Shinde, J. *et al.* Bioinformatics (2018) [Palimpsest: an R package for studying
 </p>
 
 Fig.(A) Workflow illustrating a typical analysis with Palimpsest. Taking as input somatic mutations, copy-number alterations (CNAs) and structural variants, the package classifies variants as clonal and subclonal, extracts mutational and structural variant
-signatures separately in early clonal and late subclonal events, and estimates the probability of each alteration being due to each process. The timing of chromosome duplications is also estimated from the ratio of duplicated/non-duplicated mutations to reconstruct the complete natural history of the tumor. (B) Example of output representing, for one tumor, the number of clonal and subclonal mutations, their distribution per mutation signature, the driver alterations (colored according to the most likely causal mutational process) and CNA timing.
+signatures separately in early clonal and late subclonal events, and estimates the probability of each alteration being due to each process. The timing of chromosome duplications is also estimated from the ratio of duplicated/non-duplicated mutations to reconstruct the complete natural history of the tumour. (B) Example of output representing, for one tumour, the number of clonal and subclonal mutations, their distribution per mutation signature, the driver alterations (colored according to the most likely causal mutational process) and CNA timing.
 
 
 License
 ========
 
-Copyright (C) 2017 Jayendra Shinde
+Copyright (C) 2019 Benedict Monteiro & Jayendra Shinde 
 
 Palimpsest is a free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
