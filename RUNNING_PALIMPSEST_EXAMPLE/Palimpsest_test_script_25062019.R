@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
 ##  Palimpsest 2.0 - Comprehensive analysis and visualisation of mutational processes in cancer genomes
-##  For details on the implementation visit
+##  For more details on the implementation visit
 ##  https://github.com/FunGeST/Palimpsest
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
@@ -14,9 +14,10 @@ library(BSgenome.Hsapiens.UCSC.hg19) # Reference genome of choice
 #-------------------------------------------------------------------------------------------------
 
 # define input directory containing example dataset
-datadir <- "/Palimpsest/RUNNING_PALIMPSEST_EXAMPLE/LiC1162/"
+# D/L link: https://github.com/FunGeST/Palimpsest/tree/master/RUNNING_PALIMPSEST_EXAMPLE/LiC1162
+datadir <- "/Palimpsest/RUNNING_PALIMPSEST_EXAMPLE/LiC1162/" 
 
-# define output directory 
+# define parent results directory 
 resdir_parent <- "/Results/"
 if(!file.exists(resdir_parent)) dir.create(resdir_parent)
 
@@ -24,9 +25,9 @@ if(!file.exists(resdir_parent)) dir.create(resdir_parent)
 # 1] Load and annotate mutation data (VCF)
 #-------------------------------------------------------------------------------------------------
 
-vcf_load = load2object(paste0(datadir,"vcf.RData"))
+vcf = load2object(paste0(datadir,"vcf.RData"))
 
-vcf <- annotate_VCF(vcf = vcf_load, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
+vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
                     ref_fasta = "/Genomes/Homo_sapiens_assembly19.fasta")
 
 
@@ -96,12 +97,14 @@ DBS_input <- palimpsest_input(vcf = vcf, Type = "DBS")
 
 # select desired COSMIC DBS reference signatures 
 DBS_liver_names <- c("DBS2","DBS4","DBS5","DBS7","DBS11")
-for(new_name in c(DBS_liver_names[DBS_liver_names %!in% names(sig_cols)])) sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for signatures currently without defined colours 
+for(new_name in c(DBS_liver_names[DBS_liver_names %!in% names(sig_cols)])) 
+  sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for signatures currently without defined colours 
 
 DBS_liver_sigs <- DBS_cosmic[rownames(DBS_cosmic) %in% DBS_liver_names,]
 
 # calculate and plot the exposure of the signatures across the series
-DBS_signatures_exp <- deconvolution_fit(input_matrices = DBS_input, input_signatures = DBS_liver_sigs, threshold = 6, signature_colours = sig_cols,resdir = resdir)
+DBS_signatures_exp <- deconvolution_fit(input_matrices = DBS_input, input_signatures = DBS_liver_sigs, 
+                                        threshold = 6, signature_colours = sig_cols,resdir = resdir)
 
 pdf(file.path(resdir,"DBS_signature_content_plot.pdf"),width=15,height=10)
 deconvolution_exposure(signature_contribution = DBS_signatures_exp,signature_colours = sig_cols)
@@ -117,12 +120,14 @@ ID_input <- palimpsest_input(vcf = vcf, Type = "ID")
 
 # select desired COSMIC indel reference signatures 
 ID_liver_names <- c("ID1","ID2","ID3","ID5","ID8")
-for(new_name in c(ID_liver_names[ID_liver_names %!in% names(sig_cols)])) sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for signatures currently without defined colours 
+for(new_name in c(ID_liver_names[ID_liver_names %!in% names(sig_cols)])) 
+  sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for signatures currently without defined colours 
 
 ID_liver_sigs <- ID_cosmic[rownames(ID_cosmic) %in% ID_liver_names,]
 
 # calculate and plot the exposure of the signatures across the series
-ID_signatures_exp <- deconvolution_fit(input_matrices = ID_input, input_signatures = ID_liver_sigs, threshold = 6, signature_colours = sig_cols,resdir = resdir)
+ID_signatures_exp <- deconvolution_fit(input_matrices = ID_input, input_signatures = ID_liver_sigs, 
+                                       threshold = 6, signature_colours = sig_cols,resdir = resdir)
 
 pdf(file.path(resdir,"ID_signature_content_plot.pdf"),width=15,height=10)
 deconvolution_exposure(signature_contribution = ID_signatures_exp,signature_colours = sig_cols)
@@ -133,12 +138,15 @@ dev.off()
 # 6] Assign the probability of each individual mutation being due to each process 
 # (Again, this function works for DBS, Indel and SV signatures too)
 #-------------------------------------------------------------------------------------------------
-# This step is quite computationally-intensive for whole genome data. For this example we restrict the analysis to coding mutations 
+# This step is quite computationally-intensive for whole genome data. 
+# For this example we restrict the analysis to coding mutations 
 vcf.cod <- vcf[(!is.na(vcf$gene_name) & vcf$Type=="SNV"),]
-vcf.cod <- signature_origins(input = vcf.cod, Type = "SBS",input_signatures = SBS_liver_sigs,signature_contribution = SBS_signatures_exp)
+vcf.cod <- signature_origins(input = vcf.cod, Type = "SBS",input_signatures = SBS_liver_sigs,
+                             signature_contribution = SBS_signatures_exp)
 
 # Estimate and represent the cumulative contribution of signatures to each driver gene
-drivers <- c("CTNNB1","TP53","ARID2","NFE2L2","ACVR2A","ARID1A","AXIN1","RB1","RPS6KA3","KEAP1","ALB","CDKN2A","CDKN1A","RPL22")
+drivers <- c("CTNNB1","TP53","ARID2","NFE2L2","ACVR2A","ARID1A","AXIN1","RB1","RPS6KA3","KEAP1",
+             "ALB","CDKN2A","CDKN1A","RPL22")
 matprob <- matrix(nrow=length(drivers),ncol=length(SBS_liver_names),dimnames=list(drivers, SBS_liver_names))
 sig.cols <- grep("prob",colnames(vcf.cod))
 for(i in 1:nrow(matprob)){
@@ -147,7 +155,8 @@ for(i in 1:nrow(matprob)){
   matprob[i,] <- apply(vcf.cod[ind,sig.cols],2,sum,na.rm=T)
 }
 barplot(t(matprob),col = sig_cols,border = sig_cols,las=2)
-legend("top",names(sig_cols)[names(sig_cols) %in% rownames(SBS_liver_sigs)],fill=sig_cols,ncol=5,cex=0.75,bty ="n",inset = c(0,-0.3),xpd = T)
+legend("top",names(sig_cols)[names(sig_cols) %in% rownames(SBS_liver_sigs)],fill=sig_cols,ncol=5,
+       cex=0.75,bty ="n",inset = c(0,-0.3),xpd = T)
 
 # Compare signature 16 contribution between CTNNB1 mutations and others
 library(ggplot2)
@@ -162,7 +171,7 @@ vcf <- merge(vcf,vcf.cod,all=TRUE,sort=FALSE)
 #-------------------------------------------------------------------------------------------------
 # 7] Clonality analysis
 #-------------------------------------------------------------------------------------------------
-resdir <- file.path(resdir_parent,"Clonality");if(!file.exists(resdir)){dir.create(resdir)}# Defining the results directory
+resdir <- file.path(resdir_parent,"Clonality");if(!file.exists(resdir)){dir.create(resdir)}
 
 # Load copy number analysis (CNA) and annotation (annot) data
 cna_data = load2object(paste0(datadir,"cna_data.RData"))
@@ -178,7 +187,7 @@ cnaCCF_plots(vcf=vcf_cna,resdir=resdir)
 #-------------------------------------------------------------------------------------------------
 # 8] Compare mutational signatures between early clonal and late subclonal mutations in each tumour
 #-------------------------------------------------------------------------------------------------
-resdir <- file.path(resdir_parent,"Signatures_early_vs_late/");if(!file.exists(resdir)){dir.create(resdir)}# Defining the results directory
+resdir <- file.path(resdir_parent,"Signatures_early_vs_late/");if(!file.exists(resdir)){dir.create(resdir)}
 
 # Estimate the contribution of each signature to clonal and subclonal mutations in each tumour
 vcf.clonal <- vcf_cna[which(vcf_cna$Clonality=="clonal"),]
@@ -263,7 +272,7 @@ palimpsest_plotTumorHistories(vcf = vcf_cna, sv.vcf = SV.vcf,cna_data =  cna_dat
 
 ##################################################################################################
 #-------------------------------------------------------------------------------------------------
-# In **Introduction to Palimpsest** you can find comprehensive examples and explanations for the functions.
-
+# In [**Introduction to Palimpsest** you can find comprehensive examples and explanations for the functions.
+# Link: https://github.com/FunGeST/Palimpsest/tree/master/Files/vignette_palimpsest.pdf
 #-------------------------------------------------------------------------------------------------
 ##################################################################################################
