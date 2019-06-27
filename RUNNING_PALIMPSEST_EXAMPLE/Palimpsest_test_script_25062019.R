@@ -15,7 +15,7 @@ library(BSgenome.Hsapiens.UCSC.hg19) # Reference genome of choice
 
 # define input directory containing example dataset
 # D/L link: https://github.com/FunGeST/Palimpsest/tree/master/RUNNING_PALIMPSEST_EXAMPLE/LiC1162
-datadir <- "/Palimpsest/RUNNING_PALIMPSEST_EXAMPLE/LiC1162/" 
+datadir <- "~/Documents/Code/Palimpsest_git/RUNNING_PALIMPSEST_EXAMPLE/LiC1162/" 
 
 # define parent results directory 
 resdir_parent <- "/Results/"
@@ -28,8 +28,8 @@ if(!file.exists(resdir_parent)) dir.create(resdir_parent)
 vcf = load2object(paste0(datadir,"vcf.RData"))
 
 # Annotate VCF with categories of all mutation types
-vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
-                    ref_fasta = "Genomes/Homo_sapiens_assembly19.fasta")
+vcf <- annotate_VCF(vcf = vcf_load, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
+                    ref_fasta = "Genomes/Homo_sapiens_assembly19.fasta",add_strand_and_SBS_cats = F,add_DBS_cats = F,add_ID_cats = T)
 
 # Annotate VCF with SBS & DBS categories only (Windows friendly & no FASTA dependency)
 vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, add_ID_cats = FALSE) 

@@ -4,12 +4,14 @@
 \alias{add_ID_cats_ToVCF}
 \title{add_ID_cats_ToVCF}
 \usage{
-add_ID_cats_ToVCF(vcf = NULL, ref_fasta = NULL, palimpdir = NULL)
+add_ID_cats_ToVCF(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA)
 }
 \arguments{
 \item{vcf}{VCF to which Indel mutation categories are to be added.}
 
 \item{ref_fasta}{Path to fasta file for reference genome of choice (e.g. hg19 genome).}
+
+\item{palimpdir_man}{Path to palimpsest directory entered manually.}
 
 \item{tool_dir}{Path to folder containing PCAWG7-data-preparation-version-1.5 tool.}
 }

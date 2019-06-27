@@ -6,7 +6,8 @@
 \usage{
 annotate_VCF(vcf = vcf, add_strand_and_SBS_cats = T,
   add_DBS_cats = T, add_ID_cats = F, genome_build = "hg19",
-  ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19)
+  ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
+  palimpdir = NULL)
 }
 \arguments{
 \item{vcf}{Input VCF to annotate.}
@@ -22,6 +23,8 @@ annotate_VCF(vcf = vcf, add_strand_and_SBS_cats = T,
 \item{ref_fasta}{File path to FASTA file compatable with input VCF positions and chromosomes.}
 
 \item{ref_genome}{Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19).}
+
+\item{palimpdir}{If you received an error when trying to add indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from GitHub.}
 }
 \value{
 vcf
@@ -30,5 +33,5 @@ vcf
 Function to add strand, gene and COSMIC mutation category annotations to a VCF. This function can take a long time depending on the number of mutations and how many of the annotation options you have selected. Please be patient!
 }
 \examples{
-vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta")
+vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta", palimpdir = "~/Code/Palimpsest/")
 }
