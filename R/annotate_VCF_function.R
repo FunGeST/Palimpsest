@@ -336,9 +336,8 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
 #' vcf <- add_ID_cats_ToVCF(vcf = vcf,ref_fasta = ref_fasta)
 
 add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
-  if((Sys.which("python")=="")==TRUE) stop("python must be installed on this device and accessible to R to allow indel categories to be added.
-                                           (must be performed in a Unix environment)")
-  if(nrow(filter(vcf, Type != "SNV")) == 0) warning("No rows of the VCF corresponding to insertions or deletions were detected.")
+  if((Sys.which("python2.7")=="")==TRUE) stop("python 2.7 must be installed on this device and accessible to R to allow indel categories to be added. (see README for more information)")
+  if(nrow(filter(vcf, Type %in% c("INS","DEL"))) == 0) warning("No rows of the VCF corresponding to insertions or deletions were detected.")
   palimpdir = NA
   for(i in length(.libPaths)){
     if("Palimpsest" %in% c(list.files(.libPaths()[i]))){
