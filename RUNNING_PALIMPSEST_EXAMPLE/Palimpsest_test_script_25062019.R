@@ -98,7 +98,7 @@ DBS_input <- palimpsest_input(vcf = vcf, Type = "DBS")
 # select desired COSMIC DBS reference signatures 
 DBS_liver_names <- c("DBS2","DBS4","DBS5","DBS7","DBS11")
 for(new_name in c(DBS_liver_names[DBS_liver_names %!in% names(sig_cols)])) 
-  sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for signatures currently without defined colours 
+  sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for new signatures 
 
 DBS_liver_sigs <- DBS_cosmic[rownames(DBS_cosmic) %in% DBS_liver_names,]
 
@@ -121,7 +121,7 @@ ID_input <- palimpsest_input(vcf = vcf, Type = "ID")
 # select desired COSMIC indel reference signatures 
 ID_liver_names <- c("ID1","ID2","ID3","ID5","ID8")
 for(new_name in c(ID_liver_names[ID_liver_names %!in% names(sig_cols)])) 
-  sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for signatures currently without defined colours 
+  sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for new signatures 
 
 ID_liver_sigs <- ID_cosmic[rownames(ID_cosmic) %in% ID_liver_names,]
 
@@ -136,7 +136,7 @@ dev.off()
 
 #-------------------------------------------------------------------------------------------------
 # 6] Assign the probability of each individual mutation being due to each process 
-# (Again, this function works for DBS, Indel and SV signatures too)
+# (Again, this function works for DBS, Indel and SV signatures)
 #-------------------------------------------------------------------------------------------------
 # This step is quite computationally-intensive for whole genome data. 
 # For this example we restrict the analysis to coding mutations 
@@ -193,20 +193,24 @@ resdir <- file.path(resdir_parent,"Signatures_early_vs_late/");if(!file.exists(r
 vcf.clonal <- vcf_cna[which(vcf_cna$Clonality=="clonal"),]
 SBS_input_clonal <- palimpsest_input(vcf = vcf.clonal,Type = "SBS")
 signatures_exp_clonal <- deconvolution_fit(input_matrices = SBS_input_clonal,
-                                           input_signatures = SBS_liver_sigs, resdir =  resdir,save_signatures_exp = F)
+                                           input_signatures = SBS_liver_sigs, resdir =  resdir,
+                                           save_signatures_exp = F)
 
 vcf.subclonal <- vcf_cna[which(vcf_cna$Clonality=="subclonal"),]
 SBS_input_subclonal <- palimpsest_input(vcf = vcf.subclonal,Type = "SBS")
 signatures_exp_subclonal <- deconvolution_fit(input_matrices = SBS_input_subclonal,
-                                              input_signatures = SBS_liver_sigs, resdir =  resdir,save_signatures_exp = F)
+                                              input_signatures = SBS_liver_sigs, resdir =  resdir,
+                                              save_signatures_exp = F)
 
 # Generate per tumour comparisons of clonal and subclonal mutations
 palimpsest_DissectSigs(vcf=vcf_cna, signatures_exp_clonal = signatures_exp_clonal,
-                       signatures_exp_subclonal = signatures_exp_subclonal,sig_cols = sig_cols,resdir=resdir)
+                       signatures_exp_subclonal = signatures_exp_subclonal, sig_cols = sig_cols,
+                       resdir = resdir)
 
 # Generate across the series comparisons of signature assigned to clonal and subclonal mutations
 palimpsest_clonalitySigsCompare(clonsig = signatures_exp_clonal$sig_nums,
-                                subsig = signatures_exp_subclonal$sig_nums, msigcol = sig_cols, resdir = resdir)
+                                subsig = signatures_exp_subclonal$sig_nums, msigcol = sig_cols, 
+                                resdir = resdir)
 dev.off()
 
 
@@ -240,7 +244,7 @@ SV_input <- palimpsest_input(vcf = SV.vcf,Type = "SV")
 SV_denovo_sigs <- NMF_Extraction(input_matrices =  SV_input,range_of_sigs = 1:10,nrun = 10,
                                  resdir = resdir)
 
-# define list of colors for visualizing mutational signatures. Selecting default colors
+# generate colours for new signatures 
 SV_cols <- signature_colour_generator(rownames(SV_denovo_sigs))
 
 # Calculate contribution of signatures in each sample:
