@@ -27,8 +27,12 @@ if(!file.exists(resdir_parent)) dir.create(resdir_parent)
 
 vcf = load2object(paste0(datadir,"vcf.RData"))
 
+# Annotate VCF with categories of all mutation types
 vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
-                    ref_fasta = "/Genomes/Homo_sapiens_assembly19.fasta")
+                    ref_fasta = "Genomes/Homo_sapiens_assembly19.fasta")
+
+# Annotate VCF with SBS & DBS categories only (Windows friendly & no FASTA dependency)
+vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, add_ID_cats = FALSE) 
 
 
 #-------------------------------------------------------------------------------------------------
