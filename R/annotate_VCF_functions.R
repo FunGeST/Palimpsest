@@ -4,9 +4,9 @@
 #' @param vcf Input VCF to annotate.
 #' @param add_strand_and_SBS_cats Logical indicating whether or not strand, gene and SBS category annotations are to be added (defaults to TRUE).
 #' @param add_DBS_cats Logical indicating whether or not DBS category annotations are to be added (defaults to TRUE).
-#' @param add_ID_cats Logical indicating whether or not Indel category annotations are to be added (defaults to TRUE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).
+#' @param add_ID_cats Logical indicating whether or not Indel category annotations are to be added (defaults to FALSE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).
 #' @param genome_build Enter either "hg19" or "hg38".
-#' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes.
+#' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE. 
 #' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19).
 #' @param palimpdir If you received an error when trying to add indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from GitHub.
 #'
@@ -18,7 +18,7 @@
 #'vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta", palimpdir = "~/Code/Palimpsest/")
 
 annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = T, add_ID_cats = F, genome_build = "hg19",
-                         ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NULL){
+                         ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NA){
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5) stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
   if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions marked 'INS', please change accordingly")
@@ -348,17 +348,17 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA){
       }
     }
   }
-  if("exec" %!in% list.files(palimpdir)) palimpdir = NA
+  if(!is.na(palimpdir)) if("exec" %!in% list.files(palimpdir)) palimpdir = NA
   if(is.na(palimpdir)){
       if(is.na(palimpdir_man)){
         print("ERROR: The Palimpsest package directory could not be located in the following default R library/libraries:", quote = F)
         print(.libPaths())
         }else{
-          print(paste("The filepath you entered:",palimpdir_man,"does not contain the 'exec' folder with th python script."))
+          print(paste("The filepath you entered:",palimpdir_man,"does not contain the 'exec' folder with th python script."), quote = F)
         }
       print(" ", quote = F)
       print("example filepath you should input: '/Users/joe_bloggs/Library/R/3.6/library/Palimpsest/'", quote = F)
-      stop("This function needs the location of the up-to-date Palimpsest directory to launch the indel category extraction in python. Please find and enter the file path manually using the palimpdir parameter", quote = F)
+      stop("This function needs the location of the up-to-date Palimpsest directory to launch the indel category extraction in python. Please find and enter the file path manually using the palimpdir parameter")
     }
 
   tmpdir <- file.path(palimpdir,"Temporary/"); if(!file.exists(tmpdir))  dir.create(tmpdir) 
