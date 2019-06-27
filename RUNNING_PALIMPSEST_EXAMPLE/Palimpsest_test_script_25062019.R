@@ -35,7 +35,7 @@ vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
 # 2] Single base substitution (SBS) de novo mutational signature extraction  
 #    (N.B. these de novo extraction functions work for DBS, Indel & SV too!)
 #-------------------------------------------------------------------------------------------------
-resdir <- paste0(resdir_parent,"SBS_denovo/"); if(!file.exists(resdir))	dir.create(resdir) ## set results directory
+resdir <- file.path(resdir_parent,"SBS_denovo/"); if(!file.exists(resdir))	dir.create(resdir) ## set results directory
 
 # Extract de novo SBS signatures
 SBS_input <- palimpsest_input(vcf = vcf, Type = "SBS")
@@ -68,7 +68,7 @@ dev.off()
 #-------------------------------------------------------------------------------------------------
 # 3] Extract with published SBS COSMIC signatures
 #-------------------------------------------------------------------------------------------------
-resdir <- paste0(resdir_parent,"SBS_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
+resdir <- file.path(resdir_parent,"SBS_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
 
 # select desired COSMIC SBS reference signatures 
 SBS_liver_names <- c("SBS1","SBS4","SBS5","SBS6","SBS12","SBS16","SBS17","SBS18","SBS22","SBS23",
@@ -91,7 +91,7 @@ dev.off()
 #-------------------------------------------------------------------------------------------------
 # 4] Extract with published double base substitution (DBS) COSMIC signatures
 #-------------------------------------------------------------------------------------------------
-resdir <- paste0(resdir_parent,"DBS_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
+resdir <- file.path(resdir_parent,"DBS_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
 
 DBS_input <- palimpsest_input(vcf = vcf, Type = "DBS")
 
@@ -114,7 +114,7 @@ dev.off()
 #-------------------------------------------------------------------------------------------------
 # 5] Extract with published insertion and deletion (ID) COSMIC signatures
 #-------------------------------------------------------------------------------------------------
-resdir <- paste0(resdir_parent,"ID_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
+resdir <- file.path(resdir_parent,"ID_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
 
 ID_input <- palimpsest_input(vcf = vcf, Type = "ID")
 
@@ -174,8 +174,8 @@ vcf <- merge(vcf,vcf.cod,all=TRUE,sort=FALSE)
 resdir <- file.path(resdir_parent,"Clonality");if(!file.exists(resdir)){dir.create(resdir)}
 
 # Load copy number analysis (CNA) and annotation (annot) data
-cna_data = load2object(paste0(datadir,"cna_data.RData"))
-annot = load2object(paste0(datadir,"annot_data.RData"))
+cna_data = load2object(file.path(datadir,"cna_data.RData"))
+annot = load2object(file.path(datadir,"annot_data.RData"))
 
 # Calculate the Cancer Cell Fraction (CCF) of each mutation.
 vcf_cna <- cnaCCF_annot(vcf= vcf, annot_data = annot,cna_data = cna_data, CCF_boundary = 0.95)
@@ -236,7 +236,7 @@ library(bedr);library(RCircos) # Loading dependencies necessary for SV annotatio
 # For the bedr package to function you will need to have the BEDTools programme installed and in your default PATH
 
 # Load SV Data
-SV_data = load2object(paste0(datadir,"sv_data.RData"))
+SV_data = load2object(file.path(datadir,"sv_data.RData"))
 
 # Preprocess SV inputs and annotate for further analysis:
 SV.vcf <- preprocessInput_sv(input_data =  SV_data,resdir = resdir)

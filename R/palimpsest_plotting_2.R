@@ -307,7 +307,7 @@ plot_signatures <- function (input_data = NULL, Title = NA, label = "Full") {
 #' signature_content_plot <- deconvolution_exposure(signature_contribution = SBS_signatures_exp, rm_samples = "CHC892T", signature_colours = sig_cols)
 #' dev.off()
 
-deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_samples = NA,signature_colours = NA){
+deconvolution_exposure <- function(signature_contribution = signatures_exp, rm_samples = NA,signature_colours = sig_cols){
   
   requireNamespace("ggpubr", quietly = TRUE); requireNamespace("reshape2", quietly = TRUE)
   sig_nums <- signature_contribution$sig_nums; sig_props <- signature_contribution$sig_props

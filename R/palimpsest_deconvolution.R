@@ -256,7 +256,7 @@ signature_origins <- function (input = NULL, Type = Type,
 #' signatures_exp <- deconvolution_fit(input_matrices = SBS_input, threshold = 8,input_signatures = SBS_liver,signature_colours = sig_cols,resdir = resdir)
 
 deconvolution_fit <- function (input_matrices = NULL,
-                                 input_signatures = NULL, input_vcf = vcf, threshold = 6, signature_colours = NA,
+                                 input_signatures = NULL, input_vcf = vcf, threshold = 6, signature_colours = sig_cols,
                                  doplot = TRUE, save_signatures_exp = TRUE, resdir = resdir) {
   requireNamespace("tibble", quietly = TRUE);requireNamespace("NMF", quietly = TRUE)
   prop_matrix <- input_matrices$mut_props; num_matrix <- input_matrices$mut_nums
