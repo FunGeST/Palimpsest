@@ -75,7 +75,7 @@ dev.off()
 resdir <- file.path(resdir_parent,"SBS_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
 
 # select desired COSMIC SBS reference signatures 
-SBS_liver_names <- c("SBS1","SBS4","SBS5","SBS6","SBS12","SBS16","SBS17","SBS18","SBS22","SBS23",
+SBS_liver_names <- c("SBS1","SBS4","SBS5","SBS6","SBS12","SBS16","SBS17b","SBS18","SBS22","SBS23",
                      "SBS24")
 for(new_name in c(SBS_liver_names[SBS_liver_names %!in% names(sig_cols)]))
   sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for new signatures 
@@ -144,7 +144,7 @@ dev.off()
 #-------------------------------------------------------------------------------------------------
 # This step is quite computationally-intensive for whole genome data. 
 # For this example we restrict the analysis to coding mutations 
-vcf.cod <- vcf[(!is.na(vcf$gene_name) & vcf$Type=="SNV"),]
+vcf.cod <- vcf[(!is.na(vcf$Driver) & vcf$Type=="SNV"),]
 vcf.cod <- signature_origins(input = vcf.cod, Type = "SBS",input_signatures = SBS_liver_sigs,
                              signature_contribution = SBS_signatures_exp)
 
@@ -152,13 +152,13 @@ vcf.cod <- signature_origins(input = vcf.cod, Type = "SBS",input_signatures = SB
 drivers <- c("CTNNB1","TP53","ARID2","NFE2L2","ACVR2A","ARID1A","AXIN1","RB1","RPS6KA3","KEAP1",
              "ALB","CDKN2A","CDKN1A","RPL22")
 matprob <- matrix(nrow=length(drivers),ncol=length(SBS_liver_names),dimnames=list(drivers, SBS_liver_names))
-sig.cols <- grep("prob",colnames(vcf.cod))
+sig.cols <- paste0(rownames(SBS_liver_sigs),".prob")
 for(i in 1:nrow(matprob)){
   g <- rownames(matprob)[i]
   ind <- which(vcf.cod$gene_name==g)
   matprob[i,] <- apply(vcf.cod[ind,sig.cols],2,sum,na.rm=T)
 }
-barplot(t(matprob),col = sig_cols,border = sig_cols,las=2)
+barplot(t(matprob),col = sig_cols,border = sig_cols,las=2,ylim = c(0,14))
 legend("top",names(sig_cols)[names(sig_cols) %in% rownames(SBS_liver_sigs)],fill=sig_cols,ncol=5,
        cex=0.75,bty ="n",inset = c(0,-0.3),xpd = T)
 
@@ -170,6 +170,8 @@ wilcox.test(c(vcf.cod$SBS5.prob) ~ c(vcf.cod$CTNNB1))
 
 # Add signature probability columns to the original vcf
 vcf <- merge(vcf,vcf.cod,all=TRUE,sort=FALSE)
+
+
 
 
 #-------------------------------------------------------------------------------------------------

@@ -8,16 +8,17 @@
 #' @param genome_build Enter either "hg19" or "hg38".
 #' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes.
 #' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19).
+#' @param palimpdir If you received an error when trying to add indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from GitHub.
 #'
 #' @return vcf
 #' @export
 #' @import gtools
 #' @import VariantAnnotation
 #' @examples
-#'vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta")
+#'vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta", palimpdir = "~/Code/Palimpsest/")
 
-annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = T, add_ID_cats = T, genome_build = "hg19",
-                         ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19){
+annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = T, add_ID_cats = F, genome_build = "hg19",
+                         ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NULL){
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5) stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
   if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions marked 'INS', please change accordingly")
@@ -99,7 +100,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     vcf <- add_DBS_cats_ToVCF(vcf = vcf,DBS_mutations_only = F)
   }
   if(add_ID_cats == TRUE & .Platform$OS.type != "windows"){
-    vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta)
+    vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir)
   }
   if(add_ID_cats == TRUE & .Platform$OS.type == "windows") warning("Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.). All other Palimpsest functions work on windows.")
   return(vcf)
@@ -331,40 +332,36 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
 #' @param vcf VCF to which Indel mutation categories are to be added.
 #' @param tool_dir Path to folder containing PCAWG7-data-preparation-version-1.5 tool.
 #' @param ref_fasta Path to fasta file for reference genome of choice (e.g. hg19 genome).
+#' @param palimpdir_man Path to palimpsest directory entered manually. 
 #' @keywords Signatures
 #' @examples
 #' vcf <- add_ID_cats_ToVCF(vcf = vcf,ref_fasta = ref_fasta)
 
-add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
+add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA){
   if((Sys.which("python2.7")=="")==TRUE) stop("python 2.7 must be installed on this device and accessible to R to allow indel categories to be added. (see README for more information)")
   if(nrow(filter(vcf, Type %in% c("INS","DEL"))) == 0) warning("No rows of the VCF corresponding to insertions or deletions were detected.")
-  palimpdir = NA
-  for(i in length(.libPaths)){
-    if("Palimpsest" %in% c(list.files(.libPaths()[i]))){
-      palimpdir = paste0(.libPaths()[i],"/Palimpsest/")
+  palimpdir = palimpdir_man
+  if(palimpdir_man == NA){
+    for(i in length(.libPaths)){
+      if("Palimpsest" %in% c(list.files(.libPaths()[i]))){
+        palimpdir = file.path(.libPaths()[i],"/Palimpsest/")
+      }
     }
   }
-  for(i in 1:1000000){
-    if("exec" %!in% list.files(palimpdir)) palimpdir = NA
-    if(is.na(palimpdir)){
-      if(i ==1){
-        print(" ", quote = F)
+  if("exec" %!in% list.files(palimpdir)) palimpdir = NA
+  if(is.na(palimpdir)){
+      if(is.na(palimpdir_man)){
         print("ERROR: The Palimpsest package directory could not be located in the following default R library/libraries:", quote = F)
         print(.libPaths())
-        print(" ", quote = F)
-        print("This function needs the location of the up-to-date Palimpsest directory (containing the 'exec' folder) to launch the 
-              indel category extraction in python, please find and enter the file path manually", quote = F)
-      }
-      if(i > 1){
-        print(paste0("ERROR: The filepath entered is not the Palimpsest package directory downlaoded from github, please try again 
-                     making sure that you are not using quotation marks"), quote = F)
-      }
-      print("example filepath: '/Users/joe_bloggs/Library/R/3.5/library/Palimpsest/'", quote = F)
-      palimpdir = readline(prompt="Enter filepath (without quotation marks): ")
-    } 
-    if("exec" %in% list.files(palimpdir)) break	
-  }
-  tmpdir <- paste0(palimpdir,"Temporary/"); if(!file.exists(tmpdir))  dir.create(tmpdir) 
+        }else{
+          print(paste("The filepath you entered:",palimpdir_man,"does not contain the 'exec' folder with th python script."))
+        }
+      print(" ", quote = F)
+      print("example filepath you should input: '/Users/joe_bloggs/Library/R/3.6/library/Palimpsest/'", quote = F)
+      stop("This function needs the location of the up-to-date Palimpsest directory to launch the indel category extraction in python. Please find and enter the file path manually using the palimpdir parameter", quote = F)
+    }
+
+  tmpdir <- file.path(palimpdir,"Temporary/"); if(!file.exists(tmpdir))  dir.create(tmpdir) 
   heure <- Sys.time(); heure <- gsub(" ","_",heure); heure <- gsub("-","",heure); heure <- gsub(":",".",heure)
   
   nums <- c(1:nrow(vcf))
@@ -388,14 +385,14 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NA){
       mutate(REF =  substr(REF,2,nchar(REF)), ALT = "-", End = End + 1, Start = Start + 1)
   }
   
-  vcf_output <- paste0(tmpdir,"python_vcf_indel.simple")
+  vcf_output <- file.path(tmpdir,"python_vcf_indel.simple")
   
   write.table(format(python_vcf,scientific=FALSE),file=vcf_output,col.names = F,row.names=F,sep="\t",quote=F)
   
   
   ### RUN PCAWG7-data-preparation-version-1.5 IN PYTHON ###
   print("Runnng PCAWG7-data-preparation-version-1.5 in python to extract Indel categories..",quote = F)
-  tool <- paste0(palimpdir,"exec/make_spectra_indels.py")
+  tool <- file.path(palimpdir,"exec/make_spectra_indels.py")
 
   cachedir <- paste0(tmpdir,"cache_",heure,"/");if(!file.exists(cachedir))  dir.create(cachedir) 
   
