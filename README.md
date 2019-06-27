@@ -23,7 +23,7 @@ The R package _bedr_ is required to perform structural variant signature analysi
 
 Input files
 ========
-Palimpsest requires 3 mandatory input files -- a **mutational catalogue** file (vcf) describing somatic mutations in the tumour series, a **copy number alteration** file (cna_data) providing genome-wide absolute copy number estimates, and a minimal **sample annotation** file (annot_data) indicating gender and tumour purity.
+For the analysis of somatic mutations _Palimpsest_ requires one mandatory input file -- a **mutational catalogue** file (vcf) describing somatic mutations in the tumour series. For the analysis of the clonality of somatic mutations (optional), a further two files are required -- a **copy number alteration** file (cna_data) providing genome-wide absolute copy number estimates, and a minimal **sample annotation** file (annot_data) indicating gender and tumour purity.
 
 **The input files should have the following columns (the header is required, but the order of the columns can change). Example input files are provided with the package.**
 
