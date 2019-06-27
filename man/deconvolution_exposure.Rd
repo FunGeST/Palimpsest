@@ -5,7 +5,7 @@
 \title{deconvolution_exposure}
 \usage{
 deconvolution_exposure(signature_contribution = signatures_exp,
-  rm_samples = NA, signature_colours = NA)
+  rm_samples = NA, signature_colours = sig_cols)
 }
 \arguments{
 \item{signature_contribution}{List of signatures exposure numbers and proportions matrices (output from deconvolution_fit function).}

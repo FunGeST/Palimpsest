@@ -5,7 +5,7 @@
 \title{deconvolution_fit}
 \usage{
 deconvolution_fit(input_matrices = NULL, input_signatures = NULL,
-  input_vcf = vcf, threshold = 6, signature_colours = NA,
+  input_vcf = vcf, threshold = 6, signature_colours = sig_cols,
   doplot = TRUE, save_signatures_exp = TRUE, resdir = resdir)
 }
 \arguments{
