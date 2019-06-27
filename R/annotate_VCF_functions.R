@@ -341,7 +341,7 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA){
   if((Sys.which("python2.7")=="")==TRUE) stop("python 2.7 must be installed on this device and accessible to R to allow indel categories to be added. (see README for more information)")
   if(nrow(filter(vcf, Type %in% c("INS","DEL"))) == 0) warning("No rows of the VCF corresponding to insertions or deletions were detected.")
   palimpdir = palimpdir_man
-  if(palimpdir_man == NA){
+  if(is.na(palimpdir_man)){
     for(i in length(.libPaths)){
       if("Palimpsest" %in% c(list.files(.libPaths()[i]))){
         palimpdir = file.path(.libPaths()[i],"/Palimpsest/")
