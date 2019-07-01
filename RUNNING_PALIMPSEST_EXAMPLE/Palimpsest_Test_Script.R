@@ -240,7 +240,7 @@ SV_data = load2object(paste0(datadir,"sv_data.RData"))
 # Preprocess SV inputs and annotate for further analysis:
 SV.vcf <- preprocessInput_sv(input_data =  SV_data,resdir = resdir)
 SV_input <- palimpsest_input(vcf = SV.vcf,Type = "SV")
-SV_denovo_sigs <- NMF_Extraction(input_matrices =  SV_input,range_of_sigs = 2:10,nrun = 10,
+SV_denovo_sigs <- NMF_Extraction(input_matrices =  SV_input,range_of_sigs = 1:10,nrun = 10,
                                  resdir = resdir)
 
 # define list of colors for visualizing mutational signatures. Selecting default colors
