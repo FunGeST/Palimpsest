@@ -7,7 +7,7 @@
 annotate_VCF(vcf = vcf, add_strand_and_SBS_cats = T,
   add_DBS_cats = T, add_ID_cats = F, genome_build = "hg19",
   ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
-  palimpdir = NULL)
+  palimpdir = NA)
 }
 \arguments{
 \item{vcf}{Input VCF to annotate.}
@@ -16,11 +16,11 @@ annotate_VCF(vcf = vcf, add_strand_and_SBS_cats = T,
 
 \item{add_DBS_cats}{Logical indicating whether or not DBS category annotations are to be added (defaults to TRUE).}
 
-\item{add_ID_cats}{Logical indicating whether or not Indel category annotations are to be added (defaults to TRUE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).}
+\item{add_ID_cats}{Logical indicating whether or not Indel category annotations are to be added (defaults to FALSE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).}
 
 \item{genome_build}{Enter either "hg19" or "hg38".}
 
-\item{ref_fasta}{File path to FASTA file compatable with input VCF positions and chromosomes.}
+\item{ref_fasta}{File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE.}
 
 \item{ref_genome}{Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19).}
 
