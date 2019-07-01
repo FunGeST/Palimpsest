@@ -41,6 +41,8 @@ For the analysis of somatic mutations _Palimpsest_ requires one mandatory input 
 * `Gene_Name`: OPTIONAL column for representing mutated gene name.
 * `Driver`: OPTIONAL column indicating the driver events to be annotated in tumour history plots.
 
+**Optional:**
+
 `2]. cna_data`: __copy number alteration data__
 
 * `Sample`: Sample identifier. Any alphanumeric string.
@@ -59,10 +61,6 @@ For the analysis of somatic mutations _Palimpsest_ requires one mandatory input 
 * `Gender`: Gender information for patient [M/F].
 * `Purity`: Tumour purity estimate (Represented as fraction; ranging between 0.01 - 1).
 
-**Optional:**
-
-**__Structural variant signature analysis__**
-
 `4]. sv_data`: __structural variant data__
 
 * `Sample`: Sample identifier. Any alphanumeric string.
@@ -80,7 +78,7 @@ For the analysis of somatic mutations _Palimpsest_ requires one mandatory input 
 Running Palimpsest
 ================
 
-* The RUNNING_PALIMPSEST_EXAMPLE folder contains example data and an R script for a typical Palimpsest analysis. Please try!</br>
+* The [RUNNING_PALIMPSEST_EXAMPLE](https://github.com/FunGeST/Palimpsest/tree/master/RUNNING_PALIMPSEST_EXAMPLE) folder contains an example dataset and an R script of a typical Palimpsest analysis using this data. Please try!</br>
 * [*Introduction to Palimpsest*](http://nbviewer.jupyter.org/github/FunGeST/Palimpsest/blob/master/Files/vignette_palimpsest.pdf) provides a comprehensive example of the Palimpsest workflow with detailed  explanations of each function.</br> 
 * Please refer to the following paper for extensive description of the statistical methods used in the package: Letouzé, E., Shinde, J., et al. (2017) [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumourigenesis.](https://www.nature.com/articles/s41467-017-01358-x) _Nat. Commun._
 
@@ -96,8 +94,8 @@ Shinde, J. et al. (2018) [Palimpsest: an R package for studying mutational and s
   </a>
 </p>
 
-Fig.(A) Workflow illustrating a typical analysis with Palimpsest. Taking as input somatic mutations, copy-number alterations (CNAs) and structural variants, the package classifies variants as clonal and subclonal, extracts mutational and structural variant
-signatures separately in early clonal and late subclonal events, and estimates the probability of each alteration being due to each process. The timing of chromosome duplications is also estimated from the ratio of duplicated/non-duplicated mutations to reconstruct the complete natural history of the tumour. (B) Example of output representing, for one tumour, the number of clonal and subclonal mutations, their distribution per mutation signature, the driver alterations (colored according to the most likely causal mutational process) and CNA timing.
+**Figure 1. (A)** Workflow illustrating a typical analysis with Palimpsest. Taking as input somatic mutations, copy-number alterations (CNAs) and structural variants, the package classifies variants as clonal and subclonal, extracts mutational and structural variant
+signatures separately in early clonal and late subclonal events, and estimates the probability of each alteration being due to each process. The timing of chromosome duplications is also estimated from the ratio of duplicated/non-duplicated mutations to reconstruct the complete natural history of the tumour. **(B)** Example of output representing, for one tumour, the number of clonal and subclonal mutations, their distribution per mutation signature, the driver alterations (colored according to the most likely causal mutational process) and CNA timing.
 
 
 License
