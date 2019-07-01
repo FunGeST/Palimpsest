@@ -25,7 +25,7 @@ if(!file.exists(resdir_parent)) dir.create(resdir_parent)
 # 1] Load and annotate mutation data (VCF)
 #-------------------------------------------------------------------------------------------------
 
-vcf = load2object(paste0(datadir,"vcf.RData"))
+load(paste0(datadir,"vcf.RData"))
 
 vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
                     ref_fasta = "/Genomes/Homo_sapiens_assembly19.fasta",add_ID_cats = FALSE)
