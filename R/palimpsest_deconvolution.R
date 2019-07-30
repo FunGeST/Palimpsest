@@ -20,7 +20,7 @@ NMF_Extraction <- function (input_matrices = NULL, range_of_sigs = 1:20,
           num_of_sigs = "auto", nrun = 10, method = "brunet", plot_sigs = TRUE, 
           resdir = NA) 
 {
-  input_data <- as.matrix(input_matrices$mut_props)
+  input_data <- input_matrices[[1]]
   if(nrow(input_data) %!in% c(38,78,83,96)) stop("input_matrices format incorrect")
   if(nrow(input_data)==96) Type <- "SBS"; if(nrow(input_data)==78) Type <- "DBS"; if(nrow(input_data)==83) Type <- "ID"; if(nrow(input_data)==38) Type <- "SV"  
   requireNamespace("NMF", quietly = TRUE)
