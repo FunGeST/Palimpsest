@@ -625,6 +625,36 @@ palimpsest_clonalitySigsCompare <- function(clonsig=clonsig,subsig=subsig,msigco
   dev.off()
 }
 
+#' RCircos.Get.Start.End.Locations_1
+#'
+#' @param plot.data plot.data
+#' @param plot.width plot.width
+#'
+#' @export
+#' @import RCircos
+
+RCircos.Get.Start.End.Locations_1 = function(plot.data, plot.width)
+{
+    RCircos.Cyto <- RCircos.Get.Plot.Ideogram()
+    dataChroms <- as.character(plot.data[, 1])
+    chromosomes <- unique(dataChroms)
+    cyto.chroms <- as.character(RCircos.Cyto$Chromosome)
+    point.loc <- as.numeric(plot.data$Location)
+    locations <- cbind(point.loc - plot.width/2, point.loc + plot.width/2)
+    for (aChr in seq_len(length(chromosomes))) {
+        cyto.rows <- which(cyto.chroms == chromosomes[aChr])
+        chr.start <- min(RCircos.Cyto$StartPoint[cyto.rows])
+        chr.end <- max(RCircos.Cyto$EndPoint[cyto.rows])
+        data.rows <- which(dataChroms == chromosomes[aChr])
+        start.outliers <- which(locations[data.rows, 1] < chr.start)
+        if (length(start.outliers) > 0)
+            locations[data.rows[start.outliers], 1] <- chr.start
+        end.outliers <- which(locations[data.rows, 2] > chr.end)
+        if (length(end.outliers) > 0)
+            locations[data.rows[end.outliers], 2] <- chr.end
+    }
+    return(locations)
+}
 
 #' RCircos.Heatmap.Plot_1
 #'
@@ -669,7 +699,7 @@ RCircos.Heatmap.Plot_1 <- function(heatmap.data=NULL, data.col=NULL,
   }
   colorLevel  <- seq(min.value, max.value, length=length(colorMap));
   heatmap.data <- RCircos.Get.Single.Point.Positions(heatmap.data,genomic.columns);
-  plotLocations <- RCircos.Get.Start.End.Locations(heatmap.data,RCircos.Par$heatmap.width);
+  plotLocations <- RCircos.Get.Start.End.Locations_2(heatmap.data,RCircos.Par$heatmap.width);
   chromosomes <- unique(as.character(RCircos.Cyto$Chromosome));
   outlineColors <- rep("white", length(chromosomes));
   RCircos.Track.Outline(outerPos, innerPos, num.layers=1,
