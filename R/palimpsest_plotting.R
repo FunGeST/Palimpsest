@@ -699,7 +699,7 @@ RCircos.Heatmap.Plot_1 <- function(heatmap.data=NULL, data.col=NULL,
   }
   colorLevel  <- seq(min.value, max.value, length=length(colorMap));
   heatmap.data <- RCircos.Get.Single.Point.Positions(heatmap.data,genomic.columns);
-  plotLocations <- RCircos.Get.Start.End.Locations_2(heatmap.data,RCircos.Par$heatmap.width);
+  plotLocations <- RCircos.Get.Start.End.Locations_1(heatmap.data,RCircos.Par$heatmap.width);
   chromosomes <- unique(as.character(RCircos.Cyto$Chromosome));
   outlineColors <- rep("white", length(chromosomes));
   RCircos.Track.Outline(outerPos, innerPos, num.layers=1,
