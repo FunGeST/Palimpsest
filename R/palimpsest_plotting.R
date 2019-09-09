@@ -633,7 +633,7 @@ palimpsest_clonalitySigsCompare <- function(clonsig=clonsig,subsig=subsig,msigco
 #' @export
 #' @import RCircos
 
-RCircos.Get.Start.End.Locations_1 = function(plot.data, plot.width)
+RCircos.Get.Start.End.Locations_1 <- function(plot.data, plot.width)
 {
     RCircos.Cyto <- RCircos.Get.Plot.Ideogram()
     dataChroms <- as.character(plot.data[, 1])
