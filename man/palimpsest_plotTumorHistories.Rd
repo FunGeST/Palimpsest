@@ -4,9 +4,10 @@
 \alias{palimpsest_plotTumorHistories}
 \title{palimpsest_plotTumorHistories}
 \usage{
-palimpsest_plotTumorHistories(vcf = NULL, sv.vcf = NULL, cna_data = NULL,
-  point.mut.time = NULL, clonsig = NULL, subsig = NULL, msigcol = NULL,
-  msigcol.sv = NULL, spacechar = 1, ystep = 2, resdir = NULL)
+palimpsest_plotTumorHistories(vcf = NULL, sv.vcf = NULL,
+  cna_data = NULL, point.mut.time = NULL, clonsig = NULL,
+  subsig = NULL, msigcol = NULL, msigcol.sv = NULL, spacechar = 1,
+  ystep = 2, resdir = NULL)
 }
 \arguments{
 \item{vcf}{Annotated vcf file for mutations}
@@ -28,6 +29,8 @@ palimpsest_plotTumorHistories(vcf = NULL, sv.vcf = NULL, cna_data = NULL,
 \item{spacechar}{Space for characters in the legends}
 
 \item{ystep}{Step between annotation lines}
+
+\item{resdir}{Results directory.}
 }
 \description{
 Function to represent the natural histories of tumors

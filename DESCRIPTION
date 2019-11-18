@@ -1,19 +1,20 @@
 Package: Palimpsest
 Title: Package
-Version: 1.0.0
-Authors@R: c(person("Jayendra", "Shinde", email = "jayendra.shinde91@gmail.com", role =
-    c("aut", "cre")),person("Eric", "Letouzé", email = "eric.letouze@inserm.fr", role = 
-    "aut"))
-Author: Jayendra Shinde, Eric Letouzé
+Version: 2.0.0
+Authors@R: c(person(given = "Jayendra",family = "Shinde", email = "jayendra.shinde91@gmail.com", role =
+    c("aut", "cre")),person(given = "Eric",family = "Letouzé", email = "eric.letouze@inserm.fr", role = 
+    c("aut","cre")),person(given = "Benedict",family = "Monteiro", email = "benedictmonteiro1@gmail.com", role = 
+    c("aut","cre")))
+Author: Jayendra Shinde, Eric Letouzé, Benedict Monteiro
 Maintainer: Jayendra Shinde <jayendra.shinde91@gmail.com>,
-    Eric Letouzé <eric.letouze@inserm.fr>
+    Eric Letouzé <eric.letouze@inserm.fr>, Benedict Monteiro <benedictmonteiro1@gmail.com>
 Description: An R package for studying mutational and structural variant signatures
     along clonal evolution in cancer.
 License: MIT + file LICENSE
 Imports:
     reshape2 (>= 1.4.1),
     plyr (>= 1.8.3),
-    ggplot2 (>= 2.1.0),
+    ggplot2 (>= 3.1.0),
     gtools,
     lsa,
     gplots,       
@@ -26,9 +27,14 @@ Imports:
     Biobase,
     registry,
     doParallel,
-    RColorBrewer
+    RColorBrewer, 
+    scales,
+    spgs,
+    tibble,
+    ggpubr
 Depends:
-    R (>= 3.3.2),
+    R (>= 3.5.0),
+    dplyr,
     NMF,
     GenomicRanges
 Suggests:
@@ -40,4 +46,4 @@ biocViews: SomaticMutation
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1.9000

@@ -4,7 +4,7 @@
 \alias{palimpsest_cnvProfile}
 \title{palimpsest_cnvProfile}
 \usage{
-palimpsest_cnvProfile(vcf = NULL, VAF.color = NULL)
+palimpsest_cnvProfile(vcf = NULL, VAF.color = NULL, cyto = NULL)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

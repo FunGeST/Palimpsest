@@ -7,10 +7,13 @@
 deconvolution_compare(new_signatures, COSMIC_Signatures)
 }
 \arguments{
-\item{new_signatures}{Data frame of de-novo extracted mutational signatures}
+\item{new_signatures}{Data frame of de novo extracted mutational signatures}
 
-\item{COSMIC_Signatures}{Data frame of already published mutational signatures (Example: Alexandrov et.al,2013)}
+\item{COSMIC_Signatures}{Data frame of reference mutational signatures (The reference SBS_cosmic, DBS_cosmic & ID_cosmic matrices are taken from Alexandrov et al. (2018)).}
 }
 \description{
-Function to calculate cosine similarity scores between two sets of mutational signatures.
+Function to calculate cosine similarity scores between two sets of mutational signatures (e.g. SBS COSMIC signatures vs Palimpsest de novo signatures).
+}
+\examples{
+SBS_cosine_similarities <- deconvolution_compare(SBS_denovo_sigs,SBS_cosmic)
 }

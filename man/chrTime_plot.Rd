@@ -4,7 +4,8 @@
 \alias{chrTime_plot}
 \title{chrTime_plot}
 \usage{
-chrTime_plot(vcf = NULL, point.mut.time = NULL, resdir = resdir)
+chrTime_plot(vcf = NULL, point.mut.time = NULL, resdir = resdir,
+  cyto = cytoband_hg19)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations with multiplicity annotation, as obtained using chrTime_annot function}

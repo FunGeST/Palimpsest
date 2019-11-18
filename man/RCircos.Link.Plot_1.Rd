@@ -9,7 +9,19 @@ RCircos.Link.Plot_1(link.data = NULL, track.num = NULL,
   is.sorted = TRUE, lineWidth = rep(1, nrow(link.data)))
 }
 \arguments{
-\item{lineWidth}{}
+\item{link.data}{link.data}
+
+\item{track.num}{track.num}
+
+\item{by.chromosome}{by.chromosome}
+
+\item{start.pos}{start.pos}
+
+\item{genomic.columns}{genomic.columns}
+
+\item{is.sorted}{is.sorted}
+
+\item{lineWidth}{lineWidth}
 }
 \description{
 RCircos.Link.Plot_1

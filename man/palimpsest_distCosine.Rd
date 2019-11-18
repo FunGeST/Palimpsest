@@ -5,10 +5,16 @@
 \title{palimpsest_distCosine}
 \usage{
 palimpsest_distCosine(m)
+
+palimpsest_distCosine(m)
 }
 \arguments{
-\item{required}{}
+\item{m}{input}
+
+\item{required}{m}
 }
 \description{
+Function to calculate cosine distance
+
 Function to calculate cosine distance
 }

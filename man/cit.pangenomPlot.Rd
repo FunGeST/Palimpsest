@@ -5,10 +5,11 @@
 \title{cit.pangenomPlot}
 \usage{
 cit.pangenomPlot(d = NULL, ycol = NULL, chrom = "chrom",
-  pos = "meanPos", startPos = "start", endPos = "end", colorscol = NULL,
-  cyto = NULL, absPos = "absPos", rectangleOption = FALSE,
-  plotCentro = TRUE, plotCentro.color = "lightgrey", plotChrom = TRUE,
-  plotnew = TRUE, plotyaxis = TRUE, plotxaxis = TRUE, yaxmark = NULL,
+  pos = "meanPos", startPos = "start", endPos = "end",
+  colorscol = NULL, cyto = NULL, absPos = "absPos",
+  rectangleOption = FALSE, plotCentro = TRUE,
+  plotCentro.color = "lightgrey", plotChrom = TRUE, plotnew = TRUE,
+  plotyaxis = TRUE, plotxaxis = TRUE, yaxmark = NULL,
   yaxlab = NULL, chromToPlot = c(1:22, "X", "Y"), xlim = NULL,
   CexAxis = 0.8, ...)
 }

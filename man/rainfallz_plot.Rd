@@ -4,7 +4,8 @@
 \alias{rainfallz_plot}
 \title{rainfallz_plot}
 \usage{
-rainfallz_plot(vcf, mutype.col = "mutype", cyto = NULL, resdir = resdir)
+rainfallz_plot(vcf, mutype.col = "mutype", cyto = NULL,
+  resdir = resdir)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

@@ -10,7 +10,25 @@ RCircos.Heatmap.Plot_1(heatmap.data = NULL, data.col = NULL,
   genomic.columns = 3, is.sorted = TRUE)
 }
 \arguments{
-\item{is.sorted}{}
+\item{heatmap.data}{heatmap.data}
+
+\item{data.col}{data.col}
+
+\item{track.num}{track.num}
+
+\item{side}{side}
+
+\item{min.value}{min.value}
+
+\item{max.value}{max.value}
+
+\item{inside.pos}{inside.pos}
+
+\item{outside.pos}{outside.pos}
+
+\item{genomic.columns}{genomic.columns}
+
+\item{is.sorted}{is.sorted}
 }
 \description{
 RCircos.Heatmap.Plot_1

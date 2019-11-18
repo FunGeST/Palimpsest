@@ -12,10 +12,9 @@
 #' @param namesColsToAdd Column names to give in the columns added to dfPos
 #' @param multseg required
 #'
-#' @return
 #' @export
 #' @import gtools
-#' @examples
+
 palimpsest_dfPosXSegm <- function(dfPos=NULL,
                                dfPos.chrom.col="chrom",
                                dfPos.pos.col="pos",
@@ -100,12 +99,11 @@ palimpsest_dfPosXSegm <- function(dfPos=NULL,
 #' palimpsest_distCosine
 #'
 #' Function to calculate cosine distance
-#' @param required
+#' @param required m 
 #'
-#' @return
 #' @export
 #' @importFrom lsa cosine
-#' @examples
+
 palimpsest_distCosine <- function(m)
 {
   nsamp <- nrow(m)
@@ -121,222 +119,6 @@ palimpsest_distCosine <- function(m)
   as.dist(1-res)
 }
 
-#' palimpsest_addMutationContextToVcf
-#'
-#' Function to add mutation contexts to vcf
-#' @param vcf vcf data frame containing the SNVs
-#' @param Reference_Genome Reference genome (e.g. BSgenome.Hsapiens.UCSC.hg19)
-#' @param chrom.col Name of column containing chromosomes (should be in chr1, chr2... format)
-#' @param start.col Name of column containing start position
-#' @param end.col Name of column containing end position
-#' @param ref.col Name of column containing reference base
-#' @param alt.col Name of column containing mutated base
-#' @param strand.mut.col Name of column containing mutation strand
-#' @param strand.gene.col Name of column containing gene strand
-#' @param sample.col Name of column containing sample names
-#' @param strand.ts.output.col Name of added column with transcribed or non transcribed strand
-#' @param substype.output.col Name of added column with substitution type
-#' @param ctx3.output.col Name of added column with 3 nucleotide context
-#' @param ctx5.output.col Name of added column with 5 nucleotide context
-#' @param mutcat3.output.col Name of added column with 3 nucleotide categories (includes substitution type and context)
-#' @param mutcat5.output.col Name of added column with 5 nucleotide categories (includes substitution type and context)
-#'
-#' @return
-#' @export
-#' @import VariantAnnotation
-#' @examples
-palimpsest_addMutationContextToVcf <- function(vcf,
-                                               Reference_Genome,
-                                               chrom.col="chr",
-                                               start.col = "start",
-                                               end.col="end",
-                                               ref.col="ref",
-                                               alt.col="alt",
-                                               strand.mut.col="strand.mut",
-                                               strand.gene.col="strand.gene",
-                                               sample.col="samplenames",
-                                               strand.ts.output.col="strand.ts",
-                                               substype.output.col="substype",
-                                               ctx3.output.col="context3",
-                                               ctx5.output.col="context5",
-                                               mutcat3.output.col="mutcat3",
-                                               mutcat5.output.col="mutcat5")
-{
-    requireNamespace("VariantAnnotation", quietly = TRUE)
-    nostrand <- which(is.na(vcf[,strand.gene.col]) | vcf[,strand.gene.col]=="*")
-    vcf[nostrand,strand.gene.col] <- "+"
-    vr <- VRanges(seqnames=vcf[,chrom.col],ranges=IRanges(start=vcf[,start.col],end=vcf[,end.col]),ref=vcf[,ref.col],alt=vcf[,alt.col],sampleNames=vcf[,sample.col])
-    vr@strand <- Rle(strand(vcf[, strand.mut.col]))
-    vr3 <- palimpsest_addMutationContextToVR(vr,ref=Reference_Genome, k=3,unify = TRUE)
-    vr5 <- palimpsest_addMutationContextToVR(vr,ref=Reference_Genome, k=5, unify = TRUE)
-    vcf[,strand.mut.col] <- as.character(vr3@strand)
-    vcf[,strand.ts.output.col] <- NA
-    vcf[which(vcf[,strand.gene.col] == "+" & vcf[,strand.mut.col] =="-"), strand.ts.output.col] <- "ts"
-    vcf[which(vcf[,strand.gene.col] == "+" & vcf[,strand.mut.col] =="+"), strand.ts.output.col] <- "nt"
-    vcf[which(vcf[,strand.gene.col] == "-" & vcf[,strand.mut.col] =="+"), strand.ts.output.col] <- "ts"
-    vcf[which(vcf[,strand.gene.col] == "-" & vcf[,strand.mut.col] =="-"), strand.ts.output.col] <- "nt"
-    vcf[nostrand,strand.gene.col] <- NA;vcf[nostrand,strand.ts.output.col] <- NA
-    vcf[,substype.output.col] <- as.character(vr3$alteration)
-    vcf[,ctx3.output.col] <- as.character(vr3$context)
-    vcf[,mutcat3.output.col] <- paste(vcf[,substype.output.col],vcf[,ctx3.output.col],sep="_")
-    vcf[which(vcf[,mutcat3.output.col]=="NA_NA"),mutcat3.output.col] <- NA
-    vcf[,ctx5.output.col] <- as.character(vr5$context)
-    vcf[,mutcat5.output.col] <- paste(vcf[,substype.output.col],vcf[,ctx5.output.col],sep="_")
-    vcf[which(vcf[,mutcat5.output.col]=="NA_NA"),mutcat5.output.col] <- NA
-    return(vcf)
-  }
-
-#' palimpsest_addSVcategoriesToVcf
-#'
-#' Function to add SV mutation categories to vcf
-#' @param sv vcf data frame containing the SVs
-#' @param type.col SV type description column name in mutation_data ["DEL","DUP","INV"]
-#' @param sample.col Sample column name in sv
-#' @param CHROM_1.col Start chromosome column name in sv
-#' @param CHROM_2.col End chromosome column name in sv
-#' @param POS_1.col Start position column name in sv
-#' @param POS_2.col End position column name in sv
-#' @param resdir Result directory
-#'
-#' @return
-#' @export
-#'
-#' @examples
-palimpsest_addSVcategoriesToVcf <- function (sv = sv, type.col = "Type", sample.col = "Sample",
-                                             CHROM_1.col = "CHROM", CHROM_2.col = "CHROM", POS_1.col = "POS",
-                                             POS_2.col = "POS", resdir = resdir)
-{
-  sv$Size <- 0
-  sv$size.cat <- NA
-  ind <- which(sv[, type.col] %in% c("DEL", "DUP", "INV"))
-  sv[ind, "Size"] <- sv[ind, POS_2.col] - sv[ind, POS_1.col]
-  sv[which(sv$Size <= 1000), "size.cat"] <- "a_0-1kb"
-  sv[which(sv$Size > 1000 & sv$Size <= 10000), "size.cat"] <- "b_1-10kb"
-  sv[which(sv$Size > 10000 & sv$Size <= 1e+05), "size.cat"] <- "c_10-100kb"
-  sv[which(sv$Size > 1e+05 & sv$Size <= 1e+06), "size.cat"] <- "d_100kb-1Mb"
-  sv[which(sv$Size > 1e+06 & sv$Size <= 1e+07), "size.cat"] <- "e_1-10Mb"
-  sv[which(sv$Size > 1e+07), "size.cat"] <- "f_>10Mb"
-  sv$Clustered <- 0
-  sv$Cluster <- NA
-  minbkp <- 10
-  for (s in unique(sv[, sample.col])) {
-    print(s)
-    chr <- pos <- c()
-    indsamp <- which(sv[, sample.col] == s)
-    for (i in indsamp) {
-      chr <- c(chr, sv[i, CHROM_1.col], sv[i, CHROM_2.col])
-      pos <- c(pos, as.numeric(sv[i, c(POS_1.col, POS_2.col)]))
-    }
-    bkp <- data.frame(chr, pos, dist = NA, stringsAsFactors = F)
-    tmp <- sub("X", 23, sub("Y", 24, bkp$chr))
-    bkp <- bkp[order(tmp, bkp$pos), ]
-    for (c in unique(bkp$chr)) {
-      ind <- which(bkp$chr == c)
-      if (length(ind) > 1) {
-        bkp[ind, ] <- bkp[ind[order(bkp[ind, "pos"])],
-                          ]
-        bkp[ind[-1], "dist"] <- bkp[ind[-1], "pos"] -
-          bkp[ind[-length(ind)], "pos"]
-      }
-    }
-    bed <- bkp[, c(1, 2, 2, 3)]
-    indi <- bed2index(bed, sort = TRUE)
-    tmp <- cluster.region(x = indi, distance = "1000000",
-                          verbose = T)
-    tmp[, "chr"] <- data.frame(do.call("rbind", strsplit(as.character(tmp$index), ":", fixed = TRUE)))[1]
-    tmp[, c("start", "end")] <- data.frame(do.call("rbind", strsplit(as.character(tmp$index), "-", fixed = TRUE)))[2]
-    bkp$cluster <- tmp[, "regionIndex"]
-    bkp$clustered <- 0
-    tt <- table(bkp$cluster)
-    for (clst in names(which(tt >= 10))) {
-      bkp[which(bkp$cluster == clst), "clustered"] <- 1
-    }
-    for (i in which(bkp$clustered == 1)) {
-      ind <- which(sv[, sample.col] == s & (paste(sv[,CHROM_1.col], sv[, POS_1.col]) == paste(bkp$chr[i],bkp$pos[i]) | paste(sv[, CHROM_2.col], sv[, POS_2.col]) == paste(bkp$chr[i], bkp$pos[i])))
-      sv[ind, "Clustered"] <- 1
-      sv[ind, "Cluster"] <- paste(s, bkp[i, "cluster"], sep = ".")
-    }
-    chr <- pos <- clustered <- c()
-    indsamp <- which(sv[, sample.col] == s)
-    for (i in indsamp) {
-      chr <- c(chr, sv[i, CHROM_1.col], sv[i, CHROM_2.col])
-      pos <- c(pos, as.numeric(sv[i, c(POS_1.col, POS_2.col)]))
-      clustered <- c(clustered, rep(sv[i, "Clustered"], 2))
-    }
-    bkp <- data.frame(chr, pos, clustered, stringsAsFactors = F)
-    bkp$clustered[is.na(bkp$clustered)] <- 0
-  }
-  sv$Clustered[is.na(sv$Clustered)] <- 0
-  sv$Category <- paste(sv[, type.col], substr(sv$size.cat, 3, nchar(sv$size.cat)), "clust", sv$Clustered, sep = "_")
-  sv$Category <- sub("BND_0-1kb", "BND", sv$Category)
-  return(sv)
-}
-
-#' palimpsest_addMutationContextToVR
-#'
-#' Function to add mutation context to VRanges object
-#' @param vr VRanges object containing the mutations
-#' @param ref Reference genome (e.g. BSgenome.Hsapiens.UCSC.hg19)
-#' @param k Context length
-#' @param check.ref Should consistence with the reference genome be checked?
-#' @param check.strand Should mutations on the minus strand be converted (only useful if the input file contains minus strand mutations)
-#' @param unify Should substition types be unified to the common 6 mutation types (CA, CG, CT, TA, TC, TG)
-#'
-#' @return
-#' @export
-#' @import Biostrings
-#' @examples
-palimpsest_addMutationContextToVR <- function (vr, ref, k = 3, check.ref = TRUE, check.strand = FALSE, 
-                                               unify = TRUE) 
-{
-  requireNamespace("Biostrings", quietly = TRUE)
-  requireNamespace("GenomicRanges", quietly = TRUE)
-  
-  if (any(width(vr)) != 1) 
-    stop("SNVs must have width of 1.")
-  if (k%%2 != 1) 
-    stop("'k' must be odd.")
-  mid = (k + 1)/2
-  gr = granges(vr)
-  strand.mut = strand(gr)
-  if (any(strand.mut == "*")) 
-    stop("The strand must be explicit, in order to read the correct strand.")
-  ranges = GenomicRanges::resize(gr, k, fix = "center")
-  context = getSeq(ref, ranges)
-  ref_base = DNAStringSet(ref(vr))
-  alt_base = DNAStringSet(alt(vr))
-  if (check.ref) {
-    ref0 = subseq(context, mid, mid)
-    idx_invalid = (ref0 != ref_base)
-    if (any(idx_invalid)) 
-      warning(sprintf("References do not match in %d cases", 
-                      sum(idx_invalid)))
-  }
-  if (check.strand) {
-    idx_minus = (strand.mut == "-")
-    context[idx_minus] = reverseComplement(context[idx_minus])
-    ref_base[idx_complement] = reverseComplement(ref_base[idx_complement])
-    alt_base[idx_complement] = reverseComplement(alt_base[idx_complement])
-    strand.mut[idx_minus] = "+"
-  }
-  if (unify) {
-    idx_complement = as.character(ref_base) %in% c("A", 
-                                                   "G")
-    context[idx_complement] = reverseComplement(context[idx_complement])
-    ref_base[idx_complement] = reverseComplement(ref_base[idx_complement])
-    alt_base[idx_complement] = reverseComplement(alt_base[idx_complement])
-    strand.mut[idx_complement] = "-"
-  }
-  alteration = as.character(xscat(ref_base, alt_base))
-  alteration[idx_invalid] <- NA
-  context = as.character(context)
-  context[idx_invalid] <- NA
-  vr$alteration = alteration
-  vr$context = context
-  vr@strand = Rle(strand.mut)
-  return(vr)
-}
-
 #' palimpsest_makeMutypeMatFromVcf
 #'
 #' Function to create a matrix in mutation type x sample format with either counts or proportions
@@ -346,10 +128,8 @@ palimpsest_addMutationContextToVR <- function (vr, ref, k = 3, check.ref = TRUE,
 #' @param mutypes List of categories to be included in the output
 #' @param proportion If TRUE, the output matrix will indicate mutation proportions instead of numbers
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 palimpsest_makeMutypeMatFromVcf <- function(vcf,
                                  sample.col="sample",
                                  mutcat.col="mutcat3",
@@ -371,10 +151,8 @@ palimpsest_makeMutypeMatFromVcf <- function(vcf,
 #' @param x bed file
 #' @param sort required
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 bed2index <- function(x, sort = TRUE) {
   index <- paste0(
     x[, 1],
@@ -398,10 +176,8 @@ bed2index <- function(x, sort = TRUE) {
 #' @param endPos the column in d giving the end base pair position
 #' @param chromNum the name of added column whith chromosome from 1 to 24
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.genomOrder <- function(d,
                             chrom     = "chrom",
                             pos       = "pos",
@@ -444,10 +220,8 @@ cit.genomOrder <- function(d,
 #' @param absPos name of added column giving absolute pangenomic order
 #' @param chromNum the column in x giving the chromosome position with X = 23 & Y =24
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.pangenomCoord <- function( x,
                                 chrom="chrom",
                                 pos="meanPos",
@@ -548,12 +322,9 @@ cit.pangenomCoord <- function( x,
 #' @param yaxmark  y axis 'at' parameter (considered only if {plotyaxis = TRUE})
 #' @param yaxlab y axis 'labels' parameter (considered only if {plotyaxis = TRUE})
 #' @param chromToPlot a vector of the chromosomes to be plotted (default c(1:22,"X","Y"))
-
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.pangenomPlot <- function(d=NULL,
                               ycol=NULL,
                               chrom="chrom",
@@ -642,10 +413,8 @@ cit.pangenomPlot <- function(d=NULL,
 #' Function to convert factors factors in a data frame to characters
 #' @param d Data frame to be converted
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 factochar <- function(d) {
   for(i in 1:ncol(d)) if(is.factor(d[,i])) d[,i] <- as.character(d[,i])
   d
@@ -657,10 +426,8 @@ factochar <- function(d) {
 #' @param d data.frame which columns include genomic position information
 #' @param chrom the column in \code{d} giving the chromosome position
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.chromString2num <- function (d,
                                   chrom = "chrom",
                                   chromNum  = "chrNum"
@@ -691,13 +458,11 @@ cit.chromString2num <- function (d,
 #' wrapping of the function 'density' adding down and top points to the result
 #' @param x a numeric vector
 #' @param doplot boolean
-#' @param pc
+#' @param pc ?
 #' @param ...
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.density <- function(x,doplot=FALSE,pc=.05,...){
   dx <- density(x,na.rm=TRUE,...)
   ymax <- diff(range(dx$y))
@@ -724,17 +489,15 @@ cit.density <- function(x,doplot=FALSE,pc=.05,...){
 #'
 #' wrapping of the function 'cit.density' to control the maximum number of peaks
 #' @param x a numeric vector
-#' @param percentHighestPeak
-#' @param maxNbPeaks
-#' @param minDeltaBetweenPeaks
-#' @param deltaApproach
+#' @param percentHighestPeak percentHighestPeak
+#' @param maxNbPeaks maxNbPeaks
+#' @param minDeltaBetweenPeaks minDeltaBetweenPeaks
+#' @param deltaApproach deltaApproach
 #' @param doplot boolean
 #' @param ...
-#'
-#' @return
+#' 
 #' @export
-#'
-#' @examples
+
 cit.peaks <- function(x,
                        percentHighestPeak=.2,
                        maxNbPeaks=NULL,
@@ -849,10 +612,8 @@ cit.peaks <- function(x,
 #' @param quant if TRUE (default FALSE) the \code{x} is discretize by quantile and \code{lim} is considered as cut-off(s) for quantile, ie 0<lim<1
 #' @param addlevels add character levels indicating the cut-offs (i.e. for un cut-off iqq levels=c("<iqq",">=iqq") )
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 cit.discretize <- function(x, lim, quant = FALSE, addlevels = FALSE){
 
   lim <- sort(lim)
@@ -889,10 +650,8 @@ cit.discretize <- function(x, lim, quant = FALSE, addlevels = FALSE){
 #' @param d Data frame to be converted
 #' @param ncmax Maximum number of characters for numeric fields
 #'
-#' @return
 #' @export
-#'
-#' @examples
+
 factoall <- function (d, ncmax = 10)
 {
   n <- ncol(d)
@@ -909,4 +668,253 @@ factoall <- function (d, ncmax = 10)
   }
   d
 }
+
+
+#' "Not in" function 
+#'
+#' The opposite of << %in% >>, used by several palimpsest functions.
+#' @keywords Signatures
+#' @export
+#' @examples
+#' days <- c("monday","tuesday","wednesday","thursday","friday","saturday","sunday")
+#' weekdays <- days[days %!in% c("saturday", "sunday")]
+
+'%!in%' <- function(x,y)!('%in%'(x,y))
+
+
+
+#' signature_colour_generator
+#'
+#' Generates colours for de novo signatures.
+#' @param signature_names Character vector of the names of the mutational signatures for which colours are to be generated.
+#' @keywords Signatures
+#' @export
+#' @import RColorBrewer
+#' @examples
+#' SBS_colours <- signature_colour_generator(signature_names = rownames(SBS_denovo_sigs))
+
+signature_colour_generator <- function(signature_names = NULL){
+  requireNamespace("RColorBrewer",quietly = T)
+  qual_col_pals <- brewer.pal.info[brewer.pal.info$category == 'qual',]
+  sig_cols <- unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+  sig_cols <- sig_cols[sample.int(length(sig_cols),length(signature_names))];names(sig_cols) <- signature_names
+  return(sig_cols)
+}
+
+
+#' load2object
+#'
+#' loads object to a particular name. 
+#' @export 
+
+load2object <- function (filename) 
+{
+  if (file.exists(filename)) 
+    return(eval(parse(text = load(filename))))
+  cat(paste("error! the file ", filename, 
+            " was not found :("))
+  NULL
+}
+
+
+
+
+#' palimpsest_distCosine
+#'
+#' Function to calculate cosine distance
+#' @param m input
+#'
+#' @export
+#' @importFrom lsa cosine
+
+palimpsest_distCosine <- function(m)
+{
+  nsamp <- nrow(m)
+  res <- matrix(NA,nrow=nsamp,ncol=nsamp)
+  rownames(res) <- colnames(res) <- rownames(m)
+  for(i in 1:nsamp)
+  {
+    for(j in 1:nsamp)
+    {
+      res[i,j] <- cosine(m[i,],m[j,])
+    }
+  }
+  as.dist(1-res)
+}
+
+
+#' compare_results
+#'
+#' compare the results of one or two de novo extraction(s) to a set of reference signatures (e.g. Palimpsest SBS de novo result to SBS COSMIC de novo signatures)
+#' @export
+
+compare_results <- function(reference_sigs = NA, extraction_1 = NA, extraction_2 = NULL, extraction_1_name ="Palimp", extraction_2_name = NA, lower_threshold = 0.6, upper_threshold = 0.9){
+
+  #ifelse(!is.na(extraction_2),print("good to go"),stop("function currently needs 2 denovo sets to work"))
+  if(!missing(extraction_2)){
+    rownames(extraction_1) <- c(paste0(extraction_1_name,"_",c(1:nrow(extraction_1))))
+    rownames(extraction_2) <- c(paste0(extraction_2_name,"_",c(1:nrow(extraction_2))))
+    
+    refs <- rownames(reference_sigs)
+    denovs1 <- rownames(extraction_1)
+    denovs2 <- rownames(extraction_2)
+    
+    longest <- max(c(length(denovs1),length(denovs2)))
+    
+    res <- as.data.frame(matrix(nrow = nrow(reference_sigs)+longest,ncol = 0)) %>% 
+      mutate(References = NA, denovo1 = NA, ref_denovo1_cos = NA, denovo2 = NA, ref_denovo2_cos = NA, denovo1_denovo2_cos = NA, keep_version = NA)
+  
+    res$References[1:nrow(reference_sigs)] <- c(rownames(reference_sigs))
+                                                
+                                                
+    # perfrom cosine similarity analysis
+    mutmat1 <- t(rbind(extraction_1, reference_sigs))
+    m1 <- as.matrix(palimpsest_distCosine(t(mutmat1)))
+    m1 <- 1-m1
+    mutmat2 <- t(rbind(extraction_2, reference_sigs))
+    m2 <- as.matrix(palimpsest_distCosine(t(mutmat2)))
+    m2 <- 1-m2
+    mutmat3 <- t(rbind(extraction_1, extraction_2))
+    m3 <- as.matrix(palimpsest_distCosine(t(mutmat3)))
+    m3 <- 1-m3
+    
+    # make results table
+    for(i in 1:nrow(reference_sigs)){
+      sig <- res$References[i]
+      if(max(m1[sig,colnames(m1) %in% denovs1]) > lower_threshold){
+        res$ref_denovo1_cos[i] <- max(m1[sig,colnames(m1) %in% denovs1])
+        res$denovo1[i] <- rownames(m1)[m1[sig,]==res$ref_denovo1_cos[i]]
+      }
+      if( max(m2[sig,colnames(m2) %in% denovs2]) > lower_threshold){
+        res$ref_denovo2_cos[i] <- max(m2[sig,colnames(m2) %in% denovs2])
+        res$denovo2[i] <- rownames(m2)[m2[sig,]==res$ref_denovo2_cos[i]]
+      }
+    }
+    
+    manque1 <- denovs1[denovs1 %!in% res$denovo1]
+    manque2 <- denovs2[denovs2 %!in% res$denovo2]
+    
+    if(length(manque1) > 0){
+      for(i in 1:length(manque1)){
+          res$denovo1[length(refs)+i] <- manque1[i]
+          sig <- manque1[i]
+          res$denovo1_denovo2_cos[length(refs)+i] <- max(m3[sig,colnames(m3) %in% denovs2])
+          res$denovo2[length(refs)+i] <- rownames(m3)[m3[sig,]==res$denovo1_denovo2_cos[length(refs)+i]]
+      }
+    }
+    for(i in 1:(length(refs)+length(manque1))){
+      if(!is.na(res$denovo1[i]) & !is.na(res$denovo2[i])) res$denovo1_denovo2_cos[i]<- m3[res$denovo1[i],res$denovo2[i]]
+    }
+    
+    manque2x <- manque2[manque2 %!in% res$denovo2]
+    if(length(manque1) > 0){
+      for(i in 1:length(manque2x)){
+        if(length(manque2x)==0) break
+        res$denovo2[length(refs)+i+length(manque1)] <- manque2x[i]
+      }
+    }
+    
+    for(i in (length(refs)+1):nrow(res)){
+      sig1 <- res$denovo1[i]; sig2 <- res$denovo2[i]
+      if(!is.na(sig1)){
+        if(max(m1[sig1,colnames(m1) %in% refs]) > lower_threshold){
+          res$ref_denovo1_cos[i] <- max(m1[sig1,colnames(m1) %in% refs])
+          res$References[i] <- colnames(m1)[m1[sig1,]==res$ref_denovo1_cos[i]]
+          if(!is.na(sig2)) res$ref_denovo2_cos[i] <- m2[sig2,res$References[i]]
+        }
+      }
+      if(!is.na(sig2)){
+        if(max(m2[sig2,colnames(m2) %in% refs]) > lower_threshold){
+          res$ref_denovo2_cos[i] <- max(m2[sig2,colnames(m2) %in% refs])
+          res$References[i] <- colnames(m2)[m2[sig2,]==res$ref_denovo2_cos[i]]
+          if(!is.na(sig1)) res$ref_denovo1_cos[i] <- m1[sig1,res$References[i]]
+        }
+      }
+    }
+    
+    # add suggestion annotations
+    res_f = res %>% 
+      filter(rowSums(is.na(.)) < ncol(.)) %>% 
+      mutate(keep = ifelse((ref_denovo1_cos > lower_threshold & ref_denovo2_cos > lower_threshold)|ref_denovo1_cos > upper_threshold | ref_denovo2_cos > upper_threshold,"Yes",NA)) #mark those to keep
+    
+    res_f$keep[res_f$denovo1_denovo2_cos > upper_threshold] <- "Yes"
+    res_f$keep[is.na(res_f$keep)] <- "No"
+    
+    res_f = res_f %>%
+      mutate(keep_version = ifelse(keep == "Yes" & References %in% refs & ref_denovo1_cos > upper_threshold | ref_denovo2_cos > upper_threshold , "Keep_Reference",keep_version)) #highlight for which ref is defo best
+      
+    res_f = res_f %>% 
+      mutate(keep_version = ifelse(keep == "Yes" & is.na(keep_version),"Check_denovo_results",keep_version)) #highlight for which user should check
+    res_f$keep_version[res_f$keep == "No"] <- "Discard"
+    duped <- unique(res_f$References[duplicated(res_f$References) & !is.na(res_f$References)])
+    res_f$keep_version[res_f$References %in% duped] <- "Check_denovo_results"
+    
+    colnames(res_f) <- c("Ref_Signature",paste0(extraction_1_name,"_Equivalent"),paste0("Ref_",extraction_1_name,"_cosine_score"),paste0(extraction_2_name,"_Equivalent"),
+                         paste0("Ref_",extraction_2_name,"_cosine_score"), paste0(extraction_1_name,"_",extraction_2_name,"_cosine_score"),"Suggested_Action","Keep")
+    
+    res_f <- res_f[,c(1:7)]
+    res_f
+  }
+  else{
+    rownames(extraction_1) <- c(paste0(extraction_1_name,"_",c(1:nrow(extraction_1))))
+
+  refs <- rownames(reference_sigs)
+  denovs1 <- rownames(extraction_1)
+
+  
+  res <- as.data.frame(matrix(nrow = nrow(reference_sigs)+length(denovs1),ncol = 0)) %>% 
+    mutate(References = NA, denovo1 = NA, ref_denovo1_cos = NA, keep_version = NA)
+  
+  res$References[1:nrow(reference_sigs)] <- c(rownames(reference_sigs))
+  
+  # perfrom cosine similarity analysis
+  mutmat1 <- t(rbind(extraction_1, reference_sigs))
+  m1 <- as.matrix(palimpsest_distCosine(t(mutmat1)))
+  m1 <- 1-m1
+
+  
+  # make results table
+  for(i in 1:nrow(reference_sigs)){
+    sig <- res$References[i]
+    if(max(m1[sig,colnames(m1) %in% denovs1]) > lower_threshold){
+      res$ref_denovo1_cos[i] <- max(m1[sig,colnames(m1) %in% denovs1])
+      res$denovo1[i] <- rownames(m1)[m1[sig,]==res$ref_denovo1_cos[i]]
+    }
+  }
+  
+  manque1 <- denovs1[denovs1 %!in% res$denovo1]
+  
+  if(length(manque1) > 0){
+    for(i in 1:length(manque1)){
+      res$denovo1[length(refs)+i] <- manque1[i]
+    }
+  }
+
+  
+  
+  # add suggestion annotations
+  res_f = res %>% 
+    filter(rowSums(is.na(.)) < ncol(.)) %>% 
+    mutate(keep = ifelse((ref_denovo1_cos > lower_threshold)|ref_denovo1_cos > upper_threshold,"Yes",NA)) #mark those to keep
+  
+  res_f$keep[is.na(res_f$keep)] <- "No"
+  
+  res_f = res_f %>%
+    mutate(keep_version = ifelse(keep == "Yes" & References %in% refs & ref_denovo1_cos > upper_threshold, "Keep_Reference",keep_version)) #highlight for which ref is defo best
+  
+  res_f = res_f %>% 
+    mutate(keep_version = ifelse(keep == "Yes" & is.na(keep_version),"Check_denovo_results",keep_version)) #highlight for which user should check
+  res_f$keep_version[res_f$keep == "No"] <- "Discard"
+  duped <- unique(res_f$References[duplicated(res_f$References) & !is.na(res_f$References)])
+  res_f$keep_version[res_f$References %in% duped] <- "Check_denovo_results"
+  
+  colnames(res_f) <- c("Ref_Signature",paste0(extraction_1_name,"_Equivalent"),paste0("Ref_",extraction_1_name,"_cosine_score"),
+                       "Suggested_Action","Keep")
+  
+  res_f <- res_f[,c(1:4)]
+  res_f
+    
+}
+}
+
 
