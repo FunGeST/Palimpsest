@@ -276,6 +276,6 @@ palimpsest_plotTumorHistories(vcf = vcf_cna, sv.vcf = SV.vcf,cna_data =  cna_dat
 ##################################################################################################
 #-------------------------------------------------------------------------------------------------
 # In [**Introduction to Palimpsest** you can find comprehensive examples and explanations for the functions.
-# Link: https://github.com/FunGeST/Palimpsest/tree/master/Files/vignette_palimpsest.pdf
+# Link: https://github.com/FunGeST/Palimpsest/tree/master/Files/vignette_palimpsest_2.0.pdf
 #-------------------------------------------------------------------------------------------------
 ##################################################################################################
