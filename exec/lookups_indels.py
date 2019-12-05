@@ -245,7 +245,7 @@ def annotate_simple_indel(input_path, output_path):
                 if test_chromosome == 'M': test_chromosome = 'MT'
             else: # assume no leading 'chr' prefix
                 test_chromosome = chromosome
-        elif ref_genome in ('GRCh38', 'hs38'):
+        elif ref_genome in ('GRCh38', 'hg38'):
             lookup_ref_genome = 'grch38'
             # should all start with 'chr'
             if chromosome.startswith('chr'):

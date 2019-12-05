@@ -100,7 +100,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     vcf <- add_DBS_cats_ToVCF(vcf = vcf,DBS_mutations_only = F)
   }
   if(add_ID_cats == TRUE & .Platform$OS.type != "windows"){
-    vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir)
+    vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir, genome = genome_build)
   }
   if(add_ID_cats == TRUE & .Platform$OS.type == "windows") warning("Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.). All other Palimpsest functions work on windows.")
   return(vcf)
@@ -333,11 +333,12 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
 #' @param tool_dir Path to folder containing PCAWG7-data-preparation-version-1.5 tool.
 #' @param ref_fasta Path to fasta file for reference genome of choice (e.g. hg19 genome).
 #' @param palimpdir_man Path to palimpsest directory entered manually. 
+#' @param genome Taken from annotate_VCF function.
 #' @keywords Signatures
 #' @examples
 #' vcf <- add_ID_cats_ToVCF(vcf = vcf,ref_fasta = ref_fasta)
 
-add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA){
+add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, genome = NA){
   if((Sys.which("python2.7")=="")==TRUE) stop("python 2.7 must be installed on this device and accessible to R to allow indel categories to be added. (see README for more information)")
   if(nrow(filter(vcf, Type %in% c("INS","DEL"))) == 0) warning("No rows of the VCF corresponding to insertions or deletions were detected.")
   palimpdir = palimpdir_man
@@ -370,7 +371,7 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA){
   
   python_vcf = vcf %>% 
     filter(Type != "SNV") %>% 
-    mutate(Start = POS, End = POS,col0="x", col3 = "y", Genome = "GRCh37",col11 = "1",col12 = "2", CHROM = sub("chr", "", CHROM)) %>% 
+    mutate(Start = POS, End = POS,col0="x", col3 = "y", Genome = paste(genome),col11 = "1",col12 = "2", CHROM = sub("chr", "", CHROM)) %>% 
     order_vcf() %>% 
     dplyr::select(col0,Unique,col3,Genome,Type,CHROM,Start,End,REF,ALT,col11,col12)
 
