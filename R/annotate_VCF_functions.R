@@ -368,10 +368,15 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, 
   nums <- c(1:nrow(vcf))
   vcf = vcf %>% 
     mutate(Unique = paste0(Sample,"_",nums))
+
+  genome_python = NA
+  if(genome == "hg19") genome_python = "GRCh37"
+  if(genome == "hg38") genome_python = "GRCh38"
+  if(is.na(genome_python)) stop("indel genome issue")
   
   python_vcf = vcf %>% 
     filter(Type != "SNV") %>% 
-    mutate(Start = POS, End = POS,col0="x", col3 = "y", Genome = paste(genome),col11 = "1",col12 = "2", CHROM = sub("chr", "", CHROM)) %>% 
+    mutate(Start = POS, End = POS,col0="x", col3 = "y", Genome = genome_python,col11 = "1",col12 = "2", CHROM = sub("chr", "", CHROM)) %>% 
     order_vcf() %>% 
     dplyr::select(col0,Unique,col3,Genome,Type,CHROM,Start,End,REF,ALT,col11,col12)
 
