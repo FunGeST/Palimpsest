@@ -214,7 +214,7 @@ dev.off()
 
 
 #-------------------------------------------------------------------------------------------------
-# 8] Timing Chromosomal Gains
+# 9] Timing Chromosomal Gains
 #-------------------------------------------------------------------------------------------------
 resdir <- file.path(resdir_parent,"ChromosomeDups_timing/");if(!file.exists(resdir)){dir.create(resdir)}
 
@@ -227,7 +227,7 @@ chrTime_plot(vcf = vcf_cna, point.mut.time = point.mut.time, resdir = resdir,cyt
 
 
 #-------------------------------------------------------------------------------------------------
-# 9] Structural variant (SV) signature analysis:
+# 10] Structural variant (SV) signature analysis:
 #-------------------------------------------------------------------------------------------------
 resdir <- file.path(resdir_parent,"SV_signatures/");if(!file.exists(resdir)){dir.create(resdir)}
 
@@ -262,7 +262,7 @@ SV.vcf <- signature_origins(input = SV.vcf,Type = "SV",signature_contribution = 
 
 
 #-------------------------------------------------------------------------------------------------
-# 10] Visualise the natural history of tumour samples:
+# 11] Visualise the natural history of tumour samples:
 #-------------------------------------------------------------------------------------------------
 resdir <- file.path(resdir_parent,"Natural_history/");if(!file.exists(resdir)){dir.create(resdir)}
 
