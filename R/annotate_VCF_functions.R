@@ -5,7 +5,6 @@
 #' @param add_strand_and_SBS_cats Logical indicating whether or not strand, gene and SBS category annotations are to be added (defaults to TRUE).
 #' @param add_DBS_cats Logical indicating whether or not DBS category annotations are to be added (defaults to TRUE).
 #' @param add_ID_cats Logical indicating whether or not Indel category annotations are to be added (defaults to FALSE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).
-#' @param genome_build Enter either "hg19" or "hg38".
 #' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE. 
 #' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19).
 #' @param palimpdir If you received an error when trying to add indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from GitHub.
@@ -17,13 +16,16 @@
 #' @examples
 #'vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta", palimpdir = "~/Code/Palimpsest/")
 
-annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = T, add_ID_cats = F, genome_build = "hg19",
+annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = T, add_ID_cats = F, 
                          ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NA){
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5) stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
   if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions marked 'INS', please change accordingly")
   if(genome_build %!in% c("hg19","hg38")) stop("genome_build must be either hg19 or hg38")
   vcf <- order_vcf(vcf)
+
+  if(ref_genome@pkgname == "BSgenome.Hsapiens.UCSC.hg19") genome_build = "hg19"
+  if(ref_genome@pkgname == "BSgenome.Hsapiens.UCSC.hg38") genome_build = "hg38"
   
   chroms <- unique(vcf$CHROM)
   if (1 %in% chroms == TRUE)  vcf$CHROM <- paste0("chr", vcf$CHROM)
