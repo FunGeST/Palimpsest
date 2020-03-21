@@ -10,6 +10,7 @@
 # Load Palimpsest package
 library(Palimpsest)
 library(BSgenome.Hsapiens.UCSC.hg19) # Reference genome of choice
+# library(BSgenome.Hsapiens.UCSC.hg38) # Use this package for hg38 data
 
 #-------------------------------------------------------------------------------------------------
 
@@ -18,24 +19,23 @@ library(BSgenome.Hsapiens.UCSC.hg19) # Reference genome of choice
 datadir <- "/Palimpsest/RUNNING_PALIMPSEST_EXAMPLE/LiC1162/" 
 
 # define parent results directory 
-resdir_parent <- "/Results/Palimpsest/"
-if(!file.exists(resdir_parent)) dir.create(resdir_parent)
+resdir_parent <- "/Results/Palimpsest/"; if(!file.exists(resdir_parent)) dir.create(resdir_parent)
 
 #-------------------------------------------------------------------------------------------------
 # 1] Load and annotate mutation data (VCF)
 #-------------------------------------------------------------------------------------------------
 
-load(paste0(datadir,"vcf.RData"))
+load(file.path(datadir,"vcf.RData"))
 
 vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
-                    ref_fasta = "/Genomes/Homo_sapiens_assembly19.fasta",add_ID_cats = FALSE)
+                    ref_fasta = "/Genomes/Homo_sapiens_assembly19.fasta", add_ID_cats = FALSE)
 
 
 #-------------------------------------------------------------------------------------------------
 # 2] Single base substitution (SBS) de novo mutational signature extraction  
 #    (N.B. these de novo extraction functions work for DBS, Indel & SV too!)
 #-------------------------------------------------------------------------------------------------
-resdir <- paste0(resdir_parent,"SBS_denovo/"); if(!file.exists(resdir))	dir.create(resdir) ## set results directory
+resdir <- file.path(resdir_parent,"SBS_denovo/"); if(!file.exists(resdir))	dir.create(resdir) ## set results directory
 
 # Extract de novo SBS signatures
 SBS_input <- palimpsest_input(vcf = vcf, Type = "SBS")
@@ -43,24 +43,24 @@ SBS_denovo_sigs <- NMF_Extraction(input_matrices = SBS_input, range_of_sigs = 2:
                                  resdir = resdir)
 
 # Compare the de novo signatures with published COSMIC signatures
-compare_tab <- compare_results(reference_sigs = SBS_cosmic,extraction_1 = SBS_denovo_sigs); compare_tab
-readr::write_delim(compare_tab,path = paste0(resdir,"Comparison_table.txt"))
+compare_tab <- compare_results(reference_sigs = SBS_cosmic, extraction_1 = SBS_denovo_sigs); compare_tab
+readr::write_delim(compare_tab, path = file.path(resdir,"Comparison_table.txt"))
 
 pdf(file.path(resdir, "Cosine_Similarity_Heatmap.pdf"), width = 11, height = 10)
-SBS_cosine_similarities <- deconvolution_compare(SBS_denovo_sigs,SBS_cosmic)
+SBS_cosine_similarities <- deconvolution_compare(SBS_denovo_sigs, SBS_cosmic)
 dev.off()
-save(SBS_cosine_similarities, file = paste0(resdir,"Cosine_Similarity_matrix.RData"))
+save(SBS_cosine_similarities, file = file.path(resdir, "Cosine_Similarity_matrix.RData"))
 
 
 # Define signature colours for plotting
 SBS_col <- signature_colour_generator(rownames(SBS_denovo_sigs))
 
 # Calculate and plot the exposure of the signatures across the series
-SBS_signatures_exp <- deconvolution_fit(input_matrices = SBS_input,input_signatures = SBS_denovo_sigs,
-                                        threshold = 6,resdir = resdir, signature_colours = SBS_col,
+SBS_signatures_exp <- deconvolution_fit(input_matrices = SBS_input, input_signatures = SBS_denovo_sigs,
+                                        threshold = 6, resdir = resdir, signature_colours = SBS_col,
                                         input_vcf = vcf)
 
-pdf(file.path(resdir,"signature_content_plot.pdf"),width=15,height=10)
+pdf(file.path(resdir, "signature_content_plot.pdf"), width=15, height=10)
 deconvolution_exposure(signature_colours = SBS_col, signature_contribution = SBS_signatures_exp)
 dev.off()
 
@@ -68,11 +68,12 @@ dev.off()
 #-------------------------------------------------------------------------------------------------
 # 3] Extract with published SBS COSMIC signatures
 #-------------------------------------------------------------------------------------------------
-resdir <- paste0(resdir_parent,"SBS_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
+resdir <- file.path(resdir_parent, "SBS_COSMIC_Extraction/"); if(!file.exists(resdir))	dir.create(resdir) 
 
 # select desired COSMIC SBS reference signatures 
-SBS_liver_names <- c("SBS1","SBS4","SBS5","SBS6","SBS12","SBS16","SBS17b","SBS18","SBS22","SBS23",
-                     "SBS24")
+SBS_liver_names <- c("SBS1", "SBS4", "SBS5", "SBS6", "SBS12", "SBS16", "SBS17b", "SBS18", "SBS22",
+                     "SBS23", "SBS24")
+
 for(new_name in c(SBS_liver_names[SBS_liver_names %!in% names(sig_cols)]))
   sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for new signatures 
 
@@ -80,23 +81,23 @@ SBS_liver_sigs <- SBS_cosmic[rownames(SBS_cosmic) %in% SBS_liver_names,]
 
 # calculate and plot the exposure of the signatures across the series
 SBS_signatures_exp <- deconvolution_fit(input_matrices = SBS_input, input_signatures = SBS_liver_sigs,
-                                        threshold = 6, signature_colours = sig_cols,resdir = resdir, 
+                                        threshold = 6, signature_colours = sig_cols, resdir = resdir, 
                                         input_vcf = vcf)
 
-pdf(file.path(resdir,"SBS_signature_content_plot.pdf"),width=15,height=10)
-deconvolution_exposure(signature_contribution = SBS_signatures_exp,signature_colours = sig_cols)
+pdf(file.path(resdir, "SBS_signature_content_plot.pdf"), width=15, height=10)
+deconvolution_exposure(signature_contribution = SBS_signatures_exp, signature_colours = sig_cols)
 dev.off()
 
 
 #-------------------------------------------------------------------------------------------------
 # 4] Extract with published double base substitution (DBS) COSMIC signatures
 #-------------------------------------------------------------------------------------------------
-resdir <- paste0(resdir_parent,"DBS_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
+resdir <- file.path(resdir_parent, "DBS_COSMIC_Extraction/"); if(!file.exists(resdir))	dir.create(resdir) 
 
 DBS_input <- palimpsest_input(vcf = vcf, Type = "DBS")
 
 # select desired COSMIC DBS reference signatures 
-DBS_liver_names <- c("DBS2","DBS4","DBS5","DBS7","DBS11")
+DBS_liver_names <- c("DBS2", "DBS4", "DBS5", "DBS7", "DBS11")
 for(new_name in c(DBS_liver_names[DBS_liver_names %!in% names(sig_cols)])) 
   sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for signatures currently without defined colours 
 
@@ -104,22 +105,22 @@ DBS_liver_sigs <- DBS_cosmic[rownames(DBS_cosmic) %in% DBS_liver_names,]
 
 # calculate and plot the exposure of the signatures across the series
 DBS_signatures_exp <- deconvolution_fit(input_matrices = DBS_input, input_signatures = DBS_liver_sigs, 
-                                        threshold = 6, signature_colours = sig_cols,resdir = resdir)
+                                        threshold = 6, signature_colours = sig_cols, resdir = resdir)
 
-pdf(file.path(resdir,"DBS_signature_content_plot.pdf"),width=15,height=10)
-deconvolution_exposure(signature_contribution = DBS_signatures_exp,signature_colours = sig_cols)
+pdf(file.path(resdir,"DBS_signature_content_plot.pdf"), width=15, height=10)
+deconvolution_exposure(signature_contribution = DBS_signatures_exp, signature_colours = sig_cols)
 dev.off()
 
 
 #-------------------------------------------------------------------------------------------------
 # 5] Extract with published insertion and deletion (ID) COSMIC signatures
 #-------------------------------------------------------------------------------------------------
-resdir <- paste0(resdir_parent,"ID_COSMIC_Extraction/");if(!file.exists(resdir))	dir.create(resdir) 
+resdir <- file.path(resdir_parent, "ID_COSMIC_Extraction/"); if(!file.exists(resdir))	dir.create(resdir) 
 
 ID_input <- palimpsest_input(vcf = vcf, Type = "ID")
 
 # select desired COSMIC indel reference signatures 
-ID_liver_names <- c("ID1","ID2","ID3","ID5","ID8")
+ID_liver_names <- c("ID1", "ID2", "ID3", "ID5", "ID8")
 for(new_name in c(ID_liver_names[ID_liver_names %!in% names(sig_cols)])) 
   sig_cols[new_name] <- signature_colour_generator(new_name)  ## generate colours for signatures currently without defined colours 
 
@@ -127,10 +128,10 @@ ID_liver_sigs <- ID_cosmic[rownames(ID_cosmic) %in% ID_liver_names,]
 
 # calculate and plot the exposure of the signatures across the series
 ID_signatures_exp <- deconvolution_fit(input_matrices = ID_input, input_signatures = ID_liver_sigs, 
-                                       threshold = 6, signature_colours = sig_cols,resdir = resdir)
+                                       threshold = 6, signature_colours = sig_cols, resdir = resdir)
 
-pdf(file.path(resdir,"ID_signature_content_plot.pdf"),width=15,height=10)
-deconvolution_exposure(signature_contribution = ID_signatures_exp,signature_colours = sig_cols)
+pdf(file.path(resdir,"ID_signature_content_plot.pdf"), width=15, height=10)
+deconvolution_exposure(signature_contribution = ID_signatures_exp, signature_colours = sig_cols)
 dev.off()
 
 
@@ -141,7 +142,7 @@ dev.off()
 # This step is quite computationally-intensive for whole genome data. 
 # For this example we restrict the analysis to coding mutations 
 vcf.cod <- vcf[(!is.na(vcf$Driver) & vcf$Type=="SNV"),]
-vcf.cod <- signature_origins(input = vcf.cod, Type = "SBS",input_signatures = SBS_liver_sigs,
+vcf.cod <- signature_origins(input = vcf.cod, Type = "SBS", input_signatures = SBS_liver_sigs,
                              signature_contribution = SBS_signatures_exp)
 
 # Estimate and represent the cumulative contribution of signatures to each driver gene
@@ -175,8 +176,8 @@ vcf <- merge(vcf,vcf.cod,all=TRUE,sort=FALSE)
 resdir <- file.path(resdir_parent,"Clonality");if(!file.exists(resdir)){dir.create(resdir)}
 
 # Load copy number analysis (CNA) and annotation (annot) data
-cna_data = load2object(paste0(datadir,"cna_data.RData"))
-annot = load2object(paste0(datadir,"annot_data.RData"))
+cna_data = load2object(file.path(datadir,"cna_data.RData"))
+annot = load2object(file.path(datadir,"annot_data.RData"))
 
 # Calculate the Cancer Cell Fraction (CCF) of each mutation.
 vcf_cna <- cnaCCF_annot(vcf= vcf, annot_data = annot,cna_data = cna_data, CCF_boundary = 0.95)
@@ -235,7 +236,7 @@ library(bedr);library(RCircos) # Loading dependencies necessary for SV annotatio
 # For the bedr package to function you will need to have the BEDTools programme installed and in your default PATH
 
 # Load SV Data
-SV_data = load2object(paste0(datadir,"sv_data.RData"))
+SV_data = load2object(file.path(datadir,"sv_data.RData"))
 
 # Preprocess SV inputs and annotate for further analysis:
 SV.vcf <- preprocessInput_sv(input_data =  SV_data,resdir = resdir)
