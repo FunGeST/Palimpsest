@@ -21,7 +21,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5) stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
   if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions marked 'INS', please change accordingly")
-  if(genome_build %!in% c("hg19","hg38")) stop("genome_build must be either hg19 or hg38")
+  if(ref_genome@pkgname %!in% c("BSgenome.Hsapiens.UCSC.hg19","BSgenome.Hsapiens.UCSC.hg38")) stop("either hg19 or hg38 ref_genome must be used")
   vcf <- order_vcf(vcf)
 
   if(ref_genome@pkgname == "BSgenome.Hsapiens.UCSC.hg19") genome_build = "hg19"
