@@ -314,7 +314,7 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
       mutate(DBS_cat = NA)
   }
   output <- output[,colnames(output)!="unique"]
-  if(nrow(filter(output, is.na(DBS_cat))) == nrow(output)) warning("No DBS mutations were detected.")
+  if(nrow(filter(output, is.na(DBS_cat))) == nrow(output)) warning("No DBS mutations were detected in the input VCF.")
   return(output)
 }
 
@@ -340,7 +340,7 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
 
 add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, genome = NA){
   if((Sys.which("python2.7")=="")==TRUE) stop("python 2.7 must be installed on this device and accessible to R to allow indel categories to be added. (see README for more information)")
-  if(nrow(filter(vcf, Type %in% c("INS","DEL"))) == 0) warning("No rows of the VCF corresponding to insertions or deletions were detected.")
+  if(nrow(filter(vcf, Type %in% c("INS","DEL"))) == 0) warning("No insertions or deletions were detected in the input VCF.")
   palimpdir = palimpdir_man
   if(is.na(palimpdir_man)){
     for(i in length(.libPaths)){
@@ -406,7 +406,7 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, 
 
   # system2("python",c(tool,argus))
   system(paste(tool,c(argus)))
-  warning("Indel category extraction with PCAWG7-data-preparation-version-1.5 python script is finished 
+  warning("Indel category extraction with PCAWG7-data-preparation-version-1.5 python script complete 
   (if there are error messages above it has not been successful)")
   
 
