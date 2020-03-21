@@ -310,7 +310,8 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
     }
     if(DBS_mutations_only == TRUE) output <- add_cats
   }else{
-    output = vcf
+    output = vcf %>% 
+      mutate(DBS_cat = NA)
   }
   output <- output[,colnames(output)!="unique"]
   if(nrow(filter(output, is.na(DBS_cat))) == nrow(output)) warning("No DBS mutations were detected.")
