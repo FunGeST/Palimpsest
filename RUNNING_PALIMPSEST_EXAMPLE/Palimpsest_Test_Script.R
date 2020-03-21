@@ -7,7 +7,7 @@
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
 ##################################################################################################
-# Load Palimpsest package
+# Load Palimpsest & reference genome packages
 library(Palimpsest)
 library(BSgenome.Hsapiens.UCSC.hg19) # Reference genome of choice
 # library(BSgenome.Hsapiens.UCSC.hg38) # Use this package for hg38 data
