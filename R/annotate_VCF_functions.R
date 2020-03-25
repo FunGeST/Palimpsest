@@ -104,7 +104,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     vcf <- add_DBS_cats_ToVCF(vcf = vcf, DBS_mutations_only = F)
   }
   if(add_ID_cats == TRUE & .Platform$OS.type != "windows"){
-    vcf <- edit_add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir, genome = genome_build)
+    vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir, genome = genome_build)
       warning("Indel category extraction with PCAWG7-data-preparation-version-1.5 python script complete (if there are error messages above it has not been successful)")
   }
   if(add_ID_cats == TRUE & .Platform$OS.type == "windows") warning("Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script.
