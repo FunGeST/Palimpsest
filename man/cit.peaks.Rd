@@ -4,9 +4,15 @@
 \alias{cit.peaks}
 \title{cit.peaks}
 \usage{
-cit.peaks(x, percentHighestPeak = 0.2, maxNbPeaks = NULL,
-  minDeltaBetweenPeaks = 0.03, deltaApproach = 1, doplot = FALSE,
-  ...)
+cit.peaks(
+  x,
+  percentHighestPeak = 0.2,
+  maxNbPeaks = NULL,
+  minDeltaBetweenPeaks = 0.03,
+  deltaApproach = 1,
+  doplot = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{a numeric vector}

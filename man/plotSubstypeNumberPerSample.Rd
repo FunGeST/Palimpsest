@@ -4,8 +4,13 @@
 \alias{plotSubstypeNumberPerSample}
 \title{plotSubstypeNumberPerSample}
 \usage{
-plotSubstypeNumberPerSample(vcf, sample.col = "sample",
-  substype.col = "substype", plot.file = NULL, ...)
+plotSubstypeNumberPerSample(
+  vcf,
+  sample.col = "sample",
+  substype.col = "substype",
+  plot.file = NULL,
+  ...
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

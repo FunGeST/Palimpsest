@@ -2,6 +2,7 @@
 
 export("%!in%")
 export(NMF_Extraction)
+export(RCircos.Get.Start.End.Locations_1)
 export(RCircos.Heatmap.Plot_1)
 export(RCircos.Link.Plot_1)
 export(annotate_VCF)

@@ -4,11 +4,18 @@
 \alias{palimpsest_dfPosXSegm}
 \title{palimpsest_dfPosXSegm}
 \usage{
-palimpsest_dfPosXSegm(dfPos = NULL, dfPos.chrom.col = "chrom",
-  dfPos.pos.col = "pos", dfSegm = NULL, dfSegm.chrom.col = "chrom",
-  dfSegm.start.col = "start", dfSegm.end.col = "end",
-  colsToAdd = NULL, namesColsToAdd = NULL, multseg = c(NA, "first",
-  "all")[1])
+palimpsest_dfPosXSegm(
+  dfPos = NULL,
+  dfPos.chrom.col = "chrom",
+  dfPos.pos.col = "pos",
+  dfSegm = NULL,
+  dfSegm.chrom.col = "chrom",
+  dfSegm.start.col = "start",
+  dfSegm.end.col = "end",
+  colsToAdd = NULL,
+  namesColsToAdd = NULL,
+  multseg = c(NA, "first", "all")[1]
+)
 }
 \arguments{
 \item{dfPos}{Data frame with positions to annotate}

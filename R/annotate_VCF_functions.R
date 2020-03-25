@@ -5,23 +5,25 @@
 #' @param add_strand_and_SBS_cats Logical indicating whether or not strand, gene and SBS category annotations are to be added (defaults to TRUE).
 #' @param add_DBS_cats Logical indicating whether or not DBS category annotations are to be added (defaults to TRUE).
 #' @param add_ID_cats Logical indicating whether or not Indel category annotations are to be added (defaults to FALSE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).
-#' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE. 
-#' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19).
-#' @param palimpdir If you received an error when trying to add indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from GitHub.
+#' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE. The latest reference genomes in FASTA format can be downloaded here: https://hgdownload.cse.ucsc.edu/downloads.html#human 
+#' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19). Use library(BSgenome.Hsapiens.UCSC.hg38) as appropirate. 
+#' @param palimpdir If you received an error when trying to add indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from GitHub. D/L = https://github.com/FunGeST/Palimpsest/archive/master.zip 
 #'
 #' @return vcf
 #' @export
 #' @import gtools
 #' @import VariantAnnotation
 #' @examples
-#'vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/Homo_sapiens_assembly19.fasta", palimpdir = "~/Code/Palimpsest/")
+#'vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/hg19.fa")
 
 annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = T, add_ID_cats = F, 
                          ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NA){
   
-  if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5) stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
-  if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' an/or insertions marked 'INS', please change accordingly")
-  if(ref_genome@pkgname %!in% c("BSgenome.Hsapiens.UCSC.hg19","BSgenome.Hsapiens.UCSC.hg38")) stop("either hg19 or hg38 ref_genome must be used")
+  if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5)
+     stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
+  if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' and/or insertions marked 'INS', please change accordingly")
+  if(ref_genome@pkgname %!in% c("BSgenome.Hsapiens.UCSC.hg19","BSgenome.Hsapiens.UCSC.hg38")) 
+    stop("either hg19 or hg38 ref_genome must be used, loaded from library(BSgenome.Hsapiens.UCSC.hg19) or library(BSgenome.Hsapiens.UCSC.hg38)")
   vcf <- order_vcf(vcf)
 
   if(ref_genome@pkgname == "BSgenome.Hsapiens.UCSC.hg19") genome_build = "hg19"
@@ -33,10 +35,10 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
   remove_chrs <- c("chrM", "chrMT")
   vcf <- vcf[which(vcf$CHROM %!in% remove_chrs), ]
   if(add_strand_and_SBS_cats == T){
+    print("Adding gene, strand and SBS category annotations...", quote = F)
     vcf$strand.mut <- "+"
     vcf$strand.gene <- NA
     vcf$gene_name <- NA
-    print("Adding gene, strand and SBS category annotations ..", quote = F)
     if(genome_build == "hg19") ensgene <- ensgene_hg19
     if(genome_build == "hg38") ensgene <- ensgene_hg38
     ensgene_split <- split(ensgene,ensgene$Chromosome.Name)
@@ -47,7 +49,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     for(chr in chr_listy){
       ind <- unlist(sapply(vcf_split[[chr]]$POS,function(pos){
         tmp <- which(ensgene_split[[chr]]$Gene.Start..bp. <= pos & ensgene_split[[chr]]$Gene.End..bp. >= pos)
-        if(length(tmp)==1)	tmp else{NA}
+        if(length(tmp)==1)  tmp else{NA}
       }))
       if (all(is.na(ind))) {
         vcf_split[[chr]]$gene_name <- NA 
@@ -99,15 +101,16 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     vcf <- dplyr::select(vcf,-c(substype,context3,context5))
   }
   if(add_DBS_cats == TRUE){
-    vcf <- add_DBS_cats_ToVCF(vcf = vcf,DBS_mutations_only = F)
+    vcf <- add_DBS_cats_ToVCF(vcf = vcf, DBS_mutations_only = F)
   }
   if(add_ID_cats == TRUE & .Platform$OS.type != "windows"){
-    vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir, genome = genome_build)
+    vcf <- edit_add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir, genome = genome_build)
+      warning("Indel category extraction with PCAWG7-data-preparation-version-1.5 python script complete (if there are error messages above it has not been successful)")
   }
-  if(add_ID_cats == TRUE & .Platform$OS.type == "windows") warning("Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.). All other Palimpsest functions work on windows.")
+  if(add_ID_cats == TRUE & .Platform$OS.type == "windows") warning("Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script.
+    Please run this step in a unix environment (Mac/Linux etc.). All other Palimpsest functions work on windows.")
   return(vcf)
 }
-
 
 
 #' palimpsest_addMutationContextToVR
@@ -119,9 +122,6 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
 #' @import GenomicRanges
 #' @examples
 #' vr3 <- palimpsest_addMutationContextToVR(vr = vr, ref_genome = ref_genome, k = 3, num_of_DELs = delet_this)
-
-
-
 
 palimpsest_addMutationContextToVR <- function (vr =NULL, ref_genome = NULL, k = 3,  check.strand = FALSE, 
                                                   num_of_DELs = NULL) 
@@ -321,18 +321,12 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
 
 
 
-
-
-
-
-
 #' add_ID_cats_ToVCF
 #'
 #' Adds Indel mutation categories to a VCF.
 #' @param vcf VCF to which Indel mutation categories are to be added.
-#' @param tool_dir Path to folder containing PCAWG7-data-preparation-version-1.5 tool.
 #' @param ref_fasta Path to fasta file for reference genome of choice (e.g. hg19 genome).
-#' @param palimpdir_man Path to palimpsest directory entered manually. 
+#' @param palimpdir_man Path to palimpsest directory entered manually. Must contain the "exec" folder. 
 #' @param genome Taken from annotate_VCF function.
 #' @keywords Signatures
 #' @examples
@@ -360,7 +354,7 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, 
       print(" ", quote = F)
       print("example filepath you should input: '/Users/joe_bloggs/Library/R/3.6/library/Palimpsest/'", quote = F)
       stop("This function needs the location of the up-to-date Palimpsest directory to launch the indel category extraction in python. Please find and enter the file path manually using the palimpdir parameter")
-    }
+  }
 
   tmpdir <- file.path(palimpdir,"Temporary/"); if(!file.exists(tmpdir))  dir.create(tmpdir) 
   heure <- Sys.time(); heure <- gsub(" ","_",heure); heure <- gsub("-","",heure); heure <- gsub(":",".",heure)
@@ -370,16 +364,17 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, 
     mutate(Unique = paste0(Sample,"_",nums))
 
   genome_python = NA
-  if(genome == "hg19") genome_python = "GRCh37"
+  if(genome == "hg19") genome_python = "hg19"
   if(genome == "hg38") genome_python = "GRCh38"
   if(is.na(genome_python)) stop("indel genome issue")
   
   python_vcf = vcf %>% 
     filter(Type != "SNV") %>% 
-    mutate(Start = POS, End = POS,col0="x", col3 = "y", Genome = genome_python,col11 = "1",col12 = "2", CHROM = sub("chr", "", CHROM)) %>% 
+    mutate(Start = POS, End = POS, CHROM = sub("chr", "", CHROM), col0="x", col3 = "y",
+             Genome = genome_python,col11 = "1",col12 = "2") %>% 
     order_vcf() %>% 
     dplyr::select(col0,Unique,col3,Genome,Type,CHROM,Start,End,REF,ALT,col11,col12)
-
+  
   if("-" %!in% vcf$REF[vcf$Type == "INS"]){
     python_vcf[python_vcf$Type=="INS",] = python_vcf[python_vcf$Type=="INS",] %>% 
       mutate(REF = "-", ALT =  substr(ALT,2,nchar(ALT)))
@@ -391,30 +386,22 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, 
       mutate(REF =  substr(REF,2,nchar(REF)), ALT = "-", End = End + 1, Start = Start + 1)
   }
   
-  vcf_output <- file.path(tmpdir,"python_vcf_indel.simple")
-  
-  write.table(format(python_vcf,scientific=FALSE),file=vcf_output,col.names = F,row.names=F,sep="\t",quote=F)
-  
-  
+  vcf_output = file.path(tmpdir,"python_vcf_indel.simple")
+  write.table(format(python_vcf,scientific=FALSE),file=vcf_output, col.names = F,row.names=F,sep="\t",quote=F)
+    
   ### RUN PCAWG7-data-preparation-version-1.5 IN PYTHON ###
-  print("Runnng PCAWG7-data-preparation-version-1.5 in python to extract Indel categories..",quote = F)
+  print("Runnng **updated** PCAWG7-data-preparation-version-1.5 in python to extract Indel categories..",quote = F)
   tool <- file.path(palimpdir,"exec/make_spectra_indels.py")
-
   cachedir <- paste0(tmpdir,"cache_",heure,"/");if(!file.exists(cachedir))  dir.create(cachedir) 
-  
   argus <- paste("--cachedir",cachedir,"--genome --fasta",ref_fasta,"--output",paste0(tmpdir,"indel_output"),vcf_output)
 
   # system2("python",c(tool,argus))
   system(paste(tool,c(argus)))
-  warning("Indel category extraction with PCAWG7-data-preparation-version-1.5 python script complete 
-  (if there are error messages above it has not been successful)")
-  
-
+ 
   # load output and add categories to vcf
   cachename <- list.files(paste0(cachedir,"annotated/"))
   indel_cache <- read.delim(file = paste0(cachedir,"annotated/",cachename), sep = "\t", header = F) %>% 
     mutate_all(as.character())
-  
   vcf$ID_cat <- as.character(indel_cache$V7[match(vcf$Unique,indel_cache$V1)])
   
   output <- indel_category_correct(input = vcf) %>% 
@@ -423,6 +410,7 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, 
   return(output)
   unlink(tmpdir,recursive = T,force = T) ## delete the temporary folder and files
 }
+
 
 
 

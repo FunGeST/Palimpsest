@@ -4,8 +4,12 @@
 \alias{signature_origins}
 \title{signature_origins}
 \usage{
-signature_origins(input = NULL, Type = Type,
-  signature_contribution = signatures_exp, input_signatures = NULL)
+signature_origins(
+  input = NULL,
+  Type = Type,
+  signature_contribution = signatures_exp,
+  input_signatures = NULL
+)
 }
 \arguments{
 \item{Type}{Mutation type (SBS, DBS, ID or SV).}

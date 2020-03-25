@@ -4,10 +4,17 @@
 \alias{preprocessInput_sv}
 \title{preprocessInput_sv}
 \usage{
-preprocessInput_sv(input_data = NULL, Sample.col = "Sample",
-  CHROM_1.col = "CHROM_1", CHROM_2.col = "CHROM_2",
-  POS_1.col = "POS_1", POS_2.col = "POS_2", type.col = "Type",
-  resdir = resdir, genome_build = "hg19")
+preprocessInput_sv(
+  input_data = NULL,
+  Sample.col = "Sample",
+  CHROM_1.col = "CHROM_1",
+  CHROM_2.col = "CHROM_2",
+  POS_1.col = "POS_1",
+  POS_2.col = "POS_2",
+  type.col = "Type",
+  resdir = resdir,
+  genome_build = "hg19"
+)
 }
 \arguments{
 \item{input_data}{Table describing somatic structural rearrangements.}

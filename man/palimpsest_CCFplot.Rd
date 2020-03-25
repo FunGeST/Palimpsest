@@ -4,8 +4,12 @@
 \alias{palimpsest_CCFplot}
 \title{palimpsest_CCFplot}
 \usage{
-palimpsest_CCFplot(vcf = NULL, CHROM.col = "CHROM",
-  VAF.col = "Tumor_Varprop", clonality.col = "CCF_Clonality")
+palimpsest_CCFplot(
+  vcf = NULL,
+  CHROM.col = "CHROM",
+  VAF.col = "Tumor_Varprop",
+  clonality.col = "CCF_Clonality"
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

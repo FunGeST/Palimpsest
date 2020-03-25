@@ -4,9 +4,15 @@
 \alias{deconvolution_fit_SV}
 \title{deconvolution_fit_SV}
 \usage{
-deconvolution_fit_SV(vcf = vcf, input_data = data, threshold = 6,
-  input_signatures = NULL, sig_cols = mycol, plot = TRUE,
-  resdir = NULL)
+deconvolution_fit_SV(
+  vcf = vcf,
+  input_data = data,
+  threshold = 6,
+  input_signatures = NULL,
+  sig_cols = mycol,
+  plot = TRUE,
+  resdir = NULL
+)
 }
 \arguments{
 \item{vcf}{The VCF used in the current analysis. Only required when Type == "SBS" so that the strand bias of SBS mutations can be plotted.}

@@ -4,9 +4,16 @@
 \alias{cit.pangenomCoord}
 \title{cit.pangenomCoord}
 \usage{
-cit.pangenomCoord(x, chrom = "chrom", pos = "meanPos",
-  startPos = "start", endPos = "end", cyto = NULL,
-  absPos = "absPos", chromNum = "chrNum")
+cit.pangenomCoord(
+  x,
+  chrom = "chrom",
+  pos = "meanPos",
+  startPos = "start",
+  endPos = "end",
+  cyto = NULL,
+  absPos = "absPos",
+  chromNum = "chrNum"
+)
 }
 \arguments{
 \item{x}{data.frame which columns include genomic position information}

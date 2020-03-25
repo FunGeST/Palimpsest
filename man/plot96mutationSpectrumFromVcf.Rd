@@ -4,9 +4,14 @@
 \alias{plot96mutationSpectrumFromVcf}
 \title{plot96mutationSpectrumFromVcf}
 \usage{
-plot96mutationSpectrumFromVcf(vcf, sample.col = "sample",
-  mutcat3.col = "mutcat3", ymax = NULL, averageProp = FALSE,
-  plot.file = NULL)
+plot96mutationSpectrumFromVcf(
+  vcf,
+  sample.col = "sample",
+  mutcat3.col = "mutcat3",
+  ymax = NULL,
+  averageProp = FALSE,
+  plot.file = NULL
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

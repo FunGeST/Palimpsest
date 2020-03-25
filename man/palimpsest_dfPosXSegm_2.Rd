@@ -4,11 +4,18 @@
 \alias{palimpsest_dfPosXSegm_2}
 \title{palimpsest_dfPosXSegm_2}
 \usage{
-palimpsest_dfPosXSegm_2(dfPos = NULL, dfPos.chrom.col = "chrom",
-  dfPos.pos.col = "pos", dfSegm = NULL, dfSegm.chrom.col = "chrom",
-  dfSegm.start.col = "start", dfSegm.end.col = "end",
-  colsToAdd = NULL, namesColsToAdd = NULL, multseg = c(NA, "first",
-  "all")[1])
+palimpsest_dfPosXSegm_2(
+  dfPos = NULL,
+  dfPos.chrom.col = "chrom",
+  dfPos.pos.col = "pos",
+  dfSegm = NULL,
+  dfSegm.chrom.col = "chrom",
+  dfSegm.start.col = "start",
+  dfSegm.end.col = "end",
+  colsToAdd = NULL,
+  namesColsToAdd = NULL,
+  multseg = c(NA, "first", "all")[1]
+)
 }
 \description{
 Annotating the mutation data with necessary fields for further analysis

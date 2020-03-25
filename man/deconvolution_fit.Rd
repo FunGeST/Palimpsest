@@ -4,9 +4,16 @@
 \alias{deconvolution_fit}
 \title{deconvolution_fit}
 \usage{
-deconvolution_fit(input_matrices = NULL, input_signatures = NULL,
-  input_vcf = vcf, threshold = 6, signature_colours = sig_cols,
-  doplot = TRUE, save_signatures_exp = TRUE, resdir = resdir)
+deconvolution_fit(
+  input_matrices = NULL,
+  input_signatures = NULL,
+  input_vcf = vcf,
+  threshold = 6,
+  signature_colours = sig_cols,
+  doplot = TRUE,
+  save_signatures_exp = TRUE,
+  resdir = resdir
+)
 }
 \arguments{
 \item{input_matrices}{Palimpsest input list of mutation number and proportion matrices.}

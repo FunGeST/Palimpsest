@@ -4,8 +4,12 @@
 \alias{plotStrandBias6types}
 \title{plotStrandBias6types}
 \usage{
-plotStrandBias6types(vcf, substype.col = "substype",
-  strand.ts.col = "strand.ts", plot.file = NULL)
+plotStrandBias6types(
+  vcf,
+  substype.col = "substype",
+  strand.ts.col = "strand.ts",
+  plot.file = NULL
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

@@ -4,9 +4,15 @@
 \alias{RCircos.Link.Plot_1}
 \title{RCircos.Link.Plot_1}
 \usage{
-RCircos.Link.Plot_1(link.data = NULL, track.num = NULL,
-  by.chromosome = FALSE, start.pos = NULL, genomic.columns = 3,
-  is.sorted = TRUE, lineWidth = rep(1, nrow(link.data)))
+RCircos.Link.Plot_1(
+  link.data = NULL,
+  track.num = NULL,
+  by.chromosome = FALSE,
+  start.pos = NULL,
+  genomic.columns = 3,
+  is.sorted = TRUE,
+  lineWidth = rep(1, nrow(link.data))
+)
 }
 \arguments{
 \item{link.data}{link.data}

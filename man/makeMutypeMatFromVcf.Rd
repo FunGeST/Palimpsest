@@ -4,9 +4,13 @@
 \alias{makeMutypeMatFromVcf}
 \title{makeMutypeMatFromVcf}
 \usage{
-makeMutypeMatFromVcf(vcf, sample.col = "Sample",
-  mutcat.col = "SBS_cat3", mutypes = c("CA", "CG", "CT", "TA", "TC",
-  "TG"), proportion = TRUE)
+makeMutypeMatFromVcf(
+  vcf,
+  sample.col = "Sample",
+  mutcat.col = "SBS_cat3",
+  mutypes = c("CA", "CG", "CT", "TA", "TC", "TG"),
+  proportion = TRUE
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations/SVs}

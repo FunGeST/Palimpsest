@@ -4,10 +4,17 @@
 \alias{palimpsest_addSVcategoriesToVcf}
 \title{palimpsest_addSVcategoriesToVcf}
 \usage{
-palimpsest_addSVcategoriesToVcf(sv = sv, type.col = "Type",
-  sample.col = "Sample", CHROM_1.col = "CHROM",
-  CHROM_2.col = "CHROM", POS_1.col = "POS", POS_2.col = "POS",
-  resdir = resdir, genome_build = "hg19")
+palimpsest_addSVcategoriesToVcf(
+  sv = sv,
+  type.col = "Type",
+  sample.col = "Sample",
+  CHROM_1.col = "CHROM",
+  CHROM_2.col = "CHROM",
+  POS_1.col = "POS",
+  POS_2.col = "POS",
+  resdir = resdir,
+  genome_build = "hg19"
+)
 }
 \arguments{
 \item{sv}{vcf data frame containing the SVs}

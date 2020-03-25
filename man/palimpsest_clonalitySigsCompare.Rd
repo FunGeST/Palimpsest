@@ -4,8 +4,12 @@
 \alias{palimpsest_clonalitySigsCompare}
 \title{palimpsest_clonalitySigsCompare}
 \usage{
-palimpsest_clonalitySigsCompare(clonsig = clonsig, subsig = subsig,
-  msigcol = msigcol, resdir = resdir)
+palimpsest_clonalitySigsCompare(
+  clonsig = clonsig,
+  subsig = subsig,
+  msigcol = msigcol,
+  resdir = resdir
+)
 }
 \arguments{
 \item{clonsig}{Data frame of sample x clonal mutational signature exposure format in numbers}

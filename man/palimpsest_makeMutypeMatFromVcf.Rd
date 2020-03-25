@@ -4,9 +4,13 @@
 \alias{palimpsest_makeMutypeMatFromVcf}
 \title{palimpsest_makeMutypeMatFromVcf}
 \usage{
-palimpsest_makeMutypeMatFromVcf(vcf, sample.col = "sample",
-  mutcat.col = "mutcat3", mutypes = c("CA", "CG", "CT", "TA", "TC",
-  "TG"), proportion = TRUE)
+palimpsest_makeMutypeMatFromVcf(
+  vcf,
+  sample.col = "sample",
+  mutcat.col = "mutcat3",
+  mutypes = c("CA", "CG", "CT", "TA", "TC", "TG"),
+  proportion = TRUE
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

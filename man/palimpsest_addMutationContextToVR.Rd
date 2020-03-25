@@ -4,8 +4,13 @@
 \alias{palimpsest_addMutationContextToVR}
 \title{palimpsest_addMutationContextToVR}
 \usage{
-palimpsest_addMutationContextToVR(vr = NULL, ref_genome = NULL,
-  k = 3, check.strand = FALSE, num_of_DELs = NULL)
+palimpsest_addMutationContextToVR(
+  vr = NULL,
+  ref_genome = NULL,
+  k = 3,
+  check.strand = FALSE,
+  num_of_DELs = NULL
+)
 }
 \value{
 vcf

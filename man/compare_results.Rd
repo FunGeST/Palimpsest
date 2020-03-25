@@ -4,10 +4,15 @@
 \alias{compare_results}
 \title{compare_results}
 \usage{
-compare_results(reference_sigs = NA, extraction_1 = NA,
-  extraction_2 = NULL, extraction_1_name = "Palimp",
-  extraction_2_name = NA, lower_threshold = 0.6,
-  upper_threshold = 0.9)
+compare_results(
+  reference_sigs = NA,
+  extraction_1 = NA,
+  extraction_2 = NULL,
+  extraction_1_name = "Palimp",
+  extraction_2_name = NA,
+  lower_threshold = 0.6,
+  upper_threshold = 0.9
+)
 }
 \description{
 compare the results of one or two de novo extraction(s) to a set of reference signatures (e.g. Palimpsest SBS de novo result to SBS COSMIC de novo signatures)

@@ -4,8 +4,12 @@
 \alias{plotStrandBias96types}
 \title{plotStrandBias96types}
 \usage{
-plotStrandBias96types(vcf, mutcat3.col = "mutcat3",
-  strand.ts.col = "strand.ts", plot.file = NULL)
+plotStrandBias96types(
+  vcf,
+  mutcat3.col = "mutcat3",
+  strand.ts.col = "strand.ts",
+  plot.file = NULL
+)
 }
 \arguments{
 \item{vcf}{data frame containing the mutations}

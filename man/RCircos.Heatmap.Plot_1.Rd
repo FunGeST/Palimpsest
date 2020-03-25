@@ -4,10 +4,18 @@
 \alias{RCircos.Heatmap.Plot_1}
 \title{RCircos.Heatmap.Plot_1}
 \usage{
-RCircos.Heatmap.Plot_1(heatmap.data = NULL, data.col = NULL,
-  track.num = NULL, side = c("in", "out"), min.value = NULL,
-  max.value = NULL, inside.pos = NULL, outside.pos = NULL,
-  genomic.columns = 3, is.sorted = TRUE)
+RCircos.Heatmap.Plot_1(
+  heatmap.data = NULL,
+  data.col = NULL,
+  track.num = NULL,
+  side = c("in", "out"),
+  min.value = NULL,
+  max.value = NULL,
+  inside.pos = NULL,
+  outside.pos = NULL,
+  genomic.columns = 3,
+  is.sorted = TRUE
+)
 }
 \arguments{
 \item{heatmap.data}{heatmap.data}

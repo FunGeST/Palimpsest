@@ -4,8 +4,12 @@
 \alias{cnaCCF_annot}
 \title{cnaCCF_annot}
 \usage{
-cnaCCF_annot(vcf = NULL, annot_data = NULL, cna_data = NULL,
-  CCF_boundary = 0.95)
+cnaCCF_annot(
+  vcf = NULL,
+  annot_data = NULL,
+  cna_data = NULL,
+  CCF_boundary = 0.95
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing somatic mutations}

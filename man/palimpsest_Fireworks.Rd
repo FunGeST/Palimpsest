@@ -4,9 +4,14 @@
 \alias{palimpsest_Fireworks}
 \title{palimpsest_Fireworks}
 \usage{
-palimpsest_Fireworks(vcf = NULL, CHROM.col = "CHROM",
-  POS.col = "POS", VAF.col = "Tumor_Varprop", LogR.col = "LogR",
-  nPurity.col = "nPurity")
+palimpsest_Fireworks(
+  vcf = NULL,
+  CHROM.col = "CHROM",
+  POS.col = "POS",
+  VAF.col = "Tumor_Varprop",
+  LogR.col = "LogR",
+  nPurity.col = "nPurity"
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

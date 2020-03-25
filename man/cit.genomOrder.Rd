@@ -4,8 +4,14 @@
 \alias{cit.genomOrder}
 \title{cit.genomOrder}
 \usage{
-cit.genomOrder(d, chrom = "chrom", pos = "pos", startPos = "start",
-  endPos = "end", chromNum = "chrNum")
+cit.genomOrder(
+  d,
+  chrom = "chrom",
+  pos = "pos",
+  startPos = "start",
+  endPos = "end",
+  chromNum = "chrNum"
+)
 }
 \arguments{
 \item{d}{data.frame}

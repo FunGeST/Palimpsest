@@ -4,8 +4,7 @@
 \alias{signature_exposure_plot}
 \title{signature_exposure_plot}
 \usage{
-signature_exposure_plot(mutSign_nums, mutSign_props,
-  signature_colours = NULL)
+signature_exposure_plot(mutSign_nums, mutSign_props, signature_colours = NULL)
 }
 \arguments{
 \item{mutSign_nums}{Matrix in sample x mutational signature exposure format in numbers}

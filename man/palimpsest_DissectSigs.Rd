@@ -4,8 +4,13 @@
 \alias{palimpsest_DissectSigs}
 \title{palimpsest_DissectSigs}
 \usage{
-palimpsest_DissectSigs(vcf = NULL, signatures_exp_clonal = NULL,
-  signatures_exp_subclonal = NULL, sig_cols = NULL, resdir = NULL)
+palimpsest_DissectSigs(
+  vcf = NULL,
+  signatures_exp_clonal = NULL,
+  signatures_exp_subclonal = NULL,
+  sig_cols = NULL,
+  resdir = NULL
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}

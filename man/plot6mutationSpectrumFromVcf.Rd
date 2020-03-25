@@ -4,8 +4,13 @@
 \alias{plot6mutationSpectrumFromVcf}
 \title{plot6mutationSpectrumFromVcf}
 \usage{
-plot6mutationSpectrumFromVcf(vcf, sample.col = "sample",
-  substype.col = "substype", averageProp = FALSE, plot.file = NULL)
+plot6mutationSpectrumFromVcf(
+  vcf,
+  sample.col = "sample",
+  substype.col = "substype",
+  averageProp = FALSE,
+  plot.file = NULL
+)
 }
 \arguments{
 \item{vcf}{vcf data frame containing the mutations}
