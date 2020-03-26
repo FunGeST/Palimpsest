@@ -5,9 +5,10 @@
 #' @param add_strand_and_SBS_cats Logical indicating whether or not strand, gene and SBS category annotations are to be added (defaults to TRUE).
 #' @param add_DBS_cats Logical indicating whether or not DBS category annotations are to be added (defaults to TRUE).
 #' @param add_ID_cats Logical indicating whether or not Indel category annotations are to be added (defaults to FALSE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).
-#' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE. The latest reference genomes in FASTA format can be downloaded here: https://hgdownload.cse.ucsc.edu/downloads.html#human 
+#' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE. The latest reference genomes in FASTA format can be downloaded \href{https://hgdownload.cse.ucsc.edu/downloads.html#human}{here}
 #' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19). Use library(BSgenome.Hsapiens.UCSC.hg38) as appropirate. 
-#' @param palimpdir If you received an error when trying to add indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from GitHub. D/L = https://github.com/FunGeST/Palimpsest/archive/master.zip 
+#' @param palimpdir If you received a filepath error when adding indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from \href{https://github.com/FunGeST/Palimpsest/archive/master.zip}{our GitHub}
+#' @param GRCh37_fasta If you received a VCF/FASTA error when adding indel categories, and you are working with GRCh37 data (or your hg19 FASTA has no 'chr' prefixes) set this to TRUE
 #'
 #' @return vcf
 #' @export
@@ -17,7 +18,8 @@
 #'vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/hg19.fa")
 
 annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = T, add_ID_cats = F, 
-                         ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NA){
+                         ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NA,
+                         GRCh37_fasta = FALSE){
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5)
      stop("VCF must contain columns named: 'Sample', 'CHROM', 'POS', 'REF', 'ALT' for Palimpsest functions to work")
