@@ -27,8 +27,11 @@ resdir_parent <- "/Results/Palimpsest/"; if(!file.exists(resdir_parent)) dir.cre
 
 load(file.path(datadir,"vcf.RData"))
 
+vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19)
+
+# Add Indel categories, only works in a Unix environment (e.g. Mac/Linux)
 vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
-                    ref_fasta = "/Genomes/Homo_sapiens_assembly19.fasta", add_ID_cats = FALSE)
+                    ref_fasta = "~/Genomes/hg19.fa", add_ID_cats = TRUE)
 
 
 #-------------------------------------------------------------------------------------------------
@@ -57,8 +60,7 @@ SBS_col <- signature_colour_generator(rownames(SBS_denovo_sigs))
 
 # Calculate and plot the exposure of the signatures across the series
 SBS_signatures_exp <- deconvolution_fit(input_matrices = SBS_input, input_signatures = SBS_denovo_sigs,
-                                        threshold = 6, resdir = resdir, signature_colours = SBS_col,
-                                        input_vcf = vcf)
+                                        resdir = resdir, signature_colours = SBS_col, input_vcf = vcf)
 
 pdf(file.path(resdir, "signature_content_plot.pdf"), width=15, height=10)
 deconvolution_exposure(signature_colours = SBS_col, signature_contribution = SBS_signatures_exp)
@@ -105,7 +107,7 @@ DBS_liver_sigs <- DBS_cosmic[rownames(DBS_cosmic) %in% DBS_liver_names,]
 
 # calculate and plot the exposure of the signatures across the series
 DBS_signatures_exp <- deconvolution_fit(input_matrices = DBS_input, input_signatures = DBS_liver_sigs, 
-                                        threshold = 6, signature_colours = sig_cols, resdir = resdir)
+                                        signature_colours = sig_cols, resdir = resdir)
 
 pdf(file.path(resdir,"DBS_signature_content_plot.pdf"), width=15, height=10)
 deconvolution_exposure(signature_contribution = DBS_signatures_exp, signature_colours = sig_cols)
@@ -128,7 +130,7 @@ ID_liver_sigs <- ID_cosmic[rownames(ID_cosmic) %in% ID_liver_names,]
 
 # calculate and plot the exposure of the signatures across the series
 ID_signatures_exp <- deconvolution_fit(input_matrices = ID_input, input_signatures = ID_liver_sigs, 
-                                       threshold = 6, signature_colours = sig_cols, resdir = resdir)
+                                       signature_colours = sig_cols, resdir = resdir)
 
 pdf(file.path(resdir,"ID_signature_content_plot.pdf"), width=15, height=10)
 deconvolution_exposure(signature_contribution = ID_signatures_exp, signature_colours = sig_cols)
