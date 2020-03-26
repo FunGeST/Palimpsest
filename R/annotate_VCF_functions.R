@@ -8,7 +8,7 @@
 #' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE. The latest reference genomes in FASTA format can be downloaded \href{https://hgdownload.cse.ucsc.edu/downloads.html#human}{here}
 #' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19). Use library(BSgenome.Hsapiens.UCSC.hg38) as appropirate. 
 #' @param palimpdir If you received a filepath error when adding indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from \href{https://github.com/FunGeST/Palimpsest/archive/master.zip}{our GitHub}
-#' @param GRCh37_fasta If you received a VCF/FASTA error when adding indel categories, and you are working with GRCh37 data (or your hg19 FASTA has no 'chr' prefixes) set this to TRUE
+#' @param GRCh37_fasta If you received a VCF/FASTA error when adding indel categories, and you are working with GRCh37 data (or your hg19 FASTA has no 'chr' prefixes) set to TRUE.
 #'
 #' @return vcf
 #' @export
@@ -106,7 +106,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     vcf <- add_DBS_cats_ToVCF(vcf = vcf, DBS_mutations_only = F)
   }
   if(add_ID_cats == TRUE & .Platform$OS.type != "windows"){
-    vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir, genome = genome_build)
+    vcf <- add_ID_cats_ToVCF(vcf = vcf, ref_fasta = ref_fasta,palimpdir_man = palimpdir, genome = genome_build, GRCh37 = GRCh37_fasta)
       warning("Indel category extraction with PCAWG7-data-preparation-version-1.5 python script complete (if there are error messages above it has not been successful)")
   }
   if(add_ID_cats == TRUE & .Platform$OS.type == "windows") warning("Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script.
@@ -330,11 +330,12 @@ add_DBS_cats_ToVCF <- function(vcf = NULL, DBS_mutations_only = NA){
 #' @param ref_fasta Path to fasta file for reference genome of choice (e.g. hg19 genome).
 #' @param palimpdir_man Path to palimpsest directory entered manually. Must contain the "exec" folder. 
 #' @param genome Taken from annotate_VCF function.
+#' @param GRCh37 Logical indicating whether reference fasta file is GRCh37 (i.e. no 'chr' prefixes).
 #' @keywords Signatures
 #' @examples
 #' vcf <- add_ID_cats_ToVCF(vcf = vcf,ref_fasta = ref_fasta)
 
-add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, genome = NA){
+add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, genome = NA, GRCh37 = FALSE){
   if((Sys.which("python2.7")=="")==TRUE) stop("python 2.7 must be installed on this device and accessible to R to allow indel categories to be added. (see README for more information)")
   if(nrow(filter(vcf, Type %in% c("INS","DEL"))) == 0) warning("No insertions or deletions were detected in the input VCF.")
   palimpdir = palimpdir_man
@@ -366,7 +367,8 @@ add_ID_cats_ToVCF <- function(vcf = NULL, ref_fasta = NULL, palimpdir_man = NA, 
     mutate(Unique = paste0(Sample,"_",nums))
 
   genome_python = NA
-  if(genome == "hg19") genome_python = "hg19"
+  if(genome == "hg19" & GRCh37 == FALSE) genome_python = "hg19"
+  if(genome == "hg19" & GRCh37 == TRUE) genome_python = "GRCh37"
   if(genome == "hg38") genome_python = "GRCh38"
   if(is.na(genome_python)) stop("indel genome issue")
   

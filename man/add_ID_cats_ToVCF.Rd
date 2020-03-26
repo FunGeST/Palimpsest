@@ -8,7 +8,8 @@ add_ID_cats_ToVCF(
   vcf = NULL,
   ref_fasta = NULL,
   palimpdir_man = NA,
-  genome = NA
+  genome = NA,
+  GRCh37 = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ add_ID_cats_ToVCF(
 \item{palimpdir_man}{Path to palimpsest directory entered manually. Must contain the "exec" folder.}
 
 \item{genome}{Taken from annotate_VCF function.}
+
+\item{GRCh37}{Logical indicating whether reference fasta file is GRCh37 (i.e. no 'chr' prefixes).}
 }
 \description{
 Adds Indel mutation categories to a VCF.

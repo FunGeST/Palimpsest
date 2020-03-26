@@ -30,7 +30,7 @@ annotate_VCF(
 
 \item{palimpdir}{If you received a filepath error when adding indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from \href{https://github.com/FunGeST/Palimpsest/archive/master.zip}{our GitHub}}
 
-\item{GRCh37_fasta}{If you received a VCF/FASTA error when adding indel categories, and you are working with GRCh37 data (or your hg19 FASTA has no 'chr' prefixes) set this to TRUE}
+\item{GRCh37_fasta}{If you received a VCF/FASTA error when adding indel categories, and you are working with GRCh37 data (or your hg19 FASTA has no 'chr' prefixes) set to TRUE.}
 }
 \value{
 vcf
