@@ -51,6 +51,10 @@ class reference():
         try:
             chr_start, chr_num_bases, chr_linelength, offset = self._index[chrome]
         except KeyError:
+            print >>sys.stderr, ' '
+            print >>sys.stderr, '**ERROR** incompatibility detected between input VCF and FASTA file, likely caused by no "chr" prefixes in %s' % self._fastafilename
+            print >>sys.stderr, 'try setting "genome_build" arg in annotate_VCF() to "GRCh37'
+            print >>sys.stderr, ' '
             print >>sys.stderr, 'missing contig in %s and/or index?' % self._fastafilename
             raise
 
