@@ -5,8 +5,6 @@
   <h1 align="center">Palimpsest</h1>
 </p>
 
-An R package for studying mutational signatures and structural variant signatures along clonal evolution in cancer. 
-
  Cancer genomes are altered by various mutational processes and, like [palimpsests](https://en.wikipedia.org/wiki/Palimpsest), bear the signatures of these successive processes. The _Palimpsest_ R package provides a complete workflow for the characterisation and visualisation of mutational signatures, including their evolution along tumour development. The package includes a wide range of functions for extracting single base substitution (SBS), double base substitution (DBS) and indel mutational signatures as well as structural variant (SV) signatures. _Palimpsest_ estimates the probability of each mutation being due to each signature, which allows the clonality of each alteration to be calculated, and the mechanism at the origin of each driver event to be predicted. In short, _Palimpsest_ is an easy-to-use toolset for the reconstruction of the natural history of tumours using whole exome or whole genome sequencing data. 
 
 Installation
