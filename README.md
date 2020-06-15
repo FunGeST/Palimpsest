@@ -30,7 +30,7 @@ For the analysis of somatic mutations _Palimpsest_ requires one mandatory input 
 `1]. VCF `: __somatic mutation data__
 
 * `Sample`: Sample identifier. Any alphanumeric string.
-* `Type`: Mutation type [SNV (e.g. C > A), INS for insertions (e.g. C > CAAA), DEL for deletions (e.g. CTAC > C)]. Although Palimpsest has double base substitution (DBS) extraction and analysis capacaties, DBS mutations are encoded by 2 consecutive lines of SNVs and so their type should remain as such. 
+* `Type`: Mutation type [SNV (e.g. C > A), INS for insertions (e.g. C > CAAA), DEL for deletions (e.g. CTAC > C)]. Although Palimpsest has double base substitution (DBS) extraction and analysis capacities, DBS mutations are encoded by 2 consecutive lines of SNVs and so their type should remain as such. 
 * `CHROM`: Chromosome. Between chr1 and chr22 or the chrX or chrY ('chr' prefix required).
 * `POS`: Mutation position. A positive integer.
 * `REF`: Reference base(s): Each base must be one of A,C,G,T (upper case). Multiple bases are permitted for deletions only, where the value in the POS field refers to the position of the first base in the string.
@@ -79,7 +79,7 @@ Running Palimpsest
 ================
 
 * The [RUNNING_PALIMPSEST_EXAMPLE](https://github.com/FunGeST/Palimpsest/tree/master/RUNNING_PALIMPSEST_EXAMPLE) folder contains an example dataset and an R script of a typical Palimpsest analysis using this data. Please try!</br>
-* [*Introduction to Palimpsest*](http://nbviewer.jupyter.org/github/FunGeST/Palimpsest/blob/master/Files/vignette_palimpsest_2.0.pdf) provides a comprehensive example of the Palimpsest workflow with detailed  explanations of each function.</br> 
+* [*Introduction to Palimpsest*](http://nbviewer.jupyter.org/github/FunGeST/Palimpsest/blob/master/Files/vignette_palimpsest_2.0.pdf) provides a comprehensive example of the Palimpsest workflow with detailed explanations of each function.</br> 
 * Please refer to the following paper for extensive description of the statistical methods used in the package: Letouzé, E., Shinde, J., et al. (2017) [Mutational signatures reveal the dynamic interplay of risk factors and cellular processes during liver tumorigenesis.](https://www.nature.com/articles/s41467-017-01358-x) _Nat. Commun._
 
 Reference
