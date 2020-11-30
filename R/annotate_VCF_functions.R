@@ -28,7 +28,7 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
     stop("either hg19 or hg38 ref_genome must be used, loaded from library(BSgenome.Hsapiens.UCSC.hg19) or library(BSgenome.Hsapiens.UCSC.hg38)")
   if(add_ID_cats){
     if(is.na(ref_fasta)) stop("You must specify the ref_fasta argument to add ID categories")
-    if(is.na(palimpdir)) warning("Consider specifying the palimpdir argument when adding ID categories)
+    if(is.na(palimpdir)) warning("Consider specifying the palimpdir argument when adding ID categories")
   }
 
   vcf <- order_vcf(vcf)
