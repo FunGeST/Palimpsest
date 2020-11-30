@@ -7,7 +7,7 @@
 #' @param add_ID_cats Logical indicating whether or not Indel category annotations are to be added (defaults to FALSE). Unfortunately Indel mutation categories cannot be added to the VCF in Windows, as this R function calls a python script. Please run this step in a unix environment (Mac/Linux etc.).
 #' @param ref_fasta File path to FASTA file compatable with input VCF positions and chromosomes. Only required when add_ID_cats = TRUE. The latest reference genomes in FASTA format can be downloaded \href{https://hgdownload.cse.ucsc.edu/downloads.html#human}{here}
 #' @param ref_genome Name of reference genome object. For hg19 data we use the BSgenome.Hsapiens.UCSC.hg19 object, which is loaded into the local environment by library(BSgenome.Hsapiens.UCSC.hg19). Use library(BSgenome.Hsapiens.UCSC.hg38) as appropirate. 
-#' @param palimpdir If you received a filepath error when adding indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaed from \href{https://github.com/FunGeST/Palimpsest/archive/master.zip}{our GitHub}
+#' @param palimpdir If you received a filepath error when adding indel categories, set this parameter as a filepath to the location of the Palimpsest package directory that you downloaded from \href{https://github.com/FunGeST/Palimpsest/archive/master.zip}{our GitHub}
 #' @param GRCh37_fasta If you received a VCF/FASTA error when adding indel categories, and you are working with GRCh37 data (or your hg19 FASTA has no 'chr' prefixes) set to TRUE.
 #'
 #' @return vcf
@@ -26,6 +26,11 @@ annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = 
   if(!all(unique(vcf$Type) %in% c("SNV","INS","DEL"))) stop("The column vcf$Type must contain single base substitutions marked 'SNV', deletions marked 'DEL' and/or insertions marked 'INS', please change accordingly")
   if(ref_genome@pkgname %!in% c("BSgenome.Hsapiens.UCSC.hg19","BSgenome.Hsapiens.UCSC.hg38")) 
     stop("either hg19 or hg38 ref_genome must be used, loaded from library(BSgenome.Hsapiens.UCSC.hg19) or library(BSgenome.Hsapiens.UCSC.hg38)")
+  if(add_ID_cats){
+    if(is.na(ref_fasta)) stop("You must specify the ref_fasta argument to add ID categories")
+    if(is.na(palimpdir)) warning("Consider specifying the palimpdir argument when adding ID categories)
+  }
+
   vcf <- order_vcf(vcf)
 
   if(ref_genome@pkgname == "BSgenome.Hsapiens.UCSC.hg19") genome_build = "hg19"
