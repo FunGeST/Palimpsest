@@ -18,7 +18,7 @@
 #'vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19, ref_fasta = "~/Documents/Data/Genomes/hg19.fa")
 
 annotate_VCF <- function(vcf = vcf, add_strand_and_SBS_cats = T, add_DBS_cats = T, add_ID_cats = F, 
-                         ref_fasta = NULL, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NA,
+                         ref_fasta = NA, ref_genome = BSgenome.Hsapiens.UCSC.hg19, palimpdir = NA,
                          GRCh37_fasta = FALSE){
   
   if(length(colnames(vcf)[colnames(vcf) %in% c("Sample","CHROM","POS","ALT","REF")]) < 5)
