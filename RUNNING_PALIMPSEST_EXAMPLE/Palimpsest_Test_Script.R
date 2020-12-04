@@ -27,9 +27,10 @@ resdir_parent <- "/Results/Palimpsest/"; if(!file.exists(resdir_parent)) dir.cre
 
 load(file.path(datadir,"vcf.RData"))
 
+# Annotate the VCF 
 vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19)
 
-# Add Indel categories, only works in a Unix environment (e.g. Mac/Linux)
+# Annotate the VCF with Indel categories also - this only works in a Unix environment (e.g. Mac/Linux)
 vcf <- annotate_VCF(vcf = vcf, ref_genome = BSgenome.Hsapiens.UCSC.hg19,
                     ref_fasta = "~/Genomes/hg19.fa", add_ID_cats = TRUE)
 
