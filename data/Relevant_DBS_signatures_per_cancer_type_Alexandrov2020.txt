@@ -1,0 +1,12 @@
+Signature	Biliary-AdenoCA	Bladder-TCC	Bone-Osteosarc	Bone-Other	Breast	Cervix	CNS-GBM	CNS-Medullo	CNS-Oligo	CNS-PiloAstro	ColoRect-AdenoCA	Eso-AdenoCA	Head-SCC	Kidney-ChRCC	Kidney-RCC	Liver-HCC	Lung-AdenoCA	Lung-SCC	Lymph-BNHL	Lymph-CLL	Myeloid-AML	Myeloid-MDS	Myeloid-MPN	Ovary-AdenoCA	Panc-AdenoCA	Panc-Endocrine	Prost-AdenoCA	Skin-Melanoma	SoftTissue-Leiomyo	SoftTissue-Liposarc	Stomach-AdenoCA	Thy-AdenoCA	Uterus-AdenoCA
+DBS1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0
+DBS2	1	1	0	0	1	0	1	0	0	0	1	0	1	0	1	1	1	1	0	0	0	0	0	1	1	0	1	0	0	1	1	1	1
+DBS3	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+DBS4	1	1	0	0	1	0	1	0	0	0	1	0	1	0	1	1	1	0	0	0	0	0	0	1	1	0	0	0	0	1	1	0	1
+DBS5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	1	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0
+DBS6	0	0	0	0	1	0	0	0	0	0	1	0	1	0	0	1	1	0	0	0	0	0	0	1	0	0	0	1	0	0	0	0	1
+DBS7	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	1	0	0
+DBS8	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+DBS9	0	0	0	0	1	0	0	0	0	0	0	0	1	0	1	1	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	1
+DBS10	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+DBS11	0	1	0	0	1	0	1	0	0	0	1	0	1	0	0	1	1	0	0	0	0	0	0	0	1	0	0	0	0	1	0	0	0
