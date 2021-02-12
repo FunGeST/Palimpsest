@@ -812,11 +812,12 @@ generate_table <- function(table){
 #' @param others others
 #' @param Sample_to_plot Sample_to_plot
 #' @param resdir resdir
+#' @param gv gv
 #'
 #' @export
 #' @import RCircos
 
-make_plot <- function(translocs, others, Sample_to_plot,resdir){
+make_plot <- function(translocs, others, Sample_to_plot,resdir,gv="hg38"){
   tumor = "Sample";chr1 = "CHROM_1";chr2 = "CHROM_2";pos1 = "POS_1";pos2 = "POS_2";event = "Type";
   requireNamespace("RCircos", quietly = TRUE)
   transl = translocs[which(translocs[,tumor] == Sample_to_plot),c(1:6)]
@@ -826,7 +827,8 @@ make_plot <- function(translocs, others, Sample_to_plot,resdir){
   othe[,5][which(othe[,4] == "DEL")] = 2
   othe[,5][which(othe[,4] == "INV")] = 3
   chr.exclude <- NULL
-  cyto.info <- UCSC.HG19.Human.CytoBandIdeogram
+  if(gv=="hg19"){data("UCSC.HG19.Human.CytoBandIdeogram") ; cyto.info <- UCSC.HG19.Human.CytoBandIdeogram}
+  if(gv=="hg38"){data("UCSC.HG38.Human.CytoBandIdeogram") ; cyto.info <- UCSC.HG38.Human.CytoBandIdeogram ; colnames(cyto.info)[2:3] <- c("ChromStart","ChromEnd")}
   tracks.inside <- 4
   tracks.outside <- 0
   RCircos.Set.Core.Components(cyto.info, chr.exclude, tracks.inside, tracks.outside)

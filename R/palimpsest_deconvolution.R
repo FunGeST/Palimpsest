@@ -338,6 +338,7 @@ deconvolution_fit <- function (input_matrices = NULL,
 #' @param sig_cols Character vector of R-compatible colours representing each signature to be used graphical outputs. Each signature in input_signatures must have named colour in this vector for grpahical outputs to work. Use the "signature_colour_generator" function to generate colours for new signatures.
 #' @param plot Logical indicating whether graphical outputs should be generated (defaults to TRUE). 
 #' @param resdir Results directory.
+#' @param gv Genome version (hg19 or hg38).
 #' @keywords Signatures
 #' @export
 #' @import tibble
@@ -347,7 +348,7 @@ deconvolution_fit <- function (input_matrices = NULL,
 
 deconvolution_fit_SV <- function (vcf = vcf, input_data = data,
                                threshold = 6, input_signatures = NULL,
-                               sig_cols = mycol, plot = TRUE, resdir = NULL)
+                               sig_cols = mycol, plot = TRUE, resdir = NULL,gv="hg38")
 {
   "%ni%" <- Negate("%in%");
   requireNamespace("NMF", quietly = TRUE)
@@ -364,13 +365,17 @@ deconvolution_fit_SV <- function (vcf = vcf, input_data = data,
         datas_for_plot <- generate_table(vcf)
         translocs = datas_for_plot[[1]]
         others = datas_for_plot[[2]]
+        # sv_for_plot = generate_sv_table(vcf)
+        # translocs = sv_for_plot[[1]]
+        # others = sv_for_plot[[2]]
         df <- t(as.data.frame(input_data[, s]))
         rownames(df) <- s
         pdf(file.path(resdir.., "Mean_proportion_38_sv_types.pdf"),
             width = 24, height = 6)
         plot.SV.sigs(df)
         dev.off()
-        make_plot(translocs, others, s,resdir = resdir..)
+        make_plot(translocs = translocs, others = others, Sample_to_plot = s, resdir = resdir.., gv=gv)
+        #make_circos_plot(translocs = translocs, others = others, Sample_to_plot = sample, resdir_circos = resdir.., cna_track=FALSE, gv=gv)
     }
     res <- fcnnls(as.matrix(t(input_signatures)), input_data[,s], verbose = TRUE, pseudo = FALSE)
     sig.tot <- margin.table(res$x, 2)
