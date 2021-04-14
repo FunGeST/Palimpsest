@@ -72,7 +72,7 @@ NMF_Extraction <- function (input_matrices = NULL, range_of_sigs = 1:20,
     }
   }
   denovo_signatures <- spec
-  save(denovo_signatures,file = paste0(resdir,Type,"_denovo_signatures.RData"))
+  save(denovo_signatures,file = file.path(resdir,paste0(Type,"_denovo_signatures.RData")))
   return(denovo_signatures)
 }
 
@@ -322,7 +322,7 @@ deconvolution_fit <- function (input_matrices = NULL,
   mutSign_nums <- round(mutSign_nums * mutSign_nums$total_mutations)
   mutSign_nums <- mutSign_nums[-dim(mutSign_nums)[2]]
   signatures_exp <- list(sig_props = mutSign_props, sig_nums = mutSign_nums)
-  if(save_signatures_exp == TRUE) save(signatures_exp,file = paste0(resdir_parent,Type,"_signatures_exposure.RData"))
+  if(save_signatures_exp == TRUE) save(signatures_exp,file = file.path(resdir_parent,paste0(Type,"_signatures_exposure.RData")))
   return(signatures_exp)
   dev.off()
   
