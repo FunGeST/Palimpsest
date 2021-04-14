@@ -34,7 +34,7 @@ NMF_Extraction <- function (input_matrices = NULL, range_of_sigs = 1:20,
     print(paste("Estimating the optimal number of",Type,"mutational signatures in the",ncol(input_data),"input samples.. (be patient!)"),quote = F)
     estimate <- nmfEstimateRank(x = input_data, range_of_sigs,
                                 method = method, nrun = nrun, seed = 123456)
-    pdf(paste0(resdir, "NMF_Rank_Estimates.pdf"), width = 8, 
+    pdf(file.path(resdir, "NMF_Rank_Estimates.pdf"), width = 8, 
         height = 6)
     p <- plot(estimate, y = NULL, what = "all", na.rm = FALSE, 
          xname = "x", yname = "y", xlab = "Factorization rank", 
@@ -66,7 +66,7 @@ NMF_Extraction <- function (input_matrices = NULL, range_of_sigs = 1:20,
       dev.off()
     }
     if (Type %in% c("SBS","DBS","ID")) {
-      pdf(file=paste0(resdir,Type,"_Denovo_Signature_Profiles.pdf"),width=24,height=7)
+      pdf(file=file.path(resdir,paste0(Type,"_Denovo_Signature_Profiles.pdf")),width=24,height=7)
       plot_signatures(input_data = spec,Title = rownames(spec))
       dev.off()
     }
@@ -266,7 +266,7 @@ deconvolution_fit <- function (input_matrices = NULL,
   resdir_parent <- resdir
   if (doplot == TRUE) {
     print(paste("Plotting the contribution of",Type,"signatures in each sample.."),quote = F)
-    resdir <- paste0(resdir,"Samples/");if (!file.exists(resdir)) dir.create(resdir)
+    resdir <- file.path(resdir,"Samples");if (!file.exists(resdir)) dir.create(resdir)
   }
 
   mutSign_props <- c()
@@ -357,7 +357,7 @@ deconvolution_fit_SV <- function (vcf = vcf, input_data = data,
     print(s)
     vcf. <- vcf[which(vcf[, "Sample"] == s), ]
     if (plot == TRUE) {
-      resdir_samp <- paste0(resdir,"Samples/");if (!file.exists(resdir_samp)) dir.create(resdir_samp)
+      resdir_samp <- file.path(resdir,"Samples");if (!file.exists(resdir_samp)) dir.create(resdir_samp)
       resdir.. <- file.path(resdir_samp, s)
       if (!file.exists(resdir..)) {
         dir.create(resdir..)
