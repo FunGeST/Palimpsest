@@ -12,7 +12,7 @@ Installation
 Install from the GitHub repository using devtools:
 
     install.packages("devtools")
-    devtools::install_github("benedict909/Palimpsest")
+    devtools::install_github("FunGeST/Palimpsest")
 
 Dependencies
 ========
