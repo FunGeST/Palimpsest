@@ -12,7 +12,6 @@ Installation
 Install from the GitHub repository using devtools:
 
     install.packages("devtools")
-    library(devtools)
     devtools::install_github("FunGeST/Palimpsest")
 
 Dependencies
