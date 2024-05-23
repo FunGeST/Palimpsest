@@ -48,7 +48,7 @@ SBS_denovo_sigs <- NMF_Extraction(input_matrices = SBS_input, range_of_sigs = 2:
 
 # Compare the de novo signatures with published COSMIC signatures
 compare_tab <- compare_results(reference_sigs = SBS_cosmic, extraction_1 = SBS_denovo_sigs); compare_tab
-readr::write_delim(compare_tab, path = file.path(resdir,"Comparison_table.txt"))
+readr::write_delim(compare_tab, file = file.path(resdir,"Comparison_table.txt"))
 
 pdf(file.path(resdir, "Cosine_Similarity_Heatmap.pdf"), width = 11, height = 10)
 SBS_cosine_similarities <- deconvolution_compare(SBS_denovo_sigs, SBS_cosmic)

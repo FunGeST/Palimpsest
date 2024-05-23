@@ -761,8 +761,11 @@ compare_results <- function(reference_sigs = NA, extraction_1 = NA, extraction_2
     
     longest <- max(c(length(denovs1),length(denovs2)))
     
-    res <- as.data.frame(matrix(nrow = nrow(reference_sigs)+longest,ncol = 0)) %>% 
-      mutate(References = NA, denovo1 = NA, ref_denovo1_cos = NA, denovo2 = NA, ref_denovo2_cos = NA, denovo1_denovo2_cos = NA, keep_version = NA)
+    # res <- as.data.frame(matrix(nrow = nrow(reference_sigs)+longest,ncol = 0)) %>% 
+      # mutate(References = NA, denovo1 = NA, ref_denovo1_cos = NA, denovo2 = NA, ref_denovo2_cos = NA, denovo1_denovo2_cos = NA, keep_version = NA)
+
+    repnum = nrow(reference_sigs) + longest
+    res = data.frame(References = rep(NA,repnum),  denovo1 = rep(NA,repnum), ref_denovo1_cos = rep(NA,repnum), keep_version = rep(NA,repnum))
   
     res$References[1:nrow(reference_sigs)] <- c(rownames(reference_sigs))
                                                 
@@ -860,10 +863,12 @@ compare_results <- function(reference_sigs = NA, extraction_1 = NA, extraction_2
 
   refs <- rownames(reference_sigs)
   denovs1 <- rownames(extraction_1)
+    
+  # res <- as.data.frame(matrix(nrow = nrow(reference_sigs)+length(denovs1),ncol = 0)) %>% 
+    # mutate(References = NA, denovo1 = NA, ref_denovo1_cos = NA, keep_version = NA)
 
-  
-  res <- as.data.frame(matrix(nrow = nrow(reference_sigs)+length(denovs1),ncol = 0)) %>% 
-    mutate(References = NA, denovo1 = NA, ref_denovo1_cos = NA, keep_version = NA)
+  repnum = nrow(reference_sigs) + length(denovs1)
+  res = data.frame(References = rep(NA,repnum),  denovo1 = rep(NA,repnum), ref_denovo1_cos = rep(NA,repnum), keep_version = rep(NA,repnum))
   
   res$References[1:nrow(reference_sigs)] <- c(rownames(reference_sigs))
   
